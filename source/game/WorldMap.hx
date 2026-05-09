@@ -7,15 +7,15 @@ import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.tile.FlxTilemap;
 import flixel.util.FlxDirectionFlags;
-import game.Location;
+import game.location.Location;
 
 class WorldMap {
 	// Map
 	public var tilemap:TiledMap;
 
-	private var state:FlxState;
-	private var tiles:FlxTilemap;
-	private var collisionLayer:FlxTilemap;
+	public var terrain:FlxTilemap;
+	public var midground:FlxTilemap;
+	public var foreground:FlxTilemap;
 
 	// Location table
 	public var locations:Map<String, Location>;
@@ -25,31 +25,41 @@ class WorldMap {
 	public var mapHeight:Int;
 
 	public function new(state:FlxState) {
-		this.state = state;
 		trace("Loading Map...");
 
 		// Link assets
 		var spritesheet:String = AssetPaths.tilemap_packed__png;
 		var tmx = new TiledMap(AssetPaths.level_1__tmx);
 
-		tiles = new FlxTilemap();
-		tiles.allowCollisions = FlxDirectionFlags.NONE;
+		terrain = new FlxTilemap();
+		terrain.allowCollisions = FlxDirectionFlags.NONE;
 
-		collisionLayer = new FlxTilemap();
+		midground = new FlxTilemap();
+		midground.allowCollisions = FlxDirectionFlags.ANY;
+
+		foreground = new FlxTilemap();
+		foreground.allowCollisions = FlxDirectionFlags.NONE;
 
 		mapWidth = tmx.width;
 		mapHeight = tmx.height;
 
-		state.add(tiles);
-		state.add(collisionLayer);
+		state.add(terrain);
+		state.add(midground);
+		state.add(foreground);
 
 		// Parse layers
 		for (layer in tmx.layers) {
 			if (layer.type == TILE) {
 				var tileLayer:TiledTileLayer = cast(layer, TiledTileLayer);
-				if (layer.name == "tiles") {
-					tiles.loadMapFromArray(tileLayer.tileArray, tileLayer.width, tileLayer.height, spritesheet, 8, 8, OFF, 1);
-					tiles.follow();
+				if (layer.name == "terrain") {
+					terrain.loadMapFromArray(tileLayer.tileArray, tileLayer.width, tileLayer.height, spritesheet, 8, 8, OFF, 1);
+					terrain.follow();
+				} else if (layer.name == "midlayer") {
+					midground.loadMapFromArray(tileLayer.tileArray, tileLayer.width, tileLayer.height, spritesheet, 8, 8, OFF, 1);
+					midground.follow();
+				} else if (layer.name == "foreground") {
+					foreground.loadMapFromArray(tileLayer.tileArray, tileLayer.width, tileLayer.height, spritesheet, 8, 8, OFF, 1);
+					foreground.follow();
 				} else {
 					trace("Unknown tile layer: " + layer.name);
 				}

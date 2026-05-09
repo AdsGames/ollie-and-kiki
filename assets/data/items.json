@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Fish",
+    "id": "fish",
+    "description": "A fresh fish, perfect for a meal.",
+    "value": 10
+  },
+  {
+    "name": "Catnip",
+    "id": "catnip",
+    "description": "A small bag of catnip, loved by all cats.",
+    "value": 5
+  },
+  {
+    "name": "Toy Mouse",
+    "id": "toy_mouse",
+    "description": "A small toy mouse, great for playtime.",
+    "value": 7
+  }
+]

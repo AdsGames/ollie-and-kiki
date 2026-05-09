@@ -1,0 +1,5 @@
+[
+  { "id": "market", "name": "Market", "x": 100, "y": 100 },
+  { "id": "docks",  "name": "Docks",  "x": 400, "y": 100 },
+  { "id": "bakery", "name": "Bakery", "x": 200, "y": 300 }
+]

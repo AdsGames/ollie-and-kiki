@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Fresh Fish Delivery",
+    "description": "Take the fish from the market to the docks.",
+    "itemId": "fish",
+    "fromId": "market",
+    "toId": "docks"
+  },
+  {
+    "name": "Catnip Run",
+    "description": "Pick up the catnip from the docks and bring it to the bakery.",
+    "itemId": "catnip",
+    "fromId": "docks",
+    "toId": "bakery"
+  }
+]

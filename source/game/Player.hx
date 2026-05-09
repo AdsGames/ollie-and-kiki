@@ -2,6 +2,7 @@ package game;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.util.FlxDirectionFlags;
 import game.dialogue.DialogueLine;
 import game.dialogue.DialogueManager;
 
@@ -11,6 +12,16 @@ class Player extends FlxSprite {
 	public function new(x:Float, y:Float, dialogueManager:DialogueManager) {
 		super(x, y, AssetPaths.cat__png);
 		this.dialogueManager = dialogueManager;
+
+		// Collision
+		width = 6;
+		height = 6;
+
+		// Center sprite on tile
+		offset.x = 1;
+		offset.y = 1;
+
+		allowCollisions = FlxDirectionFlags.ANY;
 	}
 
 	override public function update(elapsed:Float) {
@@ -21,7 +32,7 @@ class Player extends FlxSprite {
 			return;
 		}
 
-		if (FlxG.keys.justPressed.Z) {
+		if (FlxG.keys.justPressed.Z || FlxG.keys.justPressed.E) {
 			dialogueManager.startDialogue([
 				new DialogueLine("Ollie", "Hello there!"),
 				new DialogueLine("Kiki", "Hi Ollie! How are you?"),
@@ -29,14 +40,14 @@ class Player extends FlxSprite {
 			]);
 		}
 
-		if (FlxG.keys.pressed.UP) {
-			y -= 1;
-		} else if (FlxG.keys.pressed.DOWN) {
-			y += 1;
-		} else if (FlxG.keys.pressed.LEFT) {
-			x -= 1;
-		} else if (FlxG.keys.pressed.RIGHT) {
-			x += 1;
-		}
+		velocity.set(0, 0);
+		if (FlxG.keys.pressed.UP || FlxG.keys.pressed.W)
+			velocity.y = -60;
+		else if (FlxG.keys.pressed.DOWN || FlxG.keys.pressed.S)
+			velocity.y = 60;
+		if (FlxG.keys.pressed.LEFT || FlxG.keys.pressed.A)
+			velocity.x = -60;
+		else if (FlxG.keys.pressed.RIGHT || FlxG.keys.pressed.D)
+			velocity.x = 60;
 	}
 }

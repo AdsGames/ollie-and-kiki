@@ -2,6 +2,8 @@ package game.dialogue;
 
 import flixel.FlxG;
 import flixel.FlxState;
+import game.dialogue.DialogueBox;
+import game.dialogue.DialogueLine;
 
 class DialogueManager {
 	public var active(default, null):Bool = false;
@@ -41,7 +43,7 @@ class DialogueManager {
 
 		box.update(elapsed);
 
-		if (FlxG.keys.justPressed.Z || FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE) {
+		if (FlxG.keys.justPressed.Z || FlxG.keys.justPressed.E || FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE) {
 			if (!box.advance()) {
 				lineIdx++;
 				if (lineIdx >= lines.length) {
