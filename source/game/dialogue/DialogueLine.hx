@@ -1,11 +1,11 @@
 package game.dialogue;
 
 class DialogueLine {
-	public var speaker:String;
+	public var actorId:String;
 	public var text:String;
 
-	public function new(speaker:String, text:String) {
-		this.speaker = speaker;
+	public function new(actorId:String, text:String) {
+		this.actorId = actorId;
 		this.text = text;
 	}
 }

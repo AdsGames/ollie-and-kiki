@@ -44,6 +44,9 @@ class LocationManager {
 				return loc;
 			}
 		}
+
+		trace("Warning: No location found with id '" + id + "'");
+
 		return null;
 	}
 

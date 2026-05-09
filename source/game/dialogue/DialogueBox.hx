@@ -5,6 +5,7 @@ import flixel.graphics.frames.FlxBitmapFont;
 import flixel.group.FlxGroup;
 import flixel.text.FlxBitmapText;
 import flixel.util.FlxColor;
+import game.actor.Actor;
 
 // 9-slice dialogue box using a 48x48 spritesheet (3x3 grid of 16x16 tiles).
 class DialogueBox extends FlxGroup {
@@ -15,10 +16,12 @@ class DialogueBox extends FlxGroup {
 	static final BOX_H = 64;
 	static final INNER_W = BOX_W - TILE * 2;
 	static final INNER_H = BOX_H - TILE * 2;
+	static final PORTRAIT_SIZE = 32;
 	static final CHARS_PER_SEC = 30.0;
 
-	var speakerText:FlxBitmapText;
+	var actorText:FlxBitmapText;
 	var contentText:FlxBitmapText;
+	var portrait:FlxSprite;
 
 	var fullText:String = "";
 	var visibleChars:Float = 0;
@@ -31,13 +34,19 @@ class DialogueBox extends FlxGroup {
 
 		var font = FlxBitmapFont.fromAngelCode(AssetPaths.glasstown__png, AssetPaths.glasstown__fnt);
 
-		// Speaker name sits inside the top-border row
-		speakerText = new FlxBitmapText(font);
-		speakerText.x = BOX_X + TILE + 2;
-		speakerText.y = BOX_Y + 4;
-		speakerText.color = FlxColor.BLACK;
-		speakerText.scrollFactor.set(0, 0);
-		add(speakerText);
+		// Portrait floats above the top-right corner of the box
+		portrait = new FlxSprite(BOX_W - PORTRAIT_SIZE, BOX_Y - PORTRAIT_SIZE);
+		portrait.scrollFactor.set(0, 0);
+		portrait.visible = false;
+		add(portrait);
+
+		// Actor name sits inside the top-border row
+		actorText = new FlxBitmapText(font);
+		actorText.x = BOX_X + TILE + 2;
+		actorText.y = BOX_Y + 4;
+		actorText.color = FlxColor.BLACK;
+		actorText.scrollFactor.set(0, 0);
+		add(actorText);
 
 		// Content text fills the inner area
 		contentText = new FlxBitmapText(font);
@@ -56,14 +65,24 @@ class DialogueBox extends FlxGroup {
 	/**
 	 * Show the dialogue box with a new line of dialogue. This will reset the typewriter effect.
 	 * @param line The dialogue line to display
+	 * @param actor Resolved actor for this line, or null if unknown.
 	 */
-	public function show(line:DialogueLine):Void {
-		speakerText.text = line.speaker;
+	public function show(line:DialogueLine, actor:Null<Actor>):Void {
+		actorText.text = actor != null ? actor.name : line.actorId;
 		fullText = line.text;
 		visibleChars = 0;
 		typing = true;
 		contentText.text = "";
 		visible = true;
+
+		if (actor != null) {
+			portrait.loadGraphic(actor.imageProfile);
+			portrait.setGraphicSize(PORTRAIT_SIZE, PORTRAIT_SIZE);
+			portrait.updateHitbox();
+			portrait.visible = true;
+		} else {
+			portrait.visible = false;
+		}
 	}
 
 	/**
@@ -85,11 +104,12 @@ class DialogueBox extends FlxGroup {
 	 */
 	public function hide():Void {
 		visible = false;
+		portrait.visible = false;
 	}
 
 	/**
 	 * Handle typewriter effect.
-	 * @param elapsed 
+	 * @param elapsed
 	 */
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);

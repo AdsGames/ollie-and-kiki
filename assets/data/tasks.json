@@ -8,25 +8,25 @@
     "conversation": {
       "start": [
         {
-          "speaker": "fisherman",
+          "actor": "fishercat",
           "text": "Hey there! I just caught some fresh fish and I need someone to deliver it to the docks. Can you help me out?"
         },
         {
-          "speaker": "kiki",
+          "actor": "kiki",
           "text": "Sure, I can do that!"
         },
         {
-          "speaker": "fisherman",
+          "actor": "fishercat",
           "text": "Great! Just take the fish from the market and bring it to the docks. Thanks!"
         }
       ],
       "complete": [
         {
-          "speaker": "fisherman",
+          "actor": "fishercat",
           "text": "Thanks for delivering the fish! I really appreciate it."
         },
         {
-          "speaker": "kiki",
+          "actor": "kiki",
           "text": "No problem! Happy to help."
         }
       ]
@@ -41,25 +41,25 @@
     "conversation": {
       "start": [
         {
-          "speaker": "baker",
+          "actor": "bakercat",
           "text": "Hey there! I just ran out of catnip and I need someone to pick some up from the docks. Can you help me out?"
         },
         {
-          "speaker": "kiki",
+          "actor": "kiki",
           "text": "Sure, I can do that!"
         },
         {
-          "speaker": "baker",
+          "actor": "bakercat",
           "text": "Great! Just take the catnip from the docks and bring it to the bakery. Thanks!"
         }
       ],
       "complete": [
         {
-          "speaker": "baker",
+          "actor": "bakercat",
           "text": "Thanks for bringing the catnip! I really appreciate it."
         },
         {
-          "speaker": "kiki",
+          "actor": "kiki",
           "text": "No problem! Happy to help."
         }
       ]

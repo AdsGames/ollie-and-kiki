@@ -4,7 +4,7 @@ import flixel.FlxCamera.FlxCameraFollowStyle;
 import flixel.FlxG;
 import flixel.FlxState;
 import game.WorldMap;
-import game.dialogue.DialogueLine;
+import game.actor.ActorManager;
 import game.dialogue.DialogueManager;
 import game.item.ItemManager;
 import game.location.LocationManager;
@@ -16,6 +16,7 @@ class World {
 	public var player:Player;
 
 	// Data managers
+	public var actorManager:ActorManager;
 	public var locationManager:LocationManager;
 	public var dialogueManager:DialogueManager;
 	public var itemManager:ItemManager;
@@ -27,26 +28,26 @@ class World {
 	public function new(state:FlxState) {
 		map = new WorldMap(state);
 
-		// Dialogue system
-		dialogueManager = new DialogueManager(state);
+		// Data
+		actorManager = new ActorManager();
+		actorManager.loadActors();
 
-		// Item manager
 		itemManager = new ItemManager();
 		itemManager.loadItems();
 
-		// Location
 		locationManager = new LocationManager();
 		locationManager.loadLocations();
 
-		locationRenderer = new LocationRenderer();
-		state.add(locationRenderer);
-
-		// Update location markers
-		locationRenderer.setLocations(locationManager.getAllLocations());
-
-		// Task manager
 		taskManager = new TaskManager();
 		taskManager.load(itemManager, locationManager);
+
+		// Location markers
+		locationRenderer = new LocationRenderer();
+		state.add(locationRenderer);
+		locationRenderer.setLocations(locationManager.getAllLocations());
+
+		// Dialogue system
+		dialogueManager = new DialogueManager(state, actorManager);
 
 		// Player initialization
 		player = new Player(100, 100, dialogueManager);
@@ -58,6 +59,23 @@ class World {
 
 	public function update(elapsed:Float):Void {
 		FlxG.collide(player, map.midground);
+
+		if (!dialogueManager.active) {
+			// Accept the current task and show its opening dialogue
+			if (FlxG.keys.justPressed.R) {
+				var task = taskManager.acceptActiveTask();
+				if (task != null) {
+					dialogueManager.startDialogue(task.startLines);
+				}
+			}
+
+			// Proximity tracking
+			var completeLines = taskManager.updateProximity(player.x, player.y);
+			if (completeLines != null) {
+				dialogueManager.startDialogue(completeLines);
+			}
+		}
+
 		dialogueManager.update(elapsed);
 	}
 }

@@ -2,6 +2,7 @@ package game.dialogue;
 
 import flixel.FlxG;
 import flixel.FlxState;
+import game.actor.ActorManager;
 import game.dialogue.DialogueBox;
 import game.dialogue.DialogueLine;
 
@@ -9,32 +10,34 @@ class DialogueManager {
 	public var active(default, null):Bool = false;
 
 	var box:DialogueBox;
+	var actorManager:ActorManager;
 	var lines:Array<DialogueLine> = [];
 	var lineIdx:Int = 0;
 
-	public function new(state:FlxState) {
+	public function new(state:FlxState, actorManager:ActorManager) {
+		this.actorManager = actorManager;
 		box = new DialogueBox();
 		state.add(box);
 	}
 
 	/**
-	 * Kick of a dialogue sequence. If a dialogue is already active, this will be ignored.
-	 * @param lines 
+	 * Kick off a dialogue sequence. If a dialogue is already active, this will be ignored.
+	 * @param lines
 	 */
 	public function startDialogue(lines:Array<DialogueLine>):Void {
-		if (active) {
+		if (active || lines.length == 0) {
 			return;
 		}
 
 		this.lines = lines;
 		lineIdx = 0;
 		active = true;
-		box.show(lines[0]);
+		showLine(lines[0]);
 	}
 
 	/**
 	 * Should be called from the main update loop. Handles advancing dialogue and finishing the sequence.
-	 * @param elapsed 
+	 * @param elapsed
 	 */
 	public function update(elapsed:Float):Void {
 		if (!active) {
@@ -50,9 +53,14 @@ class DialogueManager {
 					active = false;
 					box.hide();
 				} else {
-					box.show(lines[lineIdx]);
+					showLine(lines[lineIdx]);
 				}
 			}
 		}
+	}
+
+	function showLine(line:DialogueLine):Void {
+		var actor = actorManager.getActorById(line.actorId);
+		box.show(line, actor);
 	}
 }

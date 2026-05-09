@@ -45,6 +45,9 @@ class ItemManager {
 				return item;
 			}
 		}
+
+		trace("Warning: Item with ID '" + id + "' not found.");
+
 		return null;
 	}
 }

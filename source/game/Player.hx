@@ -3,7 +3,6 @@ package game;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.util.FlxDirectionFlags;
-import game.dialogue.DialogueLine;
 import game.dialogue.DialogueManager;
 
 class Player extends FlxSprite {
@@ -26,28 +25,22 @@ class Player extends FlxSprite {
 
 	override public function update(elapsed:Float) {
 		super.update(elapsed);
+		velocity.set(0, 0);
 
 		// Do not move when dialogue is active
 		if (dialogueManager.active) {
 			return;
 		}
 
-		if (FlxG.keys.justPressed.Z || FlxG.keys.justPressed.E) {
-			dialogueManager.startDialogue([
-				new DialogueLine("Ollie", "Hello there!"),
-				new DialogueLine("Kiki", "Hi Ollie! How are you?"),
-				new DialogueLine("Ollie", "I'm doing great, thanks for asking!"),
-			]);
-		}
-
-		velocity.set(0, 0);
-		if (FlxG.keys.pressed.UP || FlxG.keys.pressed.W)
+		if (FlxG.keys.pressed.UP || FlxG.keys.pressed.W) {
 			velocity.y = -60;
-		else if (FlxG.keys.pressed.DOWN || FlxG.keys.pressed.S)
+		} else if (FlxG.keys.pressed.DOWN || FlxG.keys.pressed.S) {
 			velocity.y = 60;
-		if (FlxG.keys.pressed.LEFT || FlxG.keys.pressed.A)
+		}
+		if (FlxG.keys.pressed.LEFT || FlxG.keys.pressed.A) {
 			velocity.x = -60;
-		else if (FlxG.keys.pressed.RIGHT || FlxG.keys.pressed.D)
+		} else if (FlxG.keys.pressed.RIGHT || FlxG.keys.pressed.D) {
 			velocity.x = 60;
+		}
 	}
 }

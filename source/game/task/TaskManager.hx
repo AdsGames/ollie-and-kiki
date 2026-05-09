@@ -1,5 +1,6 @@
 package game.task;
 
+import game.dialogue.DialogueLine;
 import game.item.ItemManager;
 import game.location.Location;
 import game.location.LocationManager;
@@ -7,32 +8,27 @@ import game.task.Task;
 import openfl.Assets;
 
 class TaskManager {
-	// Tile-space radius within which the player can interact with a location.
+	/** Tile-space radius within which the player can interact with a location. */
 	static final INTERACT_RADIUS = 16.0;
 
 	public var tasks:Array<Task>;
-	public var activeTask:Null<Task>;
-
-	var locations:Array<Location>;
 
 	public function new() {
 		tasks = [];
-		locations = [];
 	}
 
 	/**
-	 * Load locations then tasks from JSON. Must be called before getActiveTask().
-	 * @param itemManager Used to resolve item IDs referenced in tasks.json.
-	 * @param locationManager Used to resolve location IDs referenced in tasks.json.
+	 * Load tasks from JSON, resolving items, locations, and actor portraits.
 	 */
 	public function load(itemManager:ItemManager, locationManager:LocationManager):Void {
 		var raw = Assets.getText(AssetPaths.tasks__json);
 		var data:Array<{
-			var name:String;
-			var description:String;
-			var itemId:String;
-			var fromId:String;
-			var toId:String;
+			name:String,
+			description:String,
+			itemId:String,
+			fromId:String,
+			toId:String,
+			conversation:{start:Array<{actor:String, text:String}>, complete:Array<{actor:String, text:String}>}
 		}> = haxe.Json.parse(raw);
 
 		for (entry in data) {
@@ -47,6 +43,8 @@ class TaskManager {
 				task.item = item;
 				task.from = from;
 				task.to = to;
+				task.startLines = entry.conversation.start.map(entry -> new DialogueLine(entry.actor, entry.text));
+				task.completeLines = entry.conversation.complete.map(entry -> new DialogueLine(entry.actor, entry.text));
 				tasks.push(task);
 			} else {
 				trace('Skipping task "${entry.name}": unresolved item or location reference.');
@@ -57,7 +55,7 @@ class TaskManager {
 	}
 
 	/**
-	 * Returns the first task that has not yet been delivered, or null if all are done.
+	 * Returns the first incomplete task, or null if all are done.
 	 */
 	public function getActiveTask():Null<Task> {
 		for (task in tasks) {
@@ -69,29 +67,38 @@ class TaskManager {
 	}
 
 	/**
-	 * Call this when the player interacts (e.g. presses confirm). Advances the
-	 * active task if the player is close enough to the relevant location.
+	 * Called when the player presses the accept key.
+	 */
+	public function acceptActiveTask():Null<Task> {
+		var task = getActiveTask();
+		if (task != null && task.state == Idle) {
+			task.accept();
+			return task;
+		}
+		return null;
+	}
+
+	/**
+	 * Call every frame (only when dialogue is not active). Advances task state based on
+	 * proximity and returns the complete dialogue lines when the task is delivered,
+	 * otherwise null.
 	 * @param playerX Player world-space X.
 	 * @param playerY Player world-space Y.
-	 * @return True if the task state changed.
 	 */
-	public function tryInteract(playerX:Float, playerY:Float):Bool {
+	public function updateProximity(playerX:Float, playerY:Float):Null<Array<DialogueLine>> {
 		var task = getActiveTask();
 		if (task == null) {
-			return false;
+			return null;
 		}
 
-		if (task.state == Idle && isNear(playerX, playerY, task.from)) {
+		if (task.state == Accepted && isNear(playerX, playerY, task.from)) {
 			task.pickUp();
-			return true;
-		}
-
-		if (task.state == PickedUp && isNear(playerX, playerY, task.to)) {
+		} else if (task.state == PickedUp && isNear(playerX, playerY, task.to)) {
 			task.deliver();
-			return true;
+			return task.completeLines;
 		}
 
-		return false;
+		return null;
 	}
 
 	inline function isNear(px:Float, py:Float, loc:Location):Bool {
