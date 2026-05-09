@@ -32,6 +32,7 @@ class TaskManager {
 			giverLocationId:String,
 			fromId:String,
 			toId:String,
+			?timeLimit:Float,
 			conversation:{start:Array<{actor:String, text:String}>, complete:Array<{actor:String, text:String}>}
 		}> = haxe.Json.parse(raw);
 
@@ -49,6 +50,7 @@ class TaskManager {
 				task.giverLocation = giver;
 				task.from = from;
 				task.to = to;
+				task.timeLimit = entry.timeLimit;
 				task.startLines = [for (e in entry.conversation.start) for (l in splitText(e.actor, e.text)) l];
 				task.completeLines = [for (e in entry.conversation.complete) for (l in splitText(e.actor, e.text)) l];
 				tasks.push(task);
@@ -78,22 +80,36 @@ class TaskManager {
 
 	/**
 	 * Call every frame (only when dialogue is not active). Advances task state for ALL
-	 * active tasks based on proximity. Returns the completion dialogue of the first task
-	 * that gets delivered this frame, or null.
+	 * active tasks based on proximity. Returns the first task delivered this frame, or null.
 	 */
-	public function updateProximity(playerX:Float, playerY:Float):Null<Array<DialogueLine>> {
-		var deliveredLines:Null<Array<DialogueLine>> = null;
+	public function updateProximity(playerX:Float, playerY:Float):Null<Task> {
+		var delivered:Null<Task> = null;
 		for (task in tasks) {
 			if (task.state == Accepted && isNear(playerX, playerY, task.from)) {
 				task.pickUp();
 			} else if (task.state == PickedUp && isNear(playerX, playerY, task.to)) {
 				task.deliver();
-				if (deliveredLines == null) {
-					deliveredLines = task.completeLines;
+				if (delivered == null) {
+					delivered = task;
 				}
 			}
 		}
-		return deliveredLines;
+		return delivered;
+	}
+
+	/**
+	 * Tick all task timers and expire the first overdue task this frame.
+	 * Returns the expired task so callers can react (e.g. flash a warning).
+	 */
+	public function updateTimers(elapsed:Float):Null<Task> {
+		for (task in tasks) {
+			task.update(elapsed);
+			if (task.isExpired()) {
+				task.expire();
+				return task;
+			}
+		}
+		return null;
 	}
 
 	function countInProgress():Int {

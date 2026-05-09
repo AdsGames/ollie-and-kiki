@@ -20,7 +20,8 @@ class ActorManager {
 			name:String,
 			description:String,
 			image:String,
-			image_profile:String
+			image_profile:String,
+			?location_id:String
 		}> = haxe.Json.parse(raw);
 
 		for (entry in data) {
@@ -44,6 +45,7 @@ class ActorManager {
 			var imgProfile = FlxGraphic.fromBitmapData(Assets.getBitmapData(entry.image_profile), false);
 			imgProfile.persist = true;
 			actor.imageProfile = imgProfile;
+			actor.locationId = entry.location_id;
 			actors.set(actor.id, actor);
 
 			trace('Loaded actor: ' + actor.name);

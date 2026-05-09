@@ -18,6 +18,8 @@ class DialogueBox extends FlxGroup {
 	static final INNER_W = BOX_W - TILE * 2;
 	static final INNER_H = BOX_H - TILE * 2;
 	static final PORTRAIT_SIZE = 32;
+	static final PORTRAIT_X_OFFSET = -10;
+	static final PORTRAIT_Y_OFFSET = 7;
 	static final CHARS_PER_SEC = 30.0;
 
 	var actorText:FlxBitmapText;
@@ -34,7 +36,7 @@ class DialogueBox extends FlxGroup {
 		buildSlices();
 
 		// Portrait floats above the top-right corner of the box
-		portrait = new FlxSprite(BOX_W - PORTRAIT_SIZE, BOX_Y - PORTRAIT_SIZE);
+		portrait = new FlxSprite(BOX_W - PORTRAIT_SIZE + PORTRAIT_X_OFFSET, BOX_Y - PORTRAIT_SIZE + PORTRAIT_Y_OFFSET);
 		portrait.scrollFactor.set(0, 0);
 		portrait.visible = false;
 		add(portrait);

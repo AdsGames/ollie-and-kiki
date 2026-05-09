@@ -6,6 +6,7 @@
     "giverLocationId": "fish_shop",
     "fromId": "fish_shop",
     "toId": "bakery",
+    "timeLimit": 30,
     "conversation": {
       "start": [
         {
@@ -74,6 +75,7 @@
     "giverLocationId": "ollies_house",
     "fromId": "fish_shop",
     "toId": "ollies_house",
+    "timeLimit": 45,
     "conversation": {
       "start": [
         {

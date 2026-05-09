@@ -4,7 +4,8 @@
     "id": "ollie",
     "image": "assets/images/actors/ollie.png",
     "image_profile": "assets/images/actors/ollie_profile.png",
-    "description": "Big chunky cat"
+    "description": "Big chunky cat",
+    "location_id": "ollies_house"
   },
   {
     "name": "Kiki",
@@ -18,13 +19,15 @@
     "id": "fishercat",
     "image": "assets/images/actors/fishercat.png",
     "image_profile": "assets/images/actors/fishercat_profile.png",
-    "description": "Sleek black cat"
+    "description": "Sleek black cat",
+    "location_id": "fish_shop"
   },
   {
     "name": "Bakercat",
     "id": "bakercat",
     "image": "assets/images/actors/baker.png",
     "image_profile": "assets/images/actors/baker_profile.png",
-    "description": "Playful tabby cat"
+    "description": "Playful tabby cat",
+    "location_id": "bakers_house"
   }
 ]

@@ -1,5 +1,6 @@
 package game.item;
 
+import flixel.graphics.FlxGraphic;
 import game.item.Item;
 import openfl.Assets;
 
@@ -20,14 +21,26 @@ class ItemManager {
 			var name:String;
 			var description:String;
 			var value:Int;
+			var image:String;
 		}> = haxe.Json.parse(raw);
 
 		for (entry in data) {
 			var item = new Item();
+
+			// Check image
+			var img = FlxGraphic.fromBitmapData(Assets.getBitmapData(entry.image), false);
+			if (img == null) {
+				trace('Skipping item "${entry.id}": missing image "${entry.image}".');
+				continue;
+			}
+
+			img.persist = true;
+
 			item.id = entry.id;
 			item.name = entry.name;
 			item.description = entry.description;
 			item.value = entry.value;
+			item.image = img;
 			items.set(item.id, item);
 
 			trace('Loaded item: ' + item.name);

@@ -5,7 +5,10 @@ import flixel.FlxG;
 import flixel.FlxState;
 import game.WorldMap;
 import game.actor.ActorManager;
+import game.actor.ActorRenderer;
 import game.dialogue.DialogueManager;
+import game.economy.CurrencyRenderer;
+import game.item.InventoryRenderer;
 import game.item.ItemManager;
 import game.location.LocationManager;
 import game.location.LocationRenderer;
@@ -25,8 +28,13 @@ class World {
 	public var taskManager:TaskManager;
 
 	// Rendering
+	public var actorRenderer:ActorRenderer;
 	public var locationRenderer:LocationRenderer;
 	public var taskRenderer:TaskRenderer;
+	public var inventoryRenderer:InventoryRenderer;
+	public var currencyRenderer:CurrencyRenderer;
+
+	public var coins:Int = 0;
 
 	// Task to accept once the start dialogue finishes
 	var pendingAcceptTask:Null<Task> = null;
@@ -47,6 +55,11 @@ class World {
 		taskManager = new TaskManager();
 		taskManager.load(itemManager, locationManager);
 
+		// Actor sprites at their home locations
+		actorRenderer = new ActorRenderer();
+		state.add(actorRenderer);
+		actorRenderer.setActors(actorManager, locationManager);
+
 		// Location markers
 		locationRenderer = new LocationRenderer();
 		state.add(locationRenderer);
@@ -58,6 +71,13 @@ class World {
 		// Quest log HUD
 		taskRenderer = new TaskRenderer();
 		state.add(taskRenderer);
+
+		// Inventory and currency HUD
+		inventoryRenderer = new InventoryRenderer();
+		state.add(inventoryRenderer);
+
+		currencyRenderer = new CurrencyRenderer();
+		state.add(currencyRenderer);
 
 		// Player initialization
 		var kikisHouse = locationManager.getLocationById("kikis_house");
@@ -87,16 +107,22 @@ class World {
 				}
 			}
 
-			// Proximity tracking
-			var completeLines = taskManager.updateProximity(player.x, player.y);
-			if (completeLines != null) {
-				dialogueManager.startDialogue(completeLines);
+			// Proximity tracking. Returns the task that was just delivered, if any
+			var deliveredTask = taskManager.updateProximity(player.x, player.y);
+			if (deliveredTask != null) {
+				coins += deliveredTask.item.value;
+				dialogueManager.startDialogue(deliveredTask.completeLines);
 			}
+
+			// Tick delivery timers; expired tasks revert silently to Accepted
+			taskManager.updateTimers(elapsed);
 		}
 
 		// Update renderers
 		locationRenderer.updateFromTasks(taskManager.tasks);
 		taskRenderer.updateTasks(taskManager.tasks);
+		inventoryRenderer.updateFromTasks(taskManager.tasks);
+		currencyRenderer.updateCoins(coins);
 
 		dialogueManager.update(elapsed);
 	}

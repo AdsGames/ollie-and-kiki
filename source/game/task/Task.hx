@@ -19,6 +19,11 @@ class Task {
 	public var to:Location;
 	public var state:TaskState = TaskState.Idle;
 
+	/** Seconds allowed between PickedUp and Delivered. Null means no limit. */
+	public var timeLimit:Null<Float> = null;
+
+	public var timeElapsed:Float = 0;
+
 	public var startLines:Array<DialogueLine>;
 	public var completeLines:Array<DialogueLine>;
 
@@ -42,6 +47,7 @@ class Task {
 	public function pickUp():Void {
 		if (state == Accepted) {
 			state = PickedUp;
+			timeElapsed = 0;
 		}
 	}
 
@@ -52,6 +58,36 @@ class Task {
 		if (state == PickedUp) {
 			state = Delivered;
 		}
+	}
+
+	/** Time ran out */
+	public function expire():Void {
+		if (state == PickedUp) {
+			state = Accepted;
+			timeElapsed = 0;
+		}
+	}
+
+	/** Tick the delivery timer forward */
+	public function update(elapsed:Float):Void {
+		if (state == PickedUp && timeLimit != null) {
+			timeElapsed += elapsed;
+		}
+	}
+
+	/**
+	 * Checks if the task is expired
+	 * @return True if the task is expired, false otherwise.
+	 */
+	public function isExpired():Bool {
+		return timeLimit != null && state == PickedUp && timeElapsed >= timeLimit;
+	}
+
+	public function timeRemaining():Float {
+		if (timeLimit == null) {
+			return Math.POSITIVE_INFINITY;
+		}
+		return Math.max(0.0, timeLimit - timeElapsed);
 	}
 
 	/**

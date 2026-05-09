@@ -10,4 +10,4 @@ html5:
 	lime test html5 --connect 6000
 
 watch:
-	find source -name "*.hx" | entr -r sh -c 'SDL_VIDEODRIVER=x11 lime test neko --connect 6001'
+	find source -name "*.hx" | entr -r sh -c 'SDL_VIDEODRIVER=x11 lime test neko -debug --connect 6001'

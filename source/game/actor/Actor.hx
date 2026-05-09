@@ -8,6 +8,7 @@ class Actor {
 	public var description:String;
 	public var image:FlxGraphic;
 	public var imageProfile:FlxGraphic;
+	public var locationId:Null<String>;
 
 	public function new() {}
 }
