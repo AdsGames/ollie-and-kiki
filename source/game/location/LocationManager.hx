@@ -1,6 +1,5 @@
 package game.location;
 
-import game.item.Item;
 import openfl.Assets;
 
 class LocationManager {
@@ -46,5 +45,12 @@ class LocationManager {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Get all locations.
+	 */
+	public function getAllLocations():Array<Location> {
+		return locations;
 	}
 }

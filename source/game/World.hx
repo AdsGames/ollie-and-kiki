@@ -8,15 +8,21 @@ import game.dialogue.DialogueLine;
 import game.dialogue.DialogueManager;
 import game.item.ItemManager;
 import game.location.LocationManager;
+import game.location.LocationRenderer;
 import game.task.TaskManager;
 
 class World {
 	public var map:WorldMap;
 	public var player:Player;
+
+	// Data managers
 	public var locationManager:LocationManager;
 	public var dialogueManager:DialogueManager;
 	public var itemManager:ItemManager;
 	public var taskManager:TaskManager;
+
+	// Rendering
+	public var locationRenderer:LocationRenderer;
 
 	public function new(state:FlxState) {
 		map = new WorldMap(state);
@@ -28,9 +34,15 @@ class World {
 		itemManager = new ItemManager();
 		itemManager.loadItems();
 
-		// Location manager
+		// Location
 		locationManager = new LocationManager();
 		locationManager.loadLocations();
+
+		locationRenderer = new LocationRenderer();
+		state.add(locationRenderer);
+
+		// Update location markers
+		locationRenderer.setLocations(locationManager.getAllLocations());
 
 		// Task manager
 		taskManager = new TaskManager();

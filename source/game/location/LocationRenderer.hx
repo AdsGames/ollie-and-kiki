@@ -1,12 +1,22 @@
 package game.location;
 
 import flixel.FlxSprite;
+import flixel.group.FlxGroup;
 
-class LocationRenderer extends FlxSprite {
-	public var location:Location;
+class LocationRenderer extends FlxGroup {
+	private var markers:Array<LocationMarker>;
 
-	public function new(location:Location) {
-		super(location.x, location.y, AssetPaths.marker__png);
-		this.location = location;
+	public function new() {
+		super();
+	}
+
+	public function setLocations(locations:Array<Location>):Void {
+		clear();
+		markers = [];
+		for (location in locations) {
+			var marker = new LocationMarker(location);
+			add(marker);
+			markers.push(marker);
+		}
 	}
 }

@@ -4,13 +4,65 @@
     "description": "Take the fish from the market to the docks.",
     "itemId": "fish",
     "fromId": "market",
-    "toId": "docks"
+    "toId": "docks",
+    "conversation": {
+      "start": [
+        {
+          "speaker": "fisherman",
+          "text": "Hey there! I just caught some fresh fish and I need someone to deliver it to the docks. Can you help me out?"
+        },
+        {
+          "speaker": "kiki",
+          "text": "Sure, I can do that!"
+        },
+        {
+          "speaker": "fisherman",
+          "text": "Great! Just take the fish from the market and bring it to the docks. Thanks!"
+        }
+      ],
+      "complete": [
+        {
+          "speaker": "fisherman",
+          "text": "Thanks for delivering the fish! I really appreciate it."
+        },
+        {
+          "speaker": "kiki",
+          "text": "No problem! Happy to help."
+        }
+      ]
+    }
   },
   {
     "name": "Catnip Run",
     "description": "Pick up the catnip from the docks and bring it to the bakery.",
     "itemId": "catnip",
     "fromId": "docks",
-    "toId": "bakery"
+    "toId": "bakery",
+    "conversation": {
+      "start": [
+        {
+          "speaker": "baker",
+          "text": "Hey there! I just ran out of catnip and I need someone to pick some up from the docks. Can you help me out?"
+        },
+        {
+          "speaker": "kiki",
+          "text": "Sure, I can do that!"
+        },
+        {
+          "speaker": "baker",
+          "text": "Great! Just take the catnip from the docks and bring it to the bakery. Thanks!"
+        }
+      ],
+      "complete": [
+        {
+          "speaker": "baker",
+          "text": "Thanks for bringing the catnip! I really appreciate it."
+        },
+        {
+          "speaker": "kiki",
+          "text": "No problem! Happy to help."
+        }
+      ]
+    }
   }
 ]

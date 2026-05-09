@@ -11,6 +11,7 @@ class TaskManager {
 	static final INTERACT_RADIUS = 16.0;
 
 	public var tasks:Array<Task>;
+	public var activeTask:Null<Task>;
 
 	var locations:Array<Location>;
 

@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Ollie",
+    "id": "ollie",
+    "image": "assets/images/characters/ollie.png",
+    "image_profile": "assets/images/characters/ollie_profile.png",
+    "description": "Big chunky cat"
+  },
+  {
+    "name": "Kiki",
+    "id": "kiki",
+    "image": "assets/images/characters/kiki.png",
+    "image_profile": "assets/images/characters/kiki_profile.png",
+    "description": "Small fluffy cat"
+  },
+  {
+    "name": "FisherCat",
+    "id": "fishercat",
+    "image": "assets/images/characters/fisherman.png",
+    "image_profile": "assets/images/characters/fisherman_profile.png",
+    "description": "Sleek black cat"
+  },
+  {
+    "name": "Bakercat",
+    "id": "bakercat",
+    "image": "assets/images/characters/baker.png",
+    "image_profile": "assets/images/characters/baker_profile.png",
+    "description": "Playful tabby cat"
+  }
+]

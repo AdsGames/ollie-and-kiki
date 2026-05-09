@@ -3,18 +3,21 @@
     "name": "Fish",
     "id": "fish",
     "description": "A fresh fish, perfect for a meal.",
-    "value": 10
+    "value": 10,
+    "image": "assets/images/items/fish.png"
   },
   {
     "name": "Catnip",
     "id": "catnip",
     "description": "A small bag of catnip, loved by all cats.",
-    "value": 5
+    "value": 5,
+    "image": "assets/images/items/catnip.png"
   },
   {
     "name": "Toy Mouse",
     "id": "toy_mouse",
     "description": "A small toy mouse, great for playtime.",
-    "value": 7
+    "value": 7,
+    "image": "assets/images/items/toy_mouse.png"
   }
 ]
