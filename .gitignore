@@ -43,3 +43,4 @@ Temporary Items
 .apdisk
 export/
 completion.hxml
+*.tiled-session
