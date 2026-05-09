@@ -1,0 +1,87 @@
+name: Build Haxe Project
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - v*
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build Project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@v1
+        with:
+          haxe-version: 4.3.7
+
+      - name: Cache Haxe Libs
+        id: cache-haxe-libs
+        uses: actions/cache@v4
+        with:
+          path: /usr/local/lib/haxe/lib/
+          key: ${{ runner.os }}-haxe-libs
+
+      - name: Setup Haxe Libs
+        run: |
+          haxelib install lime --quiet
+          haxelib install openfl --quiet
+          haxelib install flixel --quiet
+          haxelib run lime setup flixel --quiet
+
+      - name: Build project
+        run: haxelib run lime build html5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: export/html5/bin
+
+      # - name: Deploy to Itch.io 🚀
+      #   if: startsWith(github.ref, 'refs/tags/v')
+      #   uses: josephbmanley/butler-publish-itchio-action@master
+      #   env:
+      #     BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
+      #     ITCH_GAME: ollie-and-kiki
+      #     ITCH_USER: ads-games
+      #     CHANNEL: HTML5
+      #     PACKAGE: export/html5/bin
+      #     VERSION: ${{ github.ref_name }}
+
+      # - name: Deploy to A.D.S. Games
+      #   if: startsWith(github.ref, 'refs/tags/v')
+      #   uses: adsgames/deploy-to-adsgames@main
+      #   with:
+      #     project-id: ollie-and-kiki
+      #     version: ${{ github.ref_name }}
+      #     build-dir: export/html5/bin
+      #     platform: WEB
+      #     bucket-access-key: ${{ secrets.LINODE_BUCKET_ACCESS_KEY }}
+      #     bucket-secret-key: ${{ secrets.LINODE_BUCKET_SECRET_KEY }}
+      #     api-key: ${{ secrets.ADSGAMES_API_KEY }}
+
+  deploy:
+    name: Deploy to Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
