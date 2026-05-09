@@ -49,13 +49,12 @@ class LocationRenderer extends FlxGroup {
 
 		for (task in tasks) {
 			switch task.state {
-				case Idle:
-					showMarker(task.giverLocation.id, "!");
 				case Accepted:
 					showMarker(task.from.id, task.item.name);
 				case PickedUp:
 					showMarker(task.to.id, task.item.name);
 				case Delivered:
+				case Idle:
 			}
 		}
 	}
@@ -65,9 +64,14 @@ class LocationRenderer extends FlxGroup {
 		for (id in markerMap.keys()) {
 			var marker = markerMap[id];
 			var label = labelMap[id];
+			if (!label.visible)
+				continue;
 			if (marker.visible) {
 				label.x = marker.x + marker.width / 2 - LABEL_WIDTH / 2;
 				label.y = marker.y - label.height - 2;
+			} else {
+				label.x = marker.location.x + marker.width / 2 - LABEL_WIDTH / 2;
+				label.y = marker.location.y - label.height - 2;
 			}
 		}
 	}
@@ -75,9 +79,18 @@ class LocationRenderer extends FlxGroup {
 	function showMarker(locationId:String, text:String):Void {
 		var marker = markerMap[locationId];
 		var label = labelMap[locationId];
-		if (marker == null || label == null)
+		if (marker == null || label == null) {
 			return;
+		}
 		marker.visible = true;
+		label.visible = true;
+		label.text = text;
+	}
+
+	function showLabel(locationId:String, text:String):Void {
+		var label = labelMap[locationId];
+		if (label == null)
+			return;
 		label.visible = true;
 		label.text = text;
 	}

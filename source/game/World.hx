@@ -119,6 +119,7 @@ class World {
 		}
 
 		// Update renderers
+		actorRenderer.updateFromTasks(taskManager.tasks);
 		locationRenderer.updateFromTasks(taskManager.tasks);
 		taskRenderer.updateTasks(taskManager.tasks);
 		inventoryRenderer.updateFromTasks(taskManager.tasks);
