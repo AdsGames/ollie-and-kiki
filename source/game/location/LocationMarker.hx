@@ -14,10 +14,7 @@ class LocationMarker extends FlxSprite {
 
 	public override function update(elapsed:Float):Void {
 		super.update(elapsed);
-
-		// Animation
 		var animTime = FlxG.game.ticks / 100;
-		var yOff = 1 + 2 * Math.sin(animTime);
-		y = location.y + yOff;
+		y = location.y + 1 + 2 * Math.sin(animTime);
 	}
 }

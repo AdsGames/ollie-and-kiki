@@ -10,6 +10,7 @@ import game.actor.Actor;
 // 9-slice dialogue box using a 48x48 spritesheet (3x3 grid of 16x16 tiles).
 class DialogueBox extends FlxGroup {
 	static final TILE = 16;
+	static final PADDING = 8;
 	static final BOX_X = 0;
 	static final BOX_Y = 96;
 	static final BOX_W = 240;
@@ -32,8 +33,6 @@ class DialogueBox extends FlxGroup {
 
 		buildSlices();
 
-		var font = FlxBitmapFont.fromAngelCode(AssetPaths.glasstown__png, AssetPaths.glasstown__fnt);
-
 		// Portrait floats above the top-right corner of the box
 		portrait = new FlxSprite(BOX_W - PORTRAIT_SIZE, BOX_Y - PORTRAIT_SIZE);
 		portrait.scrollFactor.set(0, 0);
@@ -41,20 +40,22 @@ class DialogueBox extends FlxGroup {
 		add(portrait);
 
 		// Actor name sits inside the top-border row
-		actorText = new FlxBitmapText(font);
-		actorText.x = BOX_X + TILE + 2;
-		actorText.y = BOX_Y + 4;
+		actorText = new FlxBitmapText(Fonts.glasstownBold);
+		actorText.x = BOX_X + PADDING;
+		actorText.y = BOX_Y + PADDING;
 		actorText.color = FlxColor.BLACK;
 		actorText.scrollFactor.set(0, 0);
+		actorText.setSize(BOX_W - PADDING * 2, TILE - PADDING * 2);
 		add(actorText);
 
 		// Content text fills the inner area
-		contentText = new FlxBitmapText(font);
-		contentText.x = BOX_X + TILE + 2;
-		contentText.y = BOX_Y + TILE + 2;
-		contentText.fieldWidth = INNER_W - 4;
+		contentText = new FlxBitmapText(Fonts.glasstown);
+		contentText.x = BOX_X + PADDING;
+		contentText.y = BOX_Y + TILE + PADDING;
+		contentText.autoSize = false;
+		contentText.fieldWidth = INNER_W - PADDING * 2;
 		contentText.multiLine = true;
-		contentText.wordWrap = true;
+		contentText.wrap = WORD(WordSplitConditions.LINE_WIDTH);
 		contentText.color = FlxColor.BLACK;
 		contentText.scrollFactor.set(0, 0);
 		add(contentText);

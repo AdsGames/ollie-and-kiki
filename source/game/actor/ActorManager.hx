@@ -4,10 +4,10 @@ import flixel.graphics.FlxGraphic;
 import openfl.Assets;
 
 class ActorManager {
-	public var actors:Array<Actor>;
+	public var actors:Map<String, Actor>;
 
 	public function new() {
-		actors = [];
+		actors = new Map();
 	}
 
 	/**
@@ -44,7 +44,7 @@ class ActorManager {
 			var imgProfile = FlxGraphic.fromBitmapData(Assets.getBitmapData(entry.image_profile), false);
 			imgProfile.persist = true;
 			actor.imageProfile = imgProfile;
-			actors.push(actor);
+			actors.set(actor.id, actor);
 
 			trace('Loaded actor: ' + actor.name);
 		}
@@ -54,14 +54,10 @@ class ActorManager {
 	 * Returns an actor by ID, or null if not found.
 	 */
 	public function getActorById(id:String):Null<Actor> {
-		for (actor in actors) {
-			if (actor.id == id) {
-				return actor;
-			}
+		var actor = actors.get(id);
+		if (actor == null) {
+			trace("Warning: Actor with ID '" + id + "' not found.");
 		}
-
-		trace("Warning: Actor with ID '" + id + "' not found.");
-
-		return null;
+		return actor;
 	}
 }

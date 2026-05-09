@@ -4,14 +4,14 @@ import game.item.Item;
 import openfl.Assets;
 
 class ItemManager {
-	public var items:Array<Item>;
+	public var items:Map<String, Item>;
 
 	public function new() {
-		items = [];
+		items = new Map();
 	}
 
 	/**
-	 * Loads items from a JSON file and populates the items array.
+	 * Loads items from a JSON file and populates the items map.
 	 */
 	public function loadItems():Void {
 		var raw = Assets.getText(AssetPaths.items__json);
@@ -28,7 +28,7 @@ class ItemManager {
 			item.name = entry.name;
 			item.description = entry.description;
 			item.value = entry.value;
-			items.push(item);
+			items.set(item.id, item);
 
 			trace('Loaded item: ' + item.name);
 		}
@@ -40,14 +40,10 @@ class ItemManager {
 	 * @return The item with the specified ID, or null if not found.
 	 */
 	public function getItemById(id:String):Null<Item> {
-		for (item in items) {
-			if (item.id == id) {
-				return item;
-			}
+		var item = items.get(id);
+		if (item == null) {
+			trace("Warning: Item with ID '" + id + "' not found.");
 		}
-
-		trace("Warning: Item with ID '" + id + "' not found.");
-
-		return null;
+		return item;
 	}
 }

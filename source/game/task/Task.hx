@@ -14,6 +14,7 @@ class Task {
 	public var description:String;
 
 	public var item:Item;
+	public var giverLocation:Location;
 	public var from:Location;
 	public var to:Location;
 	public var state:TaskState = TaskState.Idle;

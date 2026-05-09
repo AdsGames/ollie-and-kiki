@@ -18,7 +18,7 @@ class WorldMap {
 	public var foreground:FlxTilemap;
 
 	// Location table
-	public var locations:Map<String, Location>;
+	public var locations:Array<Location>;
 
 	// Dimensions from map
 	public var mapWidth:Int;
@@ -26,6 +26,8 @@ class WorldMap {
 
 	public function new(state:FlxState) {
 		trace("Loading Map...");
+
+		locations = [];
 
 		// Link assets
 		var spritesheet:String = AssetPaths.tilemap_packed__png;
@@ -70,10 +72,30 @@ class WorldMap {
 				} else if (layer.name == "nodes") {
 					var objLayer:TiledObjectLayer = cast(layer, TiledObjectLayer);
 					loadNodes(objLayer);
+				} else if (layer.name == "locations") {
+					var objLayer:TiledObjectLayer = cast(layer, TiledObjectLayer);
+					loadLocationLayer(objLayer);
 				} else {
 					trace("Unknown object layer: " + layer.name);
 				}
 			}
+		}
+	}
+
+	private function loadLocationLayer(group:TiledObjectLayer):Void {
+		for (obj in group.objects) {
+			var id = obj.properties.get("id");
+			if (id == null || id.length == 0) {
+				trace('Location "${obj.name}" has no id property, skipping.');
+				continue;
+			}
+			var loc = new Location();
+			loc.id = id;
+			loc.name = obj.name;
+			loc.x = obj.x;
+			loc.y = obj.y;
+			locations.push(loc);
+			trace('Loaded location: ${loc.name} (${loc.id}) at ${loc.x}, ${loc.y}');
 		}
 	}
 

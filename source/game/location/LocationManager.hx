@@ -1,59 +1,39 @@
 package game.location;
 
-import openfl.Assets;
-
 class LocationManager {
-	public var locations:Array<Location>;
+	public var locations:Map<String, Location>;
 
 	public function new() {
-		locations = [];
+		locations = new Map();
 	}
 
 	/**
-	 * Loads locations from a JSON file and populates the locations array.
+	 * Populates locations from the parsed TMX location layer (via WorldMap).
 	 */
-	public function loadLocations():Void {
-		var raw = Assets.getText(AssetPaths.locations__json);
-		var data:Array<{
-			var id:String;
-			var name:String;
-			var x:Float;
-			var y:Float;
-		}> = haxe.Json.parse(raw);
-
-		for (entry in data) {
-			var location = new Location();
-			location.id = entry.id;
-			location.name = entry.name;
-			location.x = entry.x;
-			location.y = entry.y;
-			locations.push(location);
-
-			trace('Loaded location: ' + location.name);
+	public function loadFromWorldMap(worldLocations:Array<Location>):Void {
+		for (loc in worldLocations) {
+			locations.set(loc.id, loc);
 		}
+		trace('Loaded ${Lambda.count(locations)} locations from map.');
 	}
 
 	/**
-	 * Retrieves an item by its ID.
-	 * @param id The ID of the item to retrieve.
+	 * Retrieves a location by its ID.
+	 * @param id The ID of the location to retrieve.
 	 * @return The location with the specified ID, or null if not found.
 	 */
 	public function getLocationById(id:String):Null<Location> {
-		for (loc in locations) {
-			if (loc.id == id) {
-				return loc;
-			}
+		var loc = locations.get(id);
+		if (loc == null) {
+			trace("Warning: No location found with id '" + id + "'");
 		}
-
-		trace("Warning: No location found with id '" + id + "'");
-
-		return null;
+		return loc;
 	}
 
 	/**
 	 * Get all locations.
 	 */
 	public function getAllLocations():Array<Location> {
-		return locations;
+		return [for (loc in locations) loc];
 	}
 }

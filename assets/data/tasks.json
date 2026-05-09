@@ -1,15 +1,16 @@
 [
   {
     "name": "Fresh Fish Delivery",
-    "description": "Take the fish from the market to the docks.",
+    "description": "Pick up the fresh fish from the fish shop and bring it to the bakery.",
     "itemId": "fish",
-    "fromId": "market",
-    "toId": "docks",
+    "giverLocationId": "fish_shop",
+    "fromId": "fish_shop",
+    "toId": "bakery",
     "conversation": {
       "start": [
         {
           "actor": "fishercat",
-          "text": "Hey there! I just caught some fresh fish and I need someone to deliver it to the docks. Can you help me out?"
+          "text": "Hey there! I just caught some fresh fish and I need someone to deliver it to the bakery. Can you help me out?"
         },
         {
           "actor": "kiki",
@@ -17,7 +18,7 @@
         },
         {
           "actor": "fishercat",
-          "text": "Great! Just take the fish from the market and bring it to the docks. Thanks!"
+          "text": "Great! Just pick up the fish from the fish shop and bring it to the bakery. Thanks!"
         }
       ],
       "complete": [
@@ -34,15 +35,16 @@
   },
   {
     "name": "Catnip Run",
-    "description": "Pick up the catnip from the docks and bring it to the bakery.",
+    "description": "Pick up the catnip from Big Chungus's house and bring it to the hospital.",
     "itemId": "catnip",
-    "fromId": "docks",
-    "toId": "bakery",
+    "giverLocationId": "bakers_house",
+    "fromId": "big_chungus_house",
+    "toId": "hospital",
     "conversation": {
       "start": [
         {
           "actor": "bakercat",
-          "text": "Hey there! I just ran out of catnip and I need someone to pick some up from the docks. Can you help me out?"
+          "text": "Hey there! The hospital needs catnip urgently. Big Chungus has some at his place. Can you pick it up?"
         },
         {
           "actor": "kiki",
@@ -50,17 +52,127 @@
         },
         {
           "actor": "bakercat",
-          "text": "Great! Just take the catnip from the docks and bring it to the bakery. Thanks!"
+          "text": "Great! Grab the catnip from Big Chungus's house and bring it straight to the hospital. Thanks!"
         }
       ],
       "complete": [
         {
           "actor": "bakercat",
-          "text": "Thanks for bringing the catnip! I really appreciate it."
+          "text": "Thanks for bringing the catnip! The hospital really needed it."
         },
         {
           "actor": "kiki",
           "text": "No problem! Happy to help."
+        }
+      ]
+    }
+  },
+  {
+    "name": "Midnight Snack",
+    "description": "Ollie has the munchies. Grab a fish from the shop and bring it back to him.",
+    "itemId": "fish",
+    "giverLocationId": "ollies_house",
+    "fromId": "fish_shop",
+    "toId": "ollies_house",
+    "conversation": {
+      "start": [
+        {
+          "actor": "ollie",
+          "text": "Kiki! I've got the worst case of the midnight munchies. Could you run to the fish shop and grab me a nice fresh fish?"
+        },
+        {
+          "actor": "kiki",
+          "text": "It's the middle of the day, Ollie..."
+        },
+        {
+          "actor": "ollie",
+          "text": "Don't judge me. Just get the fish, please!"
+        }
+      ],
+      "complete": [
+        {
+          "actor": "ollie",
+          "text": "Oh wow, that smells amazing! You're the best, Kiki!"
+        },
+        {
+          "actor": "kiki",
+          "text": "Try to leave some for tomorrow, please."
+        }
+      ]
+    }
+  },
+  {
+    "name": "Rescue Mr. Whiskers",
+    "description": "Ollie's toy mouse rolled into the haunted house. Someone has to go get it.",
+    "itemId": "toy_mouse",
+    "giverLocationId": "ollies_house",
+    "fromId": "haunted_house",
+    "toId": "ollies_house",
+    "conversation": {
+      "start": [
+        {
+          "actor": "ollie",
+          "text": "Kiki, have you seen Mr. Whiskers? My toy mouse! I think it rolled into the haunted house and I'm too scared to go get it."
+        },
+        {
+          "actor": "kiki",
+          "text": "You named your toy mouse Mr. Whiskers?"
+        },
+        {
+          "actor": "ollie",
+          "text": "He has a very distinguished personality. Will you please go get him?"
+        }
+      ],
+      "complete": [
+        {
+          "actor": "ollie",
+          "text": "Mr. Whiskers! You're safe! Thank you so much, Kiki, I was so worried."
+        },
+        {
+          "actor": "kiki",
+          "text": "He was just sitting by the front door. I don't think the haunted house is actually haunted."
+        },
+        {
+          "actor": "ollie",
+          "text": "Kiki, please don't ruin this for me."
+        }
+      ]
+    }
+  },
+  {
+    "name": "Catnip Cookies",
+    "description": "Bakercat is baking catnip cookies but needs a fresh supply from the hospital.",
+    "itemId": "catnip",
+    "giverLocationId": "bakers_house",
+    "fromId": "hospital",
+    "toId": "bakery",
+    "conversation": {
+      "start": [
+        {
+          "actor": "bakercat",
+          "text": "Hello! I'm baking a special batch of catnip cookies today but I've run out of catnip. The hospital keeps some in their supply room."
+        },
+        {
+          "actor": "kiki",
+          "text": "You're baking with medical catnip?"
+        },
+        {
+          "actor": "bakercat",
+          "text": "It's the finest grade! Only the best for my cookies. Could you fetch some from the hospital and bring it to the bakery?"
+        }
+      ],
+      "complete": [
+        {
+          "actor": "bakercat",
+          "text": "Perfect! These cookies are going to be legendary. Here, take one as thanks!"
+        },
+        {
+          "actor": "kiki",
+          "text": "Oh, these are actually really good!"
+        },
+        {
+          "actor": "bakercat",
+          "text": "Of course they are. I'm a professional."
         }
       ]
     }
