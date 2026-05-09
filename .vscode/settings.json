@@ -9,6 +9,9 @@
       "source.sortImports": "explicit"
     }
   },
+  "haxe.displayConfigurations": [["completion.hxml"]],
+  "haxe.enableDiagnostics": true,
   "haxe.enableExtendedIndentation": true,
-  "cmake.configureOnOpen": false
+  "cmake.configureOnOpen": false,
+  "makefile.configureOnOpen": false
 }

@@ -3,7 +3,7 @@ package filters;
 import flixel.system.FlxAssets.FlxShader;
 
 class Scanline extends FlxShader {
-  @:glFragmentSource('
+	@:glFragmentSource('
     #pragma header
     
 		const float scale = 1.0;
@@ -15,7 +15,7 @@ class Scanline extends FlxShader {
 			else
 				gl_FragColor = texture2D(bitmap, openfl_TextureCoordv);
 		}')
-  public function new() {
-    super();
-  }
+	public function new() {
+		super();
+	}
 }

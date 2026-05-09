@@ -15,7 +15,22 @@ haxelib run flixel-tools setup
 
 ## Running
 
+### Neko
+
 ```sh
+lime test neko
+```
+
+### Native
+
+```sh
+lime test cpp
+```
+
+### HTML5
+
+```sh
+# Not required if using vscode
 haxe --wait 6000
 lime test html5 --connect 6000
 ```

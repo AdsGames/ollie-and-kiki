@@ -3,7 +3,7 @@ package filters;
 import flixel.system.FlxAssets.FlxShader;
 
 class Tiltshift extends FlxShader {
-  @:glFragmentSource('
+	@:glFragmentSource('
 		#pragma header
 
 		// Modified version of a tilt shift shader from Martin Jonasson (http://grapefrukt.com/)
@@ -82,7 +82,7 @@ class Tiltshift extends FlxShader {
 			// return the final blurred color
 			gl_FragColor = blurred;
 		}')
-  public function new() {
-    super();
-  }
+	public function new() {
+		super();
+	}
 }
