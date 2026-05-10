@@ -7,7 +7,7 @@
   {
     "id": "city",
     "file": "assets/sounds/ambience/city.ogg",
-    "gain": 0.5
+    "gain": 0.3
   },
   {
     "id": "beach",
