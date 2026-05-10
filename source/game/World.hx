@@ -116,13 +116,20 @@ class World {
 			// Interact key near a giver NPC → show start dialogue, then accept
 			if (FlxG.keys.justPressed.Z || FlxG.keys.justPressed.E || FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE) {
 				var task = taskManager.getIdleTaskNearGiver(player.x, player.y);
+				var closestLocation = locationManager.getClosestLocation(player.x, player.y, 16);
+
 				if (task != null) {
 					pendingAcceptTask = task;
 					dialogueManager.startDialogue(task.startLines);
-				} else {
-					var closest = locationManager.getClosestLocation(player.x, player.y, 16);
-					if (closest != null) {
-						var line = new DialogueLine("kiki", closest.description);
+				} else if (closestLocation != null) {
+					// Check for actor at location first.
+					var actor = actorManager.getActorForLocation(closestLocation.id);
+					if (actor != null) {
+						var line = new DialogueLine(actor.id, actor.defaultLine);
+						dialogueManager.startDialogue(([line]));
+						return;
+					} else {
+						var line = new DialogueLine("kiki", closestLocation.description);
 						dialogueManager.startDialogue(([line]));
 					}
 				}

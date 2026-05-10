@@ -22,6 +22,7 @@ class ActorManager {
 			image:String,
 			image_profile:String,
 			voice_pitch:Float,
+			default_line:String,
 			?location_id:String
 		}> = haxe.Json.parse(raw);
 
@@ -48,6 +49,8 @@ class ActorManager {
 			actor.imageProfile = imgProfile;
 			actor.locationId = entry.location_id;
 			actor.voicePitch = entry.voice_pitch;
+			actor.defaultLine = entry.default_line;
+
 			actors.set(actor.id, actor);
 
 			trace('Loaded actor: ' + actor.name);
@@ -63,5 +66,17 @@ class ActorManager {
 			trace("Warning: Actor with ID '" + id + "' not found.");
 		}
 		return actor;
+	}
+
+	/**
+	 * Get actor for location
+	 */
+	public function getActorForLocation(locationId:String):Null<Actor> {
+		for (actor in actors) {
+			if (actor.locationId != null && actor.locationId == locationId) {
+				return actor;
+			}
+		}
+		return null;
 	}
 }

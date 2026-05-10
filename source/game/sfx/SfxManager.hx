@@ -32,6 +32,7 @@ class SfxManager {
 		if (sound != null) {
 			// Some random pan to make it feel more dynamic
 			sound.pan = FlxG.random.float(-0.1, 0.1);
+			sound.volume = FlxG.random.float(0.5, 0.7);
 			sound.pitch = BASE_SPEECH_PITCH * actorPitch;
 			new FlxTimer().start(SPEECH_BLIP_S, _ -> if (sound.active) sound.stop());
 		}
