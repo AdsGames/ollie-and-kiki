@@ -427,7 +427,7 @@
   </object>
   <object id="9" name="Kiki's House" x="467.577" y="182.435">
    <properties>
-    <property name="description" value="Kiki's house is a small, cozy cottage with a thatched roof and a garden full of flowers. It has a warm and welcoming atmosphere, and Kiki is always happy to have visitors."/>
+    <property name="description" value="This is where I live!"/>
     <property name="id" value="kikis_house"/>
    </properties>
    <point/>
@@ -462,7 +462,7 @@
   </object>
   <object id="14" name="Fish Shop" x="635.719" y="439.594">
    <properties>
-    <property name="description" value="The fish shop is a small, unassuming building with a blue awning and a sign that reads 'Fresh Fish Daily.' Inside, the shop is filled with the smell of the sea, and the shelves are stocked with a variety of fish and seafood."/>
+    <property name="description" value="Smells... fishy"/>
     <property name="id" value="fish_shop"/>
    </properties>
    <point/>
@@ -497,7 +497,7 @@
   </object>
   <object id="8" name="Library" x="323.75" y="387.5">
    <properties>
-    <property name="description" value="library"/>
+    <property name="description" value="Lots to learn!"/>
     <property name="id" value="library"/>
    </properties>
    <point/>
