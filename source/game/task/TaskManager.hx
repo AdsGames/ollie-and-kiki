@@ -11,6 +11,9 @@ class TaskManager {
 	/** Tile-space radius within which the player can interact with a location. */
 	static final INTERACT_RADIUS = 16.0;
 
+	/** Seconds remaining at which the timer warning sound fires. */
+	static final TIMER_WARN_THRESHOLD = 10.0;
+
 	/** Maximum number of tasks the player can have in progress at once. */
 	static final MAX_IN_PROGRESS = 3;
 
@@ -51,8 +54,8 @@ class TaskManager {
 				task.from = from;
 				task.to = to;
 				task.timeLimit = entry.timeLimit;
-				task.startLines = [for (e in entry.conversation.start) for (l in splitText(e.actor, e.text)) l];
-				task.completeLines = [for (e in entry.conversation.complete) for (l in splitText(e.actor, e.text)) l];
+				task.startLines = [for (e in entry.conversation.start) new DialogueLine(e.actor, e.text)];
+				task.completeLines = [for (e in entry.conversation.complete) new DialogueLine(e.actor, e.text)];
 				tasks.push(task);
 			} else {
 				trace('Skipping task "${entry.name}": unresolved item or location reference.');
@@ -80,13 +83,17 @@ class TaskManager {
 
 	/**
 	 * Call every frame (only when dialogue is not active). Advances task state for ALL
-	 * active tasks based on proximity. Returns the first task delivered this frame, or null.
+	 * active tasks based on proximity. Returns the first pickup and delivery events this frame.
 	 */
-	public function updateProximity(playerX:Float, playerY:Float):Null<Task> {
+	public function updateProximity(playerX:Float, playerY:Float):{pickedUp:Null<Task>, delivered:Null<Task>} {
+		var pickedUp:Null<Task> = null;
 		var delivered:Null<Task> = null;
 		for (task in tasks) {
 			if (task.state == Accepted && isNear(playerX, playerY, task.from)) {
 				task.pickUp();
+				if (pickedUp == null) {
+					pickedUp = task;
+				}
 			} else if (task.state == PickedUp && isNear(playerX, playerY, task.to)) {
 				task.deliver();
 				if (delivered == null) {
@@ -94,22 +101,27 @@ class TaskManager {
 				}
 			}
 		}
-		return delivered;
+		return {pickedUp: pickedUp, delivered: delivered};
 	}
 
 	/**
-	 * Tick all task timers and expire the first overdue task this frame.
-	 * Returns the expired task so callers can react (e.g. flash a warning).
+	 * Tick all task timers, expire overdue tasks, and flag the first task that
+	 * just crossed the warning threshold this frame.
 	 */
-	public function updateTimers(elapsed:Float):Null<Task> {
+	public function updateTimers(elapsed:Float):{expired:Null<Task>, warned:Null<Task>} {
+		var expired:Null<Task> = null;
+		var warned:Null<Task> = null;
 		for (task in tasks) {
 			task.update(elapsed);
 			if (task.isExpired()) {
 				task.expire();
-				return task;
+				if (expired == null) expired = task;
+			} else if (!task.warnPlayed && task.timeLimit != null && task.state == PickedUp && task.timeRemaining() <= TIMER_WARN_THRESHOLD) {
+				task.warnPlayed = true;
+				if (warned == null) warned = task;
 			}
 		}
-		return null;
+		return {expired: expired, warned: warned};
 	}
 
 	function countInProgress():Int {
@@ -128,27 +140,4 @@ class TaskManager {
 		return dx * dx + dy * dy <= INTERACT_RADIUS * INTERACT_RADIUS;
 	}
 
-	static function splitText(actorId:String, text:String):Array<DialogueLine> {
-		final MAX_CHARS = 70;
-		if (text.length <= MAX_CHARS) {
-			return [new DialogueLine(actorId, text)];
-		}
-		var lines:Array<DialogueLine> = [];
-		var current = "";
-		for (word in text.split(" ")) {
-			var candidate = current.length == 0 ? word : current + " " + word;
-			if (candidate.length > MAX_CHARS) {
-				if (current.length > 0) {
-					lines.push(new DialogueLine(actorId, current));
-				}
-				current = word;
-			} else {
-				current = candidate;
-			}
-		}
-		if (current.length > 0) {
-			lines.push(new DialogueLine(actorId, current));
-		}
-		return lines;
-	}
 }

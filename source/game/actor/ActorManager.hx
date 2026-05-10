@@ -21,6 +21,7 @@ class ActorManager {
 			description:String,
 			image:String,
 			image_profile:String,
+			voice_pitch:Float,
 			?location_id:String
 		}> = haxe.Json.parse(raw);
 
@@ -46,6 +47,7 @@ class ActorManager {
 			imgProfile.persist = true;
 			actor.imageProfile = imgProfile;
 			actor.locationId = entry.location_id;
+			actor.voicePitch = entry.voice_pitch;
 			actors.set(actor.id, actor);
 
 			trace('Loaded actor: ' + actor.name);

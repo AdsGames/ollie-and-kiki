@@ -5,14 +5,16 @@
     "image": "assets/images/actors/ollie.png",
     "image_profile": "assets/images/actors/ollie_profile.png",
     "description": "Big chunky cat",
-    "location_id": "ollies_house"
+    "location_id": "ollies_house",
+    "voice_pitch": 0.5
   },
   {
     "name": "Kiki",
     "id": "kiki",
     "image": "assets/images/actors/kiki.png",
     "image_profile": "assets/images/actors/kiki_profile.png",
-    "description": "Small fluffy cat"
+    "description": "Small fluffy cat",
+    "voice_pitch": 1.5
   },
   {
     "name": "FisherCat",
@@ -20,7 +22,8 @@
     "image": "assets/images/actors/fishercat.png",
     "image_profile": "assets/images/actors/fishercat_profile.png",
     "description": "Sleek black cat",
-    "location_id": "fish_shop"
+    "location_id": "fish_shop",
+    "voice_pitch": 0.8
   },
   {
     "name": "Bakercat",
@@ -28,6 +31,7 @@
     "image": "assets/images/actors/baker.png",
     "image_profile": "assets/images/actors/baker_profile.png",
     "description": "Playful tabby cat",
-    "location_id": "bakers_house"
+    "location_id": "bakers_house",
+    "voice_pitch": 1.2
   }
 ]

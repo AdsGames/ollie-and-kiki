@@ -17,6 +17,7 @@ class WorldMap {
 	public var terrain:FlxTilemap;
 	public var midground:FlxTilemap;
 	public var foreground:FlxTilemap;
+	public var collision:FlxTilemap;
 
 	// Location table
 	public var locations:Array<Location>;
@@ -42,17 +43,19 @@ class WorldMap {
 		terrain.allowCollisions = FlxDirectionFlags.NONE;
 
 		midground = new FlxTilemap();
-		midground.allowCollisions = FlxDirectionFlags.ANY;
+		midground.allowCollisions = FlxDirectionFlags.NONE;
 
 		foreground = new FlxTilemap();
 		foreground.allowCollisions = FlxDirectionFlags.NONE;
+
+		collision = new FlxTilemap();
+		collision.visible = false;
 
 		mapWidth = tmx.width;
 		mapHeight = tmx.height;
 
 		state.add(terrain);
 		state.add(midground);
-		state.add(foreground);
 
 		// Parse layers
 		for (layer in tmx.layers) {
@@ -67,6 +70,9 @@ class WorldMap {
 				} else if (layer.name == "foreground") {
 					foreground.loadMapFromArray(tileLayer.tileArray, tileLayer.width, tileLayer.height, spritesheet, 8, 8, OFF, 1);
 					foreground.follow();
+				} else if (layer.name == "collision") {
+					collision.loadMapFromArray(tileLayer.tileArray, tileLayer.width, tileLayer.height, spritesheet, 8, 8, OFF, 1);
+					collision.follow();
 				} else {
 					trace("Unknown tile layer: " + layer.name);
 				}
@@ -107,6 +113,7 @@ class WorldMap {
 			var loc = new Location();
 			loc.id = id;
 			loc.name = obj.name;
+			loc.description = obj.properties.get("description");
 			loc.x = obj.x;
 			loc.y = obj.y;
 			locations.push(loc);
@@ -151,6 +158,11 @@ class WorldMap {
 		for (obj in group.objects) {
 			spawnObject(obj);
 		}
+	}
+
+	public function addForeground(state:FlxState):Void {
+		state.add(foreground);
+		state.add(collision);
 	}
 
 	/**

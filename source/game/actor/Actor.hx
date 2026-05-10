@@ -9,6 +9,7 @@ class Actor {
 	public var image:FlxGraphic;
 	public var imageProfile:FlxGraphic;
 	public var locationId:Null<String>;
+	public var voicePitch:Float;
 
 	public function new() {}
 }

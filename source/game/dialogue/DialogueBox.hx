@@ -28,7 +28,10 @@ class DialogueBox extends FlxGroup {
 
 	var fullText:String = "";
 	var visibleChars:Float = 0;
+	var lastVisibleInt:Int = 0;
 	var typing:Bool = false;
+	var voicePitch:Float = 1.0;
+	var onVoiceChar:Null<(String, Float)->Void> = null;
 
 	public function new() {
 		super();
@@ -70,13 +73,16 @@ class DialogueBox extends FlxGroup {
 	 * @param line The dialogue line to display
 	 * @param actor Resolved actor for this line, or null if unknown.
 	 */
-	public function show(line:DialogueLine, actor:Null<Actor>):Void {
+	public function show(line:DialogueLine, actor:Null<Actor>, onVoiceChar:Null<(String, Float)->Void> = null):Void {
 		actorText.text = actor != null ? actor.name : line.actorId;
 		fullText = line.text;
 		visibleChars = 0;
+		lastVisibleInt = 0;
 		typing = true;
 		contentText.text = "";
 		visible = true;
+		this.voicePitch = actor != null ? actor.voicePitch : 1.0;
+		this.onVoiceChar = onVoiceChar;
 
 		if (actor != null) {
 			portrait.loadGraphic(actor.imageProfile);
@@ -126,7 +132,17 @@ class DialogueBox extends FlxGroup {
 			visibleChars = fullText.length;
 			typing = false;
 		}
-		contentText.text = fullText.substr(0, Std.int(visibleChars));
+
+		var newInt = Std.int(visibleChars);
+		if (newInt > lastVisibleInt && onVoiceChar != null) {
+			var ch = fullText.charAt(newInt - 1);
+			if (ch != ' ' && ch != '\n' && ch != '\t') {
+				onVoiceChar(ch, voicePitch);
+			}
+			lastVisibleInt = newInt;
+		}
+
+		contentText.text = fullText.substr(0, newInt);
 	}
 
 	/**

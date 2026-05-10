@@ -23,6 +23,7 @@ class Task {
 	public var timeLimit:Null<Float> = null;
 
 	public var timeElapsed:Float = 0;
+	public var warnPlayed:Bool = false;
 
 	public var startLines:Array<DialogueLine>;
 	public var completeLines:Array<DialogueLine>;
@@ -48,6 +49,7 @@ class Task {
 		if (state == Accepted) {
 			state = PickedUp;
 			timeElapsed = 0;
+			warnPlayed = false;
 		}
 	}
 
@@ -65,6 +67,7 @@ class Task {
 		if (state == PickedUp) {
 			state = Accepted;
 			timeElapsed = 0;
+			warnPlayed = false;
 		}
 	}
 

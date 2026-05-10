@@ -36,4 +36,20 @@ class LocationManager {
 	public function getAllLocations():Array<Location> {
 		return [for (loc in locations) loc];
 	}
+
+	/**
+	 * Get closest location up to a threshold
+	 */
+	public function getClosestLocation(x:Float, y:Float, threshold:Float):Null<Location> {
+		var closest:Null<Location> = null;
+		var closestDist = threshold;
+		for (loc in locations) {
+			var dist = Math.sqrt(Math.pow(loc.x - x, 2) + Math.pow(loc.y - y, 2));
+			if (dist < closestDist) {
+				closestDist = dist;
+				closest = loc;
+			}
+		}
+		return closest;
+	}
 }

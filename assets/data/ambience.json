@@ -1,30 +1,37 @@
 [
   {
     "id": "forest",
-    "file": "assets/sounds/ambience/forest.ogg"
+    "file": "assets/sounds/ambience/forest.ogg",
+    "gain": 0.9
   },
   {
     "id": "city",
-    "file": "assets/sounds/ambience/city.ogg"
+    "file": "assets/sounds/ambience/city.ogg",
+    "gain": 0.5
   },
   {
     "id": "beach",
-    "file": "assets/sounds/ambience/beach.ogg"
+    "file": "assets/sounds/ambience/beach.ogg",
+    "gain": 0.5
   },
   {
     "id": "park",
-    "file": "assets/sounds/ambience/park.ogg"
+    "file": "assets/sounds/ambience/park.ogg",
+    "gain": 1.0
   },
   {
     "id": "pool",
-    "file": "assets/sounds/ambience/pool.ogg"
+    "file": "assets/sounds/ambience/pool.ogg",
+    "gain": 0.5
   },
   {
     "id": "suburbs",
-    "file": "assets/sounds/ambience/suburbs.ogg"
+    "file": "assets/sounds/ambience/suburbs.ogg",
+    "gain": 1.0
   },
   {
     "id": "warf",
-    "file": "assets/sounds/ambience/warf.ogg"
+    "file": "assets/sounds/ambience/warf.ogg",
+    "gain": 0.5
   }
 ]

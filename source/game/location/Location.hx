@@ -6,6 +6,7 @@ package game.location;
 class Location {
 	public var id:String;
 	public var name:String;
+	public var description:String;
 	public var x:Float;
 	public var y:Float;
 

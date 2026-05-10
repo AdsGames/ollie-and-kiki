@@ -7,12 +7,14 @@ import game.WorldMap;
 import game.actor.ActorManager;
 import game.actor.ActorRenderer;
 import game.ambience.AmbienceManager;
+import game.dialogue.DialogueLine;
 import game.dialogue.DialogueManager;
 import game.economy.CurrencyRenderer;
 import game.item.InventoryRenderer;
 import game.item.ItemManager;
 import game.location.LocationManager;
 import game.location.LocationRenderer;
+import game.sfx.SfxManager;
 import game.task.Task;
 import game.task.TaskManager;
 import game.task.TaskRenderer;
@@ -22,6 +24,7 @@ class World {
 	public var player:Player;
 
 	// Data managers
+	public var sfxManager:SfxManager;
 	public var ambienceManager:AmbienceManager;
 	public var actorManager:ActorManager;
 	public var locationManager:LocationManager;
@@ -45,6 +48,8 @@ class World {
 		map = new WorldMap(state);
 
 		// Data
+		sfxManager = new SfxManager();
+
 		ambienceManager = new AmbienceManager();
 		ambienceManager.loadAmbiences();
 
@@ -71,18 +76,7 @@ class World {
 		locationRenderer.setLocations(locationManager.getAllLocations());
 
 		// Dialogue system
-		dialogueManager = new DialogueManager(state, actorManager);
-
-		// Quest log HUD
-		taskRenderer = new TaskRenderer();
-		state.add(taskRenderer);
-
-		// Inventory and currency HUD
-		inventoryRenderer = new InventoryRenderer();
-		state.add(inventoryRenderer);
-
-		currencyRenderer = new CurrencyRenderer();
-		state.add(currencyRenderer);
+		dialogueManager = new DialogueManager(actorManager, sfxManager);
 
 		// Player initialization
 		var kikisHouse = locationManager.getLocationById("kikis_house");
@@ -91,10 +85,26 @@ class World {
 
 		// Camera follow
 		FlxG.camera.follow(player, FlxCameraFollowStyle.LOCKON, 1.0);
+
+		// Foreground layers render on top of the player
+		map.addForeground(state);
+
+		// HUD renders on top of world geometry
+		taskRenderer = new TaskRenderer();
+		state.add(taskRenderer);
+
+		inventoryRenderer = new InventoryRenderer();
+		state.add(inventoryRenderer);
+
+		currencyRenderer = new CurrencyRenderer();
+		state.add(currencyRenderer);
+
+		// Dialogue box renders on top of everything
+		dialogueManager.addToState(state);
 	}
 
 	public function update(elapsed:Float):Void {
-		FlxG.collide(player, map.midground);
+		FlxG.collide(player, map.collision);
 
 		if (!dialogueManager.active) {
 			// Accept the pending task now that its start dialogue has finished
@@ -109,18 +119,34 @@ class World {
 				if (task != null) {
 					pendingAcceptTask = task;
 					dialogueManager.startDialogue(task.startLines);
+				} else {
+					var closest = locationManager.getClosestLocation(player.x, player.y, 16);
+					if (closest != null) {
+						var line = new DialogueLine("kiki", closest.description);
+						dialogueManager.startDialogue(([line]));
+					}
 				}
 			}
 
-			// Proximity tracking. Returns the task that was just delivered, if any
-			var deliveredTask = taskManager.updateProximity(player.x, player.y);
-			if (deliveredTask != null) {
-				coins += deliveredTask.item.value;
-				dialogueManager.startDialogue(deliveredTask.completeLines);
+			// Proximity tracking. Fires pickup and delivery events
+			var proximity = taskManager.updateProximity(player.x, player.y);
+			if (proximity.pickedUp != null) {
+				sfxManager.playTaskPickup();
+			}
+			if (proximity.delivered != null) {
+				coins += proximity.delivered.item.value;
+				sfxManager.playTaskDelivered();
+				dialogueManager.startDialogue(proximity.delivered.completeLines);
 			}
 
 			// Tick delivery timers; expired tasks revert silently to Accepted
-			taskManager.updateTimers(elapsed);
+			var timerResult = taskManager.updateTimers(elapsed);
+			if (timerResult.expired != null) {
+				sfxManager.playTaskExpired();
+			}
+			if (timerResult.warned != null) {
+				sfxManager.playTimerWarning();
+			}
 		}
 
 		// Update renderers
