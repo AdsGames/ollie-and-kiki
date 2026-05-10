@@ -38,7 +38,7 @@
     "name": "Catnip Run",
     "description": "Pick up the catnip from Big Chungus's house and bring it to the hospital.",
     "itemId": "catnip",
-    "giverLocationId": "bakers_house",
+    "giverLocationId": "bakery",
     "fromId": "beach_house",
     "toId": "hospital",
     "conversation": {
@@ -145,7 +145,7 @@
     "name": "Catnip Cookies",
     "description": "Bakercat is baking catnip cookies but needs a fresh supply from the hospital.",
     "itemId": "catnip",
-    "giverLocationId": "bakers_house",
+    "giverLocationId": "bakery",
     "fromId": "hospital",
     "toId": "bakery",
     "conversation": {
