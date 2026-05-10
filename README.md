@@ -1,4 +1,4 @@
-# Ollie and Kiki
+# Kiki's Cat Delivery
 
 ## Installing
 

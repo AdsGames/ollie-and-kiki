@@ -51,22 +51,22 @@ jobs:
         with:
           path: export/html5/bin
 
-      # - name: Deploy to Itch.io 🚀
-      #   if: startsWith(github.ref, 'refs/tags/v')
-      #   uses: josephbmanley/butler-publish-itchio-action@master
-      #   env:
-      #     BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
-      #     ITCH_GAME: ollie-and-kiki
-      #     ITCH_USER: ads-games
-      #     CHANNEL: HTML5
-      #     PACKAGE: export/html5/bin
-      #     VERSION: ${{ github.ref_name }}
+      - name: Deploy to Itch.io 🚀
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
+          ITCH_GAME: kikis-cat-delivery
+          ITCH_USER: ads-games
+          CHANNEL: HTML5
+          PACKAGE: export/html5/bin
+          VERSION: ${{ github.ref_name }}
 
       # - name: Deploy to A.D.S. Games
       #   if: startsWith(github.ref, 'refs/tags/v')
       #   uses: adsgames/deploy-to-adsgames@main
       #   with:
-      #     project-id: ollie-and-kiki
+      #     project-id: kikis-cat-delivery
       #     version: ${{ github.ref_name }}
       #     build-dir: export/html5/bin
       #     platform: WEB
