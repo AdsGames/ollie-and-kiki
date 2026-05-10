@@ -1,0 +1,30 @@
+[
+  {
+    "id": "forest",
+    "file": "assets/sounds/ambience/forest.mp3"
+  },
+  {
+    "id": "city",
+    "file": "assets/sounds/ambience/city.mp3"
+  },
+  {
+    "id": "beach",
+    "file": "assets/sounds/ambience/beach.mp3"
+  },
+  {
+    "id": "park",
+    "file": "assets/sounds/ambience/park.mp3"
+  },
+  {
+    "id": "pool",
+    "file": "assets/sounds/ambience/pool.mp3"
+  },
+  {
+    "id": "suburbs",
+    "file": "assets/sounds/ambience/suburbs.mp3"
+  },
+  {
+    "id": "warf",
+    "file": "assets/sounds/ambience/warf.mp3"
+  }
+]

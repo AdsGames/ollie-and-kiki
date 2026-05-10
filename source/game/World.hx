@@ -6,6 +6,7 @@ import flixel.FlxState;
 import game.WorldMap;
 import game.actor.ActorManager;
 import game.actor.ActorRenderer;
+import game.ambience.AmbienceManager;
 import game.dialogue.DialogueManager;
 import game.economy.CurrencyRenderer;
 import game.item.InventoryRenderer;
@@ -21,6 +22,7 @@ class World {
 	public var player:Player;
 
 	// Data managers
+	public var ambienceManager:AmbienceManager;
 	public var actorManager:ActorManager;
 	public var locationManager:LocationManager;
 	public var dialogueManager:DialogueManager;
@@ -43,6 +45,9 @@ class World {
 		map = new WorldMap(state);
 
 		// Data
+		ambienceManager = new AmbienceManager();
+		ambienceManager.loadAmbiences();
+
 		actorManager = new ActorManager();
 		actorManager.loadActors();
 
@@ -126,5 +131,6 @@ class World {
 		currencyRenderer.updateCoins(coins);
 
 		dialogueManager.update(elapsed);
+		ambienceManager.update(player.x, player.y, map.ambienceZones);
 	}
 }

@@ -7,6 +7,7 @@ import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.tile.FlxTilemap;
 import flixel.util.FlxDirectionFlags;
+import game.ambience.AmbienceZone;
 import game.location.Location;
 
 class WorldMap {
@@ -20,6 +21,9 @@ class WorldMap {
 	// Location table
 	public var locations:Array<Location>;
 
+	// Ambience zones parsed from the map
+	public var ambienceZones:Array<AmbienceZone>;
+
 	// Dimensions from map
 	public var mapWidth:Int;
 	public var mapHeight:Int;
@@ -28,6 +32,7 @@ class WorldMap {
 		trace("Loading Map...");
 
 		locations = [];
+		ambienceZones = [];
 
 		// Link assets
 		var spritesheet:String = AssetPaths.tilemap_packed__png;
@@ -75,10 +80,20 @@ class WorldMap {
 				} else if (layer.name == "locations") {
 					var objLayer:TiledObjectLayer = cast(layer, TiledObjectLayer);
 					loadLocationLayer(objLayer);
+				} else if (layer.name == "ambience") {
+					var objLayer:TiledObjectLayer = cast(layer, TiledObjectLayer);
+					loadAmbienceLayer(objLayer);
 				} else {
 					trace("Unknown object layer: " + layer.name);
 				}
 			}
+		}
+	}
+
+	private function loadAmbienceLayer(group:TiledObjectLayer):Void {
+		for (obj in group.objects) {
+			ambienceZones.push({id: obj.name, x: obj.x, y: obj.y});
+			trace('Loaded ambience zone: ${obj.name} at ${obj.x}, ${obj.y}');
 		}
 	}
 

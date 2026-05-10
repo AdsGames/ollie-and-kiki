@@ -16,5 +16,6 @@ class InitState extends FlxGame {
 		super.create(_);
 		stage.quality = StageQuality.LOW;
 		FlxSprite.defaultAntialiasing = false;
+		FlxG.sound.playMusic(AssetPaths.jazzollie__mp3, 0.7, true);
 	}
 }

@@ -1,7 +1,7 @@
 .PHONY: server neko html5 watch
 
 server:
-	haxe --wait 6000
+	haxe --wait 6001
 
 neko:
 	SDL_VIDEODRIVER=x11 lime test neko --connect 6000

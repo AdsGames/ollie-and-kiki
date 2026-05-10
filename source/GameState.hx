@@ -1,6 +1,8 @@
 package;
 
+import flixel.FlxG;
 import flixel.FlxState;
+import flixel.sound.FlxSound;
 import game.World;
 
 class GameState extends FlxState {
