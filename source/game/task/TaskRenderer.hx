@@ -4,19 +4,20 @@ import flixel.group.FlxGroup;
 import flixel.text.FlxBitmapText;
 import flixel.util.FlxColor;
 import game.Fonts;
-import game.task.Task;
 
 class TaskRenderer extends FlxGroup {
 	static final MAX_TASKS = 3;
 	static final LINE_HEIGHT = 12;
 
 	var taskTexts:Array<FlxBitmapText>;
+	var taskManager:TaskManager;
 
-	public function new() {
+	public function new(taskManager:TaskManager) {
 		super();
+		this.taskManager = taskManager;
 		taskTexts = [];
 		for (i in 0...MAX_TASKS) {
-			var t = new FlxBitmapText(Fonts.glasstown);
+			var t = new FlxBitmapText(Fonts.glasstownBold);
 			t.x = 8;
 			t.y = 8 + i * LINE_HEIGHT;
 			t.fieldWidth = 224;
@@ -29,8 +30,9 @@ class TaskRenderer extends FlxGroup {
 		}
 	}
 
-	public function updateTasks(tasks:Array<Task>):Void {
-		var active = [for (t in tasks) if (t.state == Accepted || t.state == PickedUp) t];
+	override public function update(elapsed:Float):Void {
+		super.update(elapsed);
+		var active = [for (t in taskManager.tasks) if (t.state == Accepted || t.state == PickedUp) t];
 		for (i in 0...MAX_TASKS) {
 			if (i < active.length) {
 				taskTexts[i].visible = true;
@@ -54,8 +56,9 @@ class TaskRenderer extends FlxGroup {
 	}
 
 	function formatTimer(task:Task):String {
-		if (task.timeLimit == null)
+		if (task.timeLimit == null) {
 			return "";
+		}
 		var secs = Math.ceil(task.timeRemaining());
 		var m = Std.int(secs / 60);
 		var s = secs % 60;

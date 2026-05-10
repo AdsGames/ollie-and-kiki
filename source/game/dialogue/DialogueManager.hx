@@ -61,6 +61,7 @@ class DialogueManager {
 				current = candidate;
 			}
 		}
+
 		if (current.length > 0) {
 			result.push(new DialogueLine(line.actorId, current));
 		}

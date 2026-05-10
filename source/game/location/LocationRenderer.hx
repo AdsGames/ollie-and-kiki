@@ -1,53 +1,32 @@
 package game.location;
 
 import flixel.group.FlxGroup;
-import flixel.text.FlxBitmapText;
-import flixel.util.FlxColor;
-import game.Fonts;
-import game.task.Task;
+import game.task.TaskManager;
 
 class LocationRenderer extends FlxGroup {
-	static final LABEL_WIDTH = 56;
-
 	var markerMap:Map<String, LocationMarker>;
-	var labelMap:Map<String, FlxBitmapText>;
+	var taskManager:TaskManager;
 
-	public function new() {
+	public function new(locationManager:LocationManager, taskManager:TaskManager) {
 		super();
+		this.taskManager = taskManager;
 		markerMap = new Map();
-		labelMap = new Map();
-	}
 
-	public function setLocations(locations:Array<Location>):Void {
-		clear();
-		markerMap = new Map();
-		labelMap = new Map();
-
-		for (loc in locations) {
+		for (loc in locationManager.getAllLocations()) {
 			var marker = new LocationMarker(loc);
-			marker.visible = false;
 			add(marker);
 			markerMap[loc.id] = marker;
-
-			var label = new FlxBitmapText(Fonts.glasstown);
-			label.fieldWidth = LABEL_WIDTH;
-			label.multiLine = true;
-			label.alignment = CENTER;
-			label.color = FlxColor.WHITE;
-			label.scrollFactor.set(1, 1);
-			label.visible = false;
-			add(label);
-			labelMap[loc.id] = label;
 		}
 	}
 
-	public function updateFromTasks(tasks:Array<Task>):Void {
+	override public function update(elapsed:Float):Void {
+		super.update(elapsed);
+
 		for (id in markerMap.keys()) {
-			markerMap[id].visible = false;
-			labelMap[id].visible = false;
+			markerMap[id].hide();
 		}
 
-		for (task in tasks) {
+		for (task in taskManager.tasks) {
 			switch task.state {
 				case Accepted:
 					showMarker(task.from.id, task.item.name);
@@ -59,39 +38,11 @@ class LocationRenderer extends FlxGroup {
 		}
 	}
 
-	override public function update(elapsed:Float):Void {
-		super.update(elapsed);
-		for (id in markerMap.keys()) {
-			var marker = markerMap[id];
-			var label = labelMap[id];
-			if (!label.visible)
-				continue;
-			if (marker.visible) {
-				label.x = marker.x + marker.width / 2 - LABEL_WIDTH / 2;
-				label.y = marker.y - label.height - 2;
-			} else {
-				label.x = marker.location.x + marker.width / 2 - LABEL_WIDTH / 2;
-				label.y = marker.location.y - label.height - 2;
-			}
-		}
-	}
-
 	function showMarker(locationId:String, text:String):Void {
 		var marker = markerMap[locationId];
-		var label = labelMap[locationId];
-		if (marker == null || label == null) {
+		if (marker == null) {
 			return;
 		}
-		marker.visible = true;
-		label.visible = true;
-		label.text = text;
-	}
-
-	function showLabel(locationId:String, text:String):Void {
-		var label = labelMap[locationId];
-		if (label == null)
-			return;
-		label.visible = true;
-		label.text = text;
+		marker.show(text);
 	}
 }

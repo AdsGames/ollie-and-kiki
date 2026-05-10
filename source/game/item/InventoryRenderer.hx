@@ -6,8 +6,8 @@ import flixel.text.FlxBitmapText;
 import flixel.util.FlxColor;
 import game.Fonts;
 import game.task.Task;
+import game.task.TaskManager;
 
-/** HUD strip that shows which items Kiki is currently carrying. */
 class InventoryRenderer extends FlxGroup {
 	static final Y = 48;
 	static final MAX_SLOTS = 3;
@@ -18,11 +18,13 @@ class InventoryRenderer extends FlxGroup {
 	var bagText:FlxBitmapText;
 	var slots:Array<FlxSprite>;
 	var lastKey:String = "";
+	var taskManager:TaskManager;
 
-	public function new() {
+	public function new(taskManager:TaskManager) {
 		super();
+		this.taskManager = taskManager;
 
-		bagText = new FlxBitmapText(Fonts.glasstown);
+		bagText = new FlxBitmapText(Fonts.glasstownBold);
 		bagText.x = 8;
 		bagText.y = Y;
 		bagText.fieldWidth = LABEL_WIDTH;
@@ -43,8 +45,9 @@ class InventoryRenderer extends FlxGroup {
 		}
 	}
 
-	public function updateFromTasks(tasks:Array<Task>):Void {
-		var carried = [for (t in tasks) if (t.state == PickedUp) t.item];
+	override public function update(elapsed:Float):Void {
+		super.update(elapsed);
+		var carried = [for (t in taskManager.tasks) if (t.state == PickedUp) t.item];
 		var key = [for (item in carried) item.id].join(",");
 		if (key == lastKey) {
 			return;

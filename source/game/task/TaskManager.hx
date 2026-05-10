@@ -4,6 +4,7 @@ import game.dialogue.DialogueLine;
 import game.item.ItemManager;
 import game.location.Location;
 import game.location.LocationManager;
+import game.store.StoreManager;
 import game.task.Task;
 import openfl.Assets;
 
@@ -14,12 +15,13 @@ class TaskManager {
 	/** Seconds remaining at which the timer warning sound fires. */
 	static final TIMER_WARN_THRESHOLD = 10.0;
 
-	/** Maximum number of tasks the player can have in progress at once. */
-	static final MAX_IN_PROGRESS = 3;
-
 	public var tasks:Array<Task>;
 
-	public function new() {
+	// Store manager reference
+	public var storeManager:StoreManager;
+
+	public function new(storeManager:StoreManager) {
+		this.storeManager = storeManager;
 		tasks = [];
 	}
 
@@ -70,9 +72,6 @@ class TaskManager {
 	 * has fewer than MAX_IN_PROGRESS tasks already active. Returns null otherwise.
 	 */
 	public function getIdleTaskNearGiver(playerX:Float, playerY:Float):Null<Task> {
-		if (countInProgress() >= MAX_IN_PROGRESS) {
-			return null;
-		}
 		for (task in tasks) {
 			if (task.state == Idle && isNear(playerX, playerY, task.giverLocation)) {
 				return task;
@@ -88,6 +87,7 @@ class TaskManager {
 	public function updateProximity(playerX:Float, playerY:Float):{pickedUp:Null<Task>, delivered:Null<Task>} {
 		var pickedUp:Null<Task> = null;
 		var delivered:Null<Task> = null;
+
 		for (task in tasks) {
 			if (task.state == Accepted && isNear(playerX, playerY, task.from)) {
 				task.pickUp();
@@ -104,6 +104,10 @@ class TaskManager {
 		return {pickedUp: pickedUp, delivered: delivered};
 	}
 
+	public function isCarryFull():Bool {
+		return countInProgress() >= maxCarried();
+	}
+
 	/**
 	 * Tick all task timers, expire overdue tasks, and flag the first task that
 	 * just crossed the warning threshold this frame.
@@ -115,10 +119,17 @@ class TaskManager {
 			task.update(elapsed);
 			if (task.isExpired()) {
 				task.expire();
-				if (expired == null) expired = task;
-			} else if (!task.warnPlayed && task.timeLimit != null && task.state == PickedUp && task.timeRemaining() <= TIMER_WARN_THRESHOLD) {
+				if (expired == null) {
+					expired = task;
+				}
+			} else if (!task.warnPlayed
+				&& task.timeLimit != null
+				&& task.state == PickedUp
+				&& task.timeRemaining() <= TIMER_WARN_THRESHOLD) {
 				task.warnPlayed = true;
-				if (warned == null) warned = task;
+				if (warned == null) {
+					warned = task;
+				}
 			}
 		}
 		return {expired: expired, warned: warned};
@@ -140,4 +151,11 @@ class TaskManager {
 		return dx * dx + dy * dy <= INTERACT_RADIUS * INTERACT_RADIUS;
 	}
 
+	private function maxCarried():Int {
+		var max = 1;
+		if (storeManager.isPurchased("backpack")) {
+			max = 3;
+		}
+		return max;
+	}
 }

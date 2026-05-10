@@ -39,7 +39,7 @@
     "description": "Pick up the catnip from Big Chungus's house and bring it to the hospital.",
     "itemId": "catnip",
     "giverLocationId": "bakers_house",
-    "fromId": "big_chungus_house",
+    "fromId": "beach_house",
     "toId": "hospital",
     "conversation": {
       "start": [

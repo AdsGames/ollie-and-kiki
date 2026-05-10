@@ -1,30 +1,33 @@
 package game.economy;
 
+import flixel.FlxG;
 import flixel.group.FlxGroup;
 import flixel.text.FlxBitmapText;
 import flixel.util.FlxColor;
 import game.Fonts;
+import game.store.StoreManager;
 
-/** HUD line showing the player's current coin balance. */
 class CurrencyRenderer extends FlxGroup {
-	static final Y = 60;
+	static final Y = 4;
 
 	var coinsText:FlxBitmapText;
+	var storeManager:StoreManager;
 
-	public function new() {
+	public function new(storeManager:StoreManager) {
 		super();
-		coinsText = new FlxBitmapText(Fonts.glasstown);
-		coinsText.x = 8;
+		this.storeManager = storeManager;
+		coinsText = new FlxBitmapText(Fonts.glasstownBold);
 		coinsText.y = Y;
-		coinsText.fieldWidth = 100;
-		coinsText.multiLine = false;
+		coinsText.alignment = RIGHT;
 		coinsText.color = FlxColor.YELLOW;
 		coinsText.scrollFactor.set(0, 0);
 		coinsText.text = "Coins: 0";
 		add(coinsText);
 	}
 
-	public function updateCoins(coins:Int):Void {
-		coinsText.text = 'Coins: $coins';
+	override public function update(elapsed:Float):Void {
+		super.update(elapsed);
+		coinsText.text = 'Coins: ${storeManager.coins}';
+		coinsText.x = FlxG.width - (coinsText.width + 4);
 	}
 }

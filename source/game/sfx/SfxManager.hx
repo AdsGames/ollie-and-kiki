@@ -55,6 +55,6 @@ class SfxManager {
 	}
 
 	function playRandom(sounds:Array<String>):Void {
-		FlxG.sound.play(sounds[FlxG.random.int(0, sounds.length - 1)]);
+		FlxG.sound.play(sounds[FlxG.random.int(0, sounds.length - 1)], 0.6);
 	}
 }

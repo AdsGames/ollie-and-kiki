@@ -47,7 +47,7 @@ class DialogueBox extends FlxGroup {
 		// Actor name sits inside the top-border row
 		actorText = new FlxBitmapText(Fonts.glasstownBold);
 		actorText.x = BOX_X + PADDING;
-		actorText.y = BOX_Y + PADDING;
+		actorText.y = BOX_Y + PADDING - 2;
 		actorText.color = FlxColor.BLACK;
 		actorText.scrollFactor.set(0, 0);
 		actorText.setSize(BOX_W - PADDING * 2, TILE - PADDING * 2);
@@ -56,7 +56,7 @@ class DialogueBox extends FlxGroup {
 		// Content text fills the inner area
 		contentText = new FlxBitmapText(Fonts.glasstown);
 		contentText.x = BOX_X + PADDING;
-		contentText.y = BOX_Y + TILE + PADDING;
+		contentText.y = BOX_Y + TILE + PADDING - 2;
 		contentText.autoSize = false;
 		contentText.fieldWidth = INNER_W - PADDING * 2;
 		contentText.multiLine = true;
