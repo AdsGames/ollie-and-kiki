@@ -14,17 +14,19 @@ class MenuState extends FlxState {
 	private var pressAnyKey:FlxBitmapText;
 	private var blinkTimer:FlxTimer;
 	private var transitioning:Bool;
+	private var ready:Bool;
 
 	public function new() {
 		super();
 		transitioning = false;
+		ready = false;
 	}
 
 	override public function create():Void {
 		super.create();
 		FlxG.mouse.visible = true;
 
-		FlxG.camera.fade(FlxColor.WHITE, 0.5, true);
+		FlxG.camera.fade(FlxColor.WHITE, 0.5, true, () -> ready = true);
 
 		FlxG.sound.playMusic(AssetPaths.jazzollie__ogg, 0, true);
 		FlxTween.tween(FlxG.sound.music, {volume: 0.5}, 1.5);
@@ -45,7 +47,7 @@ class MenuState extends FlxState {
 
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
-		if (!transitioning && InputManager.justPressed(Any)) {
+		if (ready && !transitioning && InputManager.justPressed(Any)) {
 			transitioning = true;
 			blinkTimer.cancel();
 			FlxG.camera.fade(FlxColor.BLACK, 0.4, false, () -> FlxG.switchState(GameState.new));

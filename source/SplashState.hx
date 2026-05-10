@@ -82,9 +82,6 @@ class SplashState extends FlxState {
 
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
-		if (!done && InputManager.justPressed(Any)) {
-			advance();
-		}
 	}
 
 	override public function destroy():Void {
