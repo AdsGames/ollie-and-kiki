@@ -75,26 +75,29 @@ class TaskManager {
 	}
 
 	/**
-	 * Returns an idle task whose giver location is near the player, if the player
-	 * has fewer than MAX_IN_PROGRESS tasks already active. Returns null otherwise.
+	 * Returns an idle task whose giver location is near the player.
+	 * 
+	 * Checks that you are:
+	 * 1. Near enough to the giver location
+	 * 2. The precursor task (if any) is complete
+	 * 3. The giver actor doesn't already have an active task (prevents weird behaviour)
 	 */
 	public function getIdleTaskNearGiver(playerX:Float, playerY:Float):Null<Task> {
 		for (task in tasks) {
-			if (task.state == Idle && isNear(playerX, playerY, task.giverLocation) && isPrecursorComplete(task)) {
+			if (canActivate(task) && isNear(playerX, playerY, task.giverLocation)) {
 				return task;
 			}
 		}
 		return null;
 	}
 
-	public function isPrecursorComplete(task:Task):Bool {
-		if (task.precursorId == null) {
+	/**
+	 * Check if a task can be activated
+	 */
+	public function canActivate(task:Task):Bool {
+		if (task.state == Idle && isPrecursorComplete(task) && !actorHasActiveTask(task.giverLocation.id)) {
+
 			return true;
-		}
-		for (t in tasks) {
-			if (t.id == task.precursorId) {
-				return t.isComplete();
-			}
 		}
 		return false;
 	}
@@ -176,5 +179,26 @@ class TaskManager {
 			max = 3;
 		}
 		return max;
+	}
+
+	private function actorHasActiveTask(actorId:String):Bool {
+		for (task in tasks) {
+			if ((task.state == Accepted || task.state == PickedUp) && task.giverLocation.id == actorId) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private function isPrecursorComplete(task:Task):Bool {
+		if (task.precursorId == null) {
+			return true;
+		}
+		for (t in tasks) {
+			if (t.id == task.precursorId) {
+				return t.isComplete();
+			}
+		}
+		return false;
 	}
 }

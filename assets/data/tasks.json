@@ -22,9 +22,18 @@
         {
           "actor": "ollie",
           "text": "An arrow will point you where to go. Pick up the fish, then follow it to the bakery. Cats around town will always need your help, and they'll pay for it!"
+        },
+        {
+          "actor": "ollie",
+          "text": "One more thing, at any time press Q to see all of your active tasks. Good luck, Kiki!"
         }
       ],
       "complete": [
+        {
+          "actor": "bakercat",
+          "text": "Ah, the morning fish! Wonderful. Wally sends the best. Thank you, Kiki!"
+        },
+        { "actor": "kiki", "text": "Happy to help." },
         {
           "actor": "ollie",
           "text": "You did it! See? That's all there is to it."
@@ -61,8 +70,8 @@
       ],
       "complete": [
         {
-          "actor": "fishercat",
-          "text": "Thanks for delivering the fish! I really appreciate it."
+          "actor": "bakercat",
+          "text": "Kiki! Fresh fish from Wally — you're a treasure. I can get started on the lunch menu straight away."
         },
         { "actor": "kiki", "text": "No problem! Happy to help." }
       ]
@@ -91,8 +100,8 @@
       ],
       "complete": [
         {
-          "actor": "bakercat",
-          "text": "Thanks for bringing the catnip! The hospital really needed it."
+          "actor": "doctor",
+          "text": "Catnip from the beach house. Good quality. This is exactly what we needed."
         },
         { "actor": "kiki", "text": "No problem! Happy to help." }
       ]
@@ -221,12 +230,16 @@
       ],
       "complete": [
         {
-          "actor": "postcat",
-          "text": "Moe got it? Great! You're a lifesaver, Kiki."
+          "actor": "coolcat",
+          "text": "Oh hey. My package. I forgot I was even expecting something."
         },
         {
           "actor": "kiki",
-          "text": "He seemed very confused about what was inside."
+          "text": "It's been at the post office for three weeks."
+        },
+        {
+          "actor": "coolcat",
+          "text": "Hm. That tracks. Thanks Kiki, you're solid."
         }
       ]
     }
@@ -257,10 +270,14 @@
       ],
       "complete": [
         {
-          "actor": "coolcat",
-          "text": "Good look Kiki. That had been stressing me out a little."
+          "actor": "teacher",
+          "text": "The library book! We have been waiting on this for quite some time. Where has it been?"
         },
-        { "actor": "kiki", "text": "A little." }
+        { "actor": "kiki", "text": "It took a slight detour via Moe's house." },
+        {
+          "actor": "teacher",
+          "text": "I see. Well, it is here now. Thank you, Kiki."
+        }
       ]
     }
   },
@@ -290,10 +307,10 @@
       ],
       "complete": [
         {
-          "actor": "teacher",
-          "text": "Filed and documented. Order is restored. Thank you, Kiki."
+          "actor": "postcat",
+          "text": "A signed receipt! Oh wonderful, I can finally close this file. It's only been three weeks."
         },
-        { "actor": "kiki", "text": "Glad it's sorted." }
+        { "actor": "kiki", "text": "Glad it's sorted, Jake." }
       ]
     }
   },
@@ -378,12 +395,16 @@
       ],
       "complete": [
         {
-          "actor": "wizard",
-          "text": "Did Miroslav approve of the loaf? I will record his assessment."
+          "actor": "bakercat",
+          "text": "This bread is glowing, Kiki. Why is it glowing?"
         },
         {
           "actor": "kiki",
-          "text": "He ate the whole thing in about ten seconds, so I think yes."
+          "text": "Cornelius made it. He called it an arcane byproduct. For analysis."
+        },
+        {
+          "actor": "bakercat",
+          "text": "...It tastes incredible. I need to speak with that wizard."
         }
       ]
     }
@@ -412,10 +433,11 @@
       ],
       "complete": [
         {
-          "actor": "doctor",
-          "text": "Wonderful. The school should have them now. Healthy habits start young!"
+          "actor": "teacher",
+          "text": "Oh, the donation from Dr. Meow! Perfect timing. The children are just about to have their break."
         },
-        { "actor": "kiki", "text": "Ms. Violet seemed very pleased." }
+        { "actor": "kiki", "text": "He said they could use the vitamins." },
+        { "actor": "teacher", "text": "He is quite right. Thank you, Kiki." }
       ]
     }
   },
@@ -443,11 +465,14 @@
       ],
       "complete": [
         {
-          "actor": "doctor",
-          "text": "You made it in time. The students will recover. I am... not surprised this happened."
+          "actor": "teacher",
+          "text": "You made it! Right, hand those over. I have seven very sorry little cats in the hall."
         },
         { "actor": "kiki", "text": "No apples next time?" },
-        { "actor": "doctor", "text": "No apples next time." }
+        {
+          "actor": "teacher",
+          "text": "No apples next time. That is now school policy."
+        }
       ]
     }
   },
@@ -477,10 +502,17 @@
       ],
       "complete": [
         {
-          "actor": "teacher",
-          "text": "Good. Properly filed. I've also noted a request that future donations be pre-portioned."
+          "actor": "doctor",
+          "text": "The incident report. Good. I will add it to the apple file."
         },
-        { "actor": "kiki", "text": "Probably wise." }
+        {
+          "actor": "kiki",
+          "text": "She also noted a request that future donations be pre-portioned."
+        },
+        {
+          "actor": "doctor",
+          "text": "Noted. I have already updated the protocol."
+        }
       ]
     }
   },
@@ -509,7 +541,7 @@
       "complete": [
         {
           "actor": "librarian",
-          "text": "Finally! And it's in perfect condition. I suppose he really did read it cover to cover."
+          "text": "Finally! And it is in perfect condition. I suppose he really did read it cover to cover."
         },
         { "actor": "kiki", "text": "He had dog-eared at least forty pages." }
       ]
@@ -538,12 +570,16 @@
       ],
       "complete": [
         {
-          "actor": "librarian",
-          "text": "I do hope Miroslav enjoys it. Those ancient recipes are fascinating."
+          "actor": "bakercat",
+          "text": "'Ancient Cat Cuisine!' Kiki, do you know how rare this volume is? I have been looking for a copy for years."
         },
         {
           "actor": "kiki",
-          "text": "He started reading it before I could even hand it to him."
+          "text": "Marigold said it was a duplicate. Happy to pass it on."
+        },
+        {
+          "actor": "bakercat",
+          "text": "A gift? Extraordinary. Excuse me, I need to read this immediately."
         }
       ]
     }
@@ -608,12 +644,13 @@
       ],
       "complete": [
         {
-          "actor": "fishercat",
-          "text": "It's in the case? Good. Maybe it'll inspire the next generation of anglers."
+          "actor": "teacher",
+          "text": "A trophy from Wally! For the display case! How generous. The students will be very inspired."
         },
+        { "actor": "kiki", "text": "He has a shelf full, apparently." },
         {
-          "actor": "kiki",
-          "text": "Ms. Violet gave a whole speech about perseverance."
+          "actor": "teacher",
+          "text": "I shall give a speech about dedication and perseverance."
         }
       ]
     }
@@ -766,14 +803,17 @@
       ],
       "complete": [
         {
-          "actor": "bakercat",
-          "text": "Did they enjoy it? I used a new recipe. Extra fluffy."
+          "actor": "doctor",
+          "text": "Bread from the bakery. Fresh. Good crust. This will do very nicely for the patients."
         },
         {
           "actor": "kiki",
-          "text": "Dr. Meow said, and I quote: 'this is adequate.'"
+          "text": "Miroslav used a new recipe. Extra fluffy, he said."
         },
-        { "actor": "bakercat", "text": "High praise from that one." }
+        {
+          "actor": "doctor",
+          "text": "It is... adequate. You may tell him that."
+        }
       ]
     }
   },
@@ -831,8 +871,15 @@
         { "actor": "bakercat", "text": "Very fast. Go go go!" }
       ],
       "complete": [
-        { "actor": "bakercat", "text": "Did it survive? Tell me it survived." },
-        { "actor": "kiki", "text": "It was... mostly intact." }
+        {
+          "actor": "coolcat",
+          "text": "Ice cream from Miroslav. Is it... still good?"
+        },
+        { "actor": "kiki", "text": "It was mostly intact." },
+        {
+          "actor": "coolcat",
+          "text": "Mostly works for me. You're a legend, Kiki."
+        }
       ]
     }
   },
@@ -859,12 +906,16 @@
       ],
       "complete": [
         {
-          "actor": "postcat",
-          "text": "He got it okay? Wonderful. I feel much better about that now."
+          "actor": "ollie",
+          "text": "A letter? For me? Oh! I remember now — I was expecting this months ago!"
         },
         {
           "actor": "kiki",
-          "text": "He was surprised. I don't think he remembered expecting one."
+          "text": "It was at the post office the whole time."
+        },
+        {
+          "actor": "ollie",
+          "text": "Jake. Only Jake. Well — thank you for getting it to me, Kiki."
         }
       ]
     }
@@ -1053,12 +1104,13 @@
       ],
       "complete": [
         {
-          "actor": "ollie",
-          "text": "It's sent? Good. A weight off my shoulders. Did Jake say when it might arrive?"
+          "actor": "postcat",
+          "text": "A letter from Ollie! Oh, how exciting. I will get it processed immediately. Or... soon. Relatively soon."
         },
+        { "actor": "kiki", "text": "He spent six weeks on it. Seven drafts." },
         {
-          "actor": "kiki",
-          "text": "He said 'eventually.' With his track record I'd say six to eight weeks."
+          "actor": "postcat",
+          "text": "Then it deserves to be handled with care. Absolutely."
         }
       ]
     }
@@ -1086,17 +1138,11 @@
       ],
       "complete": [
         {
-          "actor": "fishercat",
-          "text": "He take it alright? He always acts like the fish is barely sufficient."
+          "actor": "wizard",
+          "text": "The weekly fish. Good. Set it there. You may go."
         },
-        {
-          "actor": "kiki",
-          "text": "He said 'this will suffice' and closed the door."
-        },
-        {
-          "actor": "fishercat",
-          "text": "That's a glowing review from Cornelius."
-        }
+        { "actor": "kiki", "text": "Wally says hello." },
+        { "actor": "wizard", "text": "...Noted." }
       ]
     }
   },

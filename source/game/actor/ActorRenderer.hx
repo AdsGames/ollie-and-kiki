@@ -42,7 +42,7 @@ class ActorRenderer extends FlxGroup {
 		}
 
 		for (task in taskManager.tasks) {
-			if (task.state == TaskState.Idle && taskManager.isPrecursorComplete(task)) {
+			if (taskManager.canActivate(task)) {
 				var marker = markerMap[task.giverLocation.id];
 				if (marker != null) {
 					marker.showQuest();

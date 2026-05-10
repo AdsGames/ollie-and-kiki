@@ -68,7 +68,9 @@ class World {
 		locationManager = new LocationManager();
 		locationManager.loadFromWorldMap(map.locations);
 
-		storeManager = new StoreManager();
+		dialogueManager = new DialogueManager(actorManager, sfxManager);
+
+		storeManager = new StoreManager(dialogueManager);
 
 		taskManager = new TaskManager(storeManager);
 		taskManager.load(itemManager, locationManager);
@@ -76,9 +78,6 @@ class World {
 		// Actor sprites at their home locations
 		actorRenderer = new ActorRenderer(actorManager, locationManager, taskManager);
 		state.add(actorRenderer);
-
-		// Dialogue system must be ready before player
-		dialogueManager = new DialogueManager(actorManager, sfxManager);
 
 		// Player initialization
 		var kikisHouse = locationManager.getLocationById("kikis_house");
@@ -167,9 +166,9 @@ class World {
 						// Already maxxed out quests
 						var giverActor = actorManager.getActorForLocation(task.giverLocation.id);
 						if (giverActor == null) {
-							dialogueManager.startDialogue(([new DialogueLine("kiki", "My paws are full!")] : Array<DialogueLine>));
+							dialogueManager.startDialogue(([new DialogueLine("kiki", "My paws are full!")]));
 						} else {
-							dialogueManager.startDialogue(([new DialogueLine(giverActor.id, "Looks like your paws are already full!")] : Array<DialogueLine>));
+							dialogueManager.startDialogue(([new DialogueLine(giverActor.id, "Looks like your paws are already full!")]));
 						}
 					} else {
 						// Offer the task
@@ -185,9 +184,9 @@ class World {
 						// Just show the location description
 						var actor = actorManager.getActorForLocation(closestLocation.id);
 						if (actor != null) {
-							dialogueManager.startDialogue(([new DialogueLine(actor.id, actor.defaultLine)] : Array<DialogueLine>));
+							dialogueManager.startDialogue(([new DialogueLine(actor.id, actor.defaultLine)]));
 						} else {
-							dialogueManager.startDialogue(([new DialogueLine("kiki", closestLocation.description)] : Array<DialogueLine>));
+							dialogueManager.startDialogue(([new DialogueLine("kiki", closestLocation.description)]));
 						}
 					}
 				}

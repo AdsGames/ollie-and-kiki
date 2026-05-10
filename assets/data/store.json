@@ -2,7 +2,7 @@
   {
     "id": "running_shoes",
     "name": "Running Shoes",
-    "description": "A pair of well-worn running shoes. They look comfortable and have seen many miles of adventure.",
+    "dialogue": "Wow, new running shoes! I feel like I could run forever in these!",
     "image": "assets/images/store/running_shoes.png",
     "overlay": "assets/images/cat_running_shoes.png",
     "price": 100
@@ -10,7 +10,7 @@
   {
     "id": "backpack",
     "name": "Backpack",
-    "description": "A sturdy backpack with multiple compartments. Fits up to 3 items!",
+    "dialogue": "A backpack! Now I can carry even more deliveries at once!",
     "image": "assets/images/store/backpack.png",
     "overlay": "assets/images/cat_backpack.png",
     "price": 30
@@ -18,7 +18,7 @@
   {
     "id": "map",
     "name": "Map",
-    "description": "A detailed map of Catopia and its surroundings.",
+    "dialogue": "Wow, a map! To open it press M.",
     "image": "assets/images/store/map.png",
     "overlay": "assets/images/cat_map.png",
     "price": 10
@@ -26,7 +26,7 @@
   {
     "id": "hat",
     "name": "Hat",
-    "description": "A stylish hat to protect you from the sun.",
+    "dialogue": "A hat! It looks great on me!",
     "image": "assets/images/store/hat.png",
     "overlay": "assets/images/cat_hat.png",
     "price": 15

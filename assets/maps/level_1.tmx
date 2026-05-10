@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="8" tileheight="8" infinite="0" nextlayerid="9" nextobjectid="15">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="8" tileheight="8" infinite="0" nextlayerid="9" nextobjectid="25">
  <tileset firstgid="1" source="tilemap.tsx"/>
  <layer id="1" name="terrain" width="100" height="100">
   <data encoding="csv">
@@ -184,9 +184,9 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,357,358,0,0,359,0,357,358,0,286,357,358,0,0,0,0,0,357,358,0,0,0,0,357,358,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,286,0,0,0,370,0,0,0,0,0,0,0,0,0,0,0,0,0,286,0,0,357,358,286,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,360,0,0,357,358,0,0,0,0,0,0,0,0,357,358,286,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,286,357,358,0,0,286,0,0,0,0,0,0,0,0,0,359,0,0,0,370,357,358,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,286,357,358,0,0,0,0,0,0,0,0,0,0,0,0,359,0,0,0,370,357,358,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,286,0,0,0,357,358,357,358,0,369,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,287,0,0,287,0,0,0,0,0,357,358,0,0,360,0,0,0,0,0,369,357,358,0,0,359,0,0,0,357,358,0,0,0,286,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,287,0,0,287,0,0,0,0,0,357,358,0,0,360,0,0,465,466,0,369,357,358,0,0,359,0,0,0,357,358,0,0,0,286,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,287,0,0,0,0,0,0,0,286,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,359,0,286,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,287,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,370,357,358,0,0,0,0,0,286,357,358,286,0,0,0,0,286,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,357,358,0,0,0,0,0,357,358,0,0,0,0,0,0,357,358,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -287,9 +287,9 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,333,334,0,0,0,0,333,334,0,0,333,334,0,0,0,0,0,333,334,0,0,0,0,333,334,0,309,310,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,309,310,0,0,0,0,333,334,0,0,309,310,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,309,310,0,0,0,0,333,334,0,0,0,0,0,0,0,0,333,334,0,309,310,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,333,334,0,0,0,0,0,0,0,0,309,310,309,310,0,0,0,0,0,333,334,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,309,310,0,0,0,0,0,0,0,0,0,309,310,333,334,333,334,0,0,309,310,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,333,334,0,0,0,0,0,0,0,0,0,333,334,0,0,0,0,0,0,333,334,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,333,334,0,0,393,394,0,0,0,0,309,310,309,310,0,0,0,0,0,333,334,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,309,310,0,0,0,0,0,417,418,0,0,309,310,333,334,333,334,0,0,309,310,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,333,334,0,0,0,0,0,441,442,0,0,333,334,0,0,0,0,0,0,333,334,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,309,310,0,0,0,0,0,0,309,310,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,333,334,0,0,309,310,0,0,333,334,0,309,310,0,0,0,0,0,0,309,310,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,92,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,309,310,333,334,0,0,0,0,0,333,334,0,0,309,310,0,0,333,334,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -394,7 +394,7 @@
 0,0,0,0,0,0,0,0,0,0,0,2684355136,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,576,576,0,0,0,0,0,0,0,0,576,576,0,0,0,0,0,0,0,0,2684355136,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,2684355136,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,576,576,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,576,576,576,0,0,0,0,0,2684355136,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,2684355136,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,576,576,576,576,0,0,0,0,0,0,0,0,0,0,0,0,2684355136,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,2684355136,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,576,576,0,0,0,0,0,0,0,0,0,576,576,0,0,0,0,0,0,576,576,0,0,0,0,0,0,0,0,2684355136,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,2684355136,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,576,576,0,0,0,0,0,576,576,0,0,576,576,0,0,0,0,0,0,576,576,0,0,0,0,0,0,0,0,2684355136,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,2684355136,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2684355136,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,2684355136,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,576,576,576,0,0,0,0,0,0,576,576,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2684355136,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,2684355136,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,576,576,0,0,0,0,0,576,576,0,0,0,0,0,0,576,576,0,0,0,2684355136,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -420,7 +420,7 @@
  <objectgroup id="2" name="locations">
   <object id="7" name="Hospital" x="155.48" y="165.73">
    <properties>
-    <property name="description" value="The hospital is a large, white building with a red cross on the roof. It has a long driveway leading up to the entrance, and there are several ambulances parked outside."/>
+    <property name="description" value="I was here when I was a kitten, I fell and hurt my nose."/>
     <property name="id" value="hospital"/>
    </properties>
    <point/>
@@ -434,28 +434,28 @@
   </object>
   <object id="10" name="Ollie's House" x="436" y="222.75">
    <properties>
-    <property name="description" value="Ollie's house is a modern, two-story building with large windows and a sleek design. It has a spacious backyard with a swimming pool, and Ollie is known for hosting lively parties there."/>
+    <property name="description" value="Ollie is my best friend! He lives here."/>
     <property name="id" value="ollies_house"/>
    </properties>
    <point/>
   </object>
   <object id="11" name="Haunted House" x="547.783" y="308.696">
    <properties>
-    <property name="description" value="The haunted house is an old, dilapidated mansion that has been abandoned for years. It is said to be haunted by the ghosts of its former inhabitants, and many people avoid it at all costs."/>
+    <property name="description" value="I try to stay away from here."/>
     <property name="id" value="haunted_house"/>
    </properties>
    <point/>
   </object>
   <object id="12" name="Baker's House" x="427.844" y="149.688">
    <properties>
-    <property name="description" value="The baker's house is a charming, two-story building with a red brick exterior and a white picket fence. It has a small bakery on the ground floor, where the baker sells delicious pastries and bread."/>
+    <property name="description" value="The baker lives here. My neighbours are great!"/>
     <property name="id" value="bakers_house"/>
    </properties>
    <point/>
   </object>
   <object id="13" name="Beach House" x="147.696" y="685.652">
    <properties>
-    <property name="description" value="Moe's Place"/>
+    <property name="description" value="Moe lives here, hes the coolest cat around!"/>
     <property name="id" value="beach_house"/>
    </properties>
    <point/>
@@ -469,28 +469,28 @@
   </object>
   <object id="15" name="Bakery" x="260.521" y="292.563">
    <properties>
-    <property name="description" value="The bakery is a cozy, family-owned shop with a warm and inviting atmosphere. The aroma of freshly baked bread and pastries fills the air, and the shelves are lined with a variety of delicious treats."/>
+    <property name="description" value="Smells delicious!"/>
     <property name="id" value="bakery"/>
    </properties>
    <point/>
   </object>
   <object id="5" name="Post Office" x="315.333" y="291.333">
    <properties>
-    <property name="description" value="lots of mail here"/>
+    <property name="description" value="Lots of mail here, what a mess!"/>
     <property name="id" value="post_office"/>
    </properties>
    <point/>
   </object>
   <object id="6" name="School" x="627.333" y="221.333">
    <properties>
-    <property name="description" value="The hospital is a large, white building with a red cross on the roof. It has a long driveway leading up to the entrance, and there are several ambulances parked outside."/>
+    <property name="description" value="I used to go here when I was a kitten."/>
     <property name="id" value="school"/>
    </properties>
    <point/>
   </object>
   <object id="7" name="Ice Cream Parlour" x="235.25" y="356.5">
    <properties>
-    <property name="description" value="ice cream shop"/>
+    <property name="description" value="I don't want to get sticky paws!"/>
     <property name="id" value="ice_cream_parlour"/>
    </properties>
    <point/>
@@ -504,21 +504,21 @@
   </object>
   <object id="9" name="Pool" x="195.5" y="355.5">
    <properties>
-    <property name="description" value="The hospital is a large, white building with a red cross on the roof. It has a long driveway leading up to the entrance, and there are several ambulances parked outside."/>
+    <property name="description" value="Who said cats don't like water?"/>
     <property name="id" value="pool"/>
    </properties>
    <point/>
   </object>
   <object id="10" name="Wizard Tower" x="211.125" y="503.125">
    <properties>
-    <property name="description" value="spooky wizard tower"/>
+    <property name="description" value="Spooky wizard tower, I wonder what goes on in here at night..."/>
     <property name="id" value="wizard_tower"/>
    </properties>
    <point/>
   </object>
   <object id="11" name="Store" x="235.667" y="229.333">
    <properties>
-    <property name="description" value="store"/>
+    <property name="description" value="Lots in stock!"/>
     <property name="id" value="store"/>
    </properties>
    <point/>
@@ -541,6 +541,76 @@
    <properties>
     <property name="description" value="This must be premium real-estate."/>
     <property name="id" value="water_house"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="15" name="Goat Pole" x="288.667" y="635.333">
+   <properties>
+    <property name="description" value="This seems a bit out of place?"/>
+    <property name="id" value="goat_pole"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="16" name="Goat House" x="515.818" y="166">
+   <properties>
+    <property name="description" value="I have never met who lives here, but they sound like a goat."/>
+    <property name="id" value="goat_house"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="17" name="Sale House" x="492" y="228.182">
+   <properties>
+    <property name="description" value="I think this house is empty, maybe it's for sale?"/>
+    <property name="id" value="sale_house"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="18" name="House 1" x="492.182" y="293.636">
+   <properties>
+    <property name="description" value="This house looks just like mine!"/>
+    <property name="id" value="house_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="19" name="House 2" x="580" y="364.909">
+   <properties>
+    <property name="description" value="I would love an addition like this."/>
+    <property name="id" value="house_2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="20" name="House 4" x="507.818" y="356.727">
+   <properties>
+    <property name="description" value="This is a big house! Must be a family living here."/>
+    <property name="id" value="house_4"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="21" name="House 3" x="644.545" y="347.818">
+   <properties>
+    <property name="description" value="Tall and stately. I don't know who lives here."/>
+    <property name="id" value="house_3"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="22" name="Office 1" x="227.848" y="164.697">
+   <properties>
+    <property name="description" value="Rumours are, there is an illegal catnip operation in here..."/>
+    <property name="id" value="office_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="23" name="Golf 1" x="413.333" y="331.333">
+   <properties>
+    <property name="description" value="I was never good at golf, I have butter paws."/>
+    <property name="id" value="golf_1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="24" name="Office 2" x="284.25" y="165.75">
+   <properties>
+    <property name="description" value="Sign reads &quot;ACME Corp HQ&quot;"/>
+    <property name="id" value="office_2"/>
    </properties>
    <point/>
   </object>

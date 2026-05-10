@@ -46,7 +46,7 @@ class DialogueManager {
 	}
 
 	static function splitLine(line:DialogueLine):Array<DialogueLine> {
-		final MAX_CHARS = 70;
+		final MAX_CHARS = 80;
 		if (line.text.length <= MAX_CHARS) {
 			return [line];
 		}

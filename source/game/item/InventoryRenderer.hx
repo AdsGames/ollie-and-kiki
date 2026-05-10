@@ -4,11 +4,10 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import game.task.TaskManager;
-import game.task.TaskState;
 
 class InventoryRenderer extends FlxGroup {
 	static final PADDING = 4;
-	static final ICON_SIZE = 8;
+	static final ICON_SIZE = 16;
 	static final ICON_STEP = ICON_SIZE + 4;
 	static final MAX_SLOTS = 3;
 
@@ -36,12 +35,15 @@ class InventoryRenderer extends FlxGroup {
 		super.update(elapsed);
 		var carried = [for (t in taskManager.tasks) if (t.state == PickedUp) t.item];
 		var key = [for (item in carried) item.id].join(",");
-		if (key == lastKey) return;
+		if (key == lastKey) {
+			return;
+		}
 		lastKey = key;
 
 		for (i in 0...MAX_SLOTS) {
 			if (i < carried.length) {
 				slots[i].loadGraphic(carried[i].image);
+				slots[i].scale.set(ICON_SIZE / carried[i].image.width, ICON_SIZE / carried[i].image.height);
 				slots[i].visible = true;
 			} else {
 				slots[i].visible = false;

@@ -16,7 +16,6 @@ class StoreUI extends FlxGroup {
 	static final ITEM_H = 14;
 
 	var storeManager:StoreManager;
-	var onPurchase:StoreItem->Void;
 	var selectedIdx:Int = 0;
 	var itemTexts:Array<FlxBitmapText> = [];
 	var hintText:FlxBitmapText;
@@ -72,6 +71,7 @@ class StoreUI extends FlxGroup {
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
 		if (!storeManager.isOpen) {
+			visible = false;
 			return;
 		}
 

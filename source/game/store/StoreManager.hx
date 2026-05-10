@@ -1,9 +1,12 @@
 package game.store;
 
 import flixel.FlxSprite;
+import game.dialogue.DialogueLine;
+import game.dialogue.DialogueManager;
 import openfl.Assets;
 
 class StoreManager {
+	var dialogueManager:DialogueManager;
 	var itemArray:Array<StoreItem>;
 	var itemMap:Map<String, StoreItem> = [];
 	var overlays:Map<String, FlxSprite> = [];
@@ -12,7 +15,8 @@ class StoreManager {
 	public var isOpen(default, null):Bool = false;
 	public var coins:Int = 0;
 
-	public function new() {
+	public function new(dialogueManager:DialogueManager) {
+		this.dialogueManager = dialogueManager;
 		itemArray = haxe.Json.parse(Assets.getText(AssetPaths.store__json));
 		for (item in itemArray) {
 			itemMap.set(item.id, item);
@@ -51,6 +55,8 @@ class StoreManager {
 		if (item != null && !isPurchased(id) && coins >= item.price) {
 			purchased.set(id, true);
 			coins -= item.price;
+			dialogueManager.startDialogue([new DialogueLine("kiki", item.dialogue)]);
+			isOpen = false;
 			return item;
 		}
 		return null;

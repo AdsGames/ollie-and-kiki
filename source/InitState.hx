@@ -7,7 +7,7 @@ import openfl.display.StageQuality;
 
 class InitState extends FlxGame {
 	public function new() {
-		super(240, 160, MenuState, 60, 60, true, false);
+		super(240, 160, SplashState, 60, 60, true, false);
 		FlxG.sound.volume = 1.0;
 		FlxG.mouse.useSystemCursor = true;
 	}
@@ -16,6 +16,5 @@ class InitState extends FlxGame {
 		super.create(_);
 		stage.quality = StageQuality.LOW;
 		FlxSprite.defaultAntialiasing = false;
-		FlxG.sound.playMusic(AssetPaths.jazzollie__ogg, 0.5, true);
 	}
 }

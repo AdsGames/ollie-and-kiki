@@ -4,25 +4,56 @@ import GameState;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
-import flixel.ui.FlxButton;
+import flixel.text.FlxBitmapText;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
+import game.Fonts;
+import game.Palette;
 
 class MenuState extends FlxState {
+	var pressAnyKey:FlxBitmapText;
+	var blinkTimer:FlxTimer;
+	var transitioning:Bool = false;
+
 	public function new() {
 		super();
 	}
 
-	override public function create() {
+	override public function create():Void {
+		super.create();
 		FlxG.mouse.visible = true;
 
-		createUI();
-	}
+		FlxG.camera.fade(FlxColor.WHITE, 0.5, true);
 
-	private function createUI() {
+		FlxG.sound.playMusic(AssetPaths.jazzollie__ogg, 0, true);
+		FlxTween.tween(FlxG.sound.music, {volume: 0.5}, 1.5);
+
 		add(new FlxSprite(0, 0, AssetPaths.title__png));
 
-		var centerX = FlxG.width / 2 - 40;
-		var centerY = FlxG.height / 2;
-		add(new FlxButton(centerX, centerY + 10, "Start Game", () -> FlxG.switchState(GameState.new)));
-		add(new FlxButton(centerX, centerY + 40, "Instructions", () -> {}));
+		pressAnyKey = new FlxBitmapText(Fonts.glasstownBold);
+		pressAnyKey.text = "PRESS ANY KEY TO START";
+		pressAnyKey.color = Palette.WHITE;
+		pressAnyKey.scrollFactor.set(0, 0);
+		pressAnyKey.x = Math.round((FlxG.width - pressAnyKey.width) / 2);
+		pressAnyKey.y = FlxG.height - 18;
+		add(pressAnyKey);
+
+		blinkTimer = new FlxTimer();
+		blinkTimer.start(0.55, (_) -> pressAnyKey.visible = !pressAnyKey.visible, 0);
+	}
+
+	override public function update(elapsed:Float):Void {
+		super.update(elapsed);
+		if (!transitioning && FlxG.keys.justPressed.ANY) {
+			transitioning = true;
+			blinkTimer.cancel();
+			FlxG.camera.fade(FlxColor.BLACK, 0.4, false, () -> FlxG.switchState(GameState.new));
+		}
+	}
+
+	override public function destroy():Void {
+		blinkTimer.cancel();
+		super.destroy();
 	}
 }
