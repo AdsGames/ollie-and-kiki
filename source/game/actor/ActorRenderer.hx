@@ -3,12 +3,12 @@ package game.actor;
 import flixel.group.FlxGroup;
 import game.location.LocationManager;
 import game.task.TaskManager;
-import game.task.TaskState;
 
 class ActorRenderer extends FlxGroup {
-	var markerMap:Map<String, ActorMarker>;
-	var taskManager:TaskManager;
+	private var markerMap:Map<String, ActorMarker>;
+	private var taskManager:TaskManager;
 
+	// Group of quest-available labels rendered above actors.
 	public var questLabels:FlxGroup;
 
 	public function new(actorManager:ActorManager, locationManager:LocationManager, taskManager:TaskManager) {

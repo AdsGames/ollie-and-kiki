@@ -4,8 +4,8 @@ import flixel.group.FlxGroup;
 import game.task.TaskManager;
 
 class LocationRenderer extends FlxGroup {
-	var markerMap:Map<String, LocationMarker>;
-	var taskManager:TaskManager;
+	private var markerMap:Map<String, LocationMarker>;
+	private var taskManager:TaskManager;
 
 	public function new(locationManager:LocationManager, taskManager:TaskManager) {
 		super();
@@ -38,7 +38,7 @@ class LocationRenderer extends FlxGroup {
 		}
 	}
 
-	function showMarker(locationId:String, text:String):Void {
+	private function showMarker(locationId:String, text:String):Void {
 		var marker = markerMap[locationId];
 		if (marker == null) {
 			return;

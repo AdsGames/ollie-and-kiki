@@ -1,10 +1,10 @@
 package game.item;
 
 import flixel.graphics.FlxGraphic;
-import game.item.Item;
 import openfl.Assets;
 
 class ItemManager {
+	// Map of all loaded items keyed by item ID.
 	public var items:Map<String, Item>;
 
 	public function new() {
@@ -43,7 +43,7 @@ class ItemManager {
 			item.image = img;
 			items.set(item.id, item);
 
-			trace('Loaded item: ' + item.name);
+			trace("Loaded item: " + item.name);
 		}
 	}
 

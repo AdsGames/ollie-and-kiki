@@ -8,10 +8,11 @@ import game.Fonts;
 import game.Palette;
 
 class LocationMarker extends FlxGroup {
+	// The location this marker represents.
 	public var location:Location;
 
-	var sprite:FlxSprite;
-	var label:FlxBitmapText;
+	private var sprite:FlxSprite;
+	private var label:FlxBitmapText;
 
 	public function new(location:Location) {
 		super();

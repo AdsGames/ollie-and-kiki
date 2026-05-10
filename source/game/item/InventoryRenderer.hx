@@ -6,18 +6,19 @@ import flixel.group.FlxGroup;
 import game.task.TaskManager;
 
 class InventoryRenderer extends FlxGroup {
-	static final PADDING = 4;
-	static final ICON_SIZE = 16;
-	static final ICON_STEP = ICON_SIZE + 4;
-	static final MAX_SLOTS = 3;
+	private static final PADDING:Int = 4;
+	private static final ICON_SIZE:Int = 16;
+	private static final ICON_STEP:Int = ICON_SIZE + 4;
+	private static final MAX_SLOTS:Int = 3;
 
-	var slots:Array<FlxSprite>;
-	var lastKey:String = "";
-	var taskManager:TaskManager;
+	private var slots:Array<FlxSprite>;
+	private var lastKey:String;
+	private var taskManager:TaskManager;
 
 	public function new(taskManager:TaskManager) {
 		super();
 		this.taskManager = taskManager;
+		lastKey = "";
 
 		slots = [];
 		for (i in 0...MAX_SLOTS) {
@@ -33,8 +34,14 @@ class InventoryRenderer extends FlxGroup {
 
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
-		var carried = [for (t in taskManager.tasks) if (t.state == PickedUp) t.item];
-		var key = [for (item in carried) item.id].join(",");
+		var key = "";
+		var carried = [];
+		for (t in taskManager.tasks) {
+			if (t.state == PickedUp) {
+				key += t.item.id + ",";
+				carried.push(t.item);
+			}
+		}
 		if (key == lastKey) {
 			return;
 		}

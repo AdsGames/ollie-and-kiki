@@ -1,21 +1,19 @@
 package game.sfx;
 
 import flixel.FlxG;
-import flixel.math.FlxRandom;
-import flixel.sound.FlxSound;
 import flixel.util.FlxTimer;
 
 class SfxManager {
-	static final PICKUP_SOUNDS = ["assets/sounds/sfx/three_tone_2.ogg",];
+	private static final PICKUP_SOUNDS:Array<String> = ["assets/sounds/sfx/three_tone_2.ogg",];
 
-	static final DELIVER_SOUNDS = ["assets/sounds/sfx/power_up_1.ogg",];
+	private static final DELIVER_SOUNDS:Array<String> = ["assets/sounds/sfx/power_up_1.ogg",];
 
-	static final EXPIRE_SOUNDS = ["assets/sounds/sfx/space_trash_2.ogg",];
+	private static final EXPIRE_SOUNDS:Array<String> = ["assets/sounds/sfx/space_trash_2.ogg",];
 
-	static final TIMER_WARN_SOUNDS = ["assets/sounds/sfx/power_up_11.ogg",];
+	private static final TIMER_WARN_SOUNDS:Array<String> = ["assets/sounds/sfx/power_up_11.ogg",];
 
-	static final SPEECH_BLIP_S = 0.06;
-	static final BASE_SPEECH_PITCH = 1.5;
+	private static final SPEECH_BLIP_S:Float = 0.06;
+	private static final BASE_SPEECH_PITCH:Float = 1.5;
 
 	public function new() {}
 
@@ -54,7 +52,7 @@ class SfxManager {
 		playRandom(EXPIRE_SOUNDS);
 	}
 
-	function playRandom(sounds:Array<String>):Void {
+	private function playRandom(sounds:Array<String>):Void {
 		FlxG.sound.play(sounds[FlxG.random.int(0, sounds.length - 1)], 0.6);
 	}
 }

@@ -1,6 +1,5 @@
 package;
 
-import GameState;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -12,12 +11,13 @@ import game.Fonts;
 import game.Palette;
 
 class MenuState extends FlxState {
-	var pressAnyKey:FlxBitmapText;
-	var blinkTimer:FlxTimer;
-	var transitioning:Bool = false;
+	private var pressAnyKey:FlxBitmapText;
+	private var blinkTimer:FlxTimer;
+	private var transitioning:Bool;
 
 	public function new() {
 		super();
+		transitioning = false;
 	}
 
 	override public function create():Void {
@@ -45,7 +45,7 @@ class MenuState extends FlxState {
 
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
-		if (!transitioning && FlxG.keys.justPressed.ANY) {
+		if (!transitioning && InputManager.justPressed(Any)) {
 			transitioning = true;
 			blinkTimer.cancel();
 			FlxG.camera.fade(FlxColor.BLACK, 0.4, false, () -> FlxG.switchState(GameState.new));

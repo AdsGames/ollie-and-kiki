@@ -6,17 +6,25 @@ import game.dialogue.DialogueManager;
 import openfl.Assets;
 
 class StoreManager {
-	var dialogueManager:DialogueManager;
-	var itemArray:Array<StoreItem>;
-	var itemMap:Map<String, StoreItem> = [];
-	var overlays:Map<String, FlxSprite> = [];
-	var purchased:Map<String, Bool> = [];
+	private var dialogueManager:DialogueManager;
+	private var itemArray:Array<StoreItem>;
+	private var itemMap:Map<String, StoreItem>;
+	private var overlays:Map<String, FlxSprite>;
+	private var purchased:Map<String, Bool>;
 
+	// Whether currently opened
 	public var isOpen(default, null):Bool = false;
-	public var coins:Int = 0;
+
+	// Player's current coin count
+	public var coins:Int;
 
 	public function new(dialogueManager:DialogueManager) {
+		this.itemMap = [];
+		this.overlays = [];
+		this.purchased = [];
+		this.coins = 0;
 		this.dialogueManager = dialogueManager;
+
 		itemArray = haxe.Json.parse(Assets.getText(AssetPaths.store__json));
 		for (item in itemArray) {
 			itemMap.set(item.id, item);

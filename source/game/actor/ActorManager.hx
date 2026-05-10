@@ -4,6 +4,7 @@ import flixel.graphics.FlxGraphic;
 import openfl.Assets;
 
 class ActorManager {
+	// Map of all loaded actors keyed by actor ID.
 	public var actors:Map<String, Actor>;
 
 	public function new() {
@@ -53,7 +54,7 @@ class ActorManager {
 
 			actors.set(actor.id, actor);
 
-			trace('Loaded actor: ' + actor.name);
+			trace("Loaded actor: " + actor.name);
 		}
 	}
 

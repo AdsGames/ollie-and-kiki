@@ -7,16 +7,32 @@ import game.Palette;
 import game.ui.NineSlice;
 
 class TaskRenderer extends FlxGroup {
-	static final MAX_TASKS = 3;
-	static final LINE_HEIGHT = 14;
-	static final PANEL_X = 4;
-	static final PANEL_Y = 4;
-	static final PANEL_W = 232;
-	static final PADDING = 8;
-	static final PANEL_H = LINE_HEIGHT + MAX_TASKS * LINE_HEIGHT + PADDING * 2;
+	// Maximum number of tasks to display at once.
+	private static final MAX_TASKS:Int = 3;
 
-	var taskTexts:Array<FlxBitmapText>;
-	var taskManager:TaskManager;
+	// Layout constants for the task panel.
+	private static final LINE_HEIGHT:Int = 14;
+
+	// PANEL_X offset
+	private static final PANEL_X:Int = 4;
+
+	// PANEL_Y offset
+	private static final PANEL_Y:Int = 4;
+
+	// PANEL_W width
+	private static final PANEL_W:Int = 232;
+
+	// Padding around the text inside the panel
+	private static final PADDING:Int = 8;
+
+	// Panel height calculation
+	private static final PANEL_H:Int = LINE_HEIGHT + MAX_TASKS * LINE_HEIGHT + PADDING * 2;
+
+	// All task text
+	private var taskTexts:Array<FlxBitmapText>;
+
+	// Reference to the task manager to get active tasks.
+	private var taskManager:TaskManager;
 
 	public function new(taskManager:TaskManager) {
 		super();
@@ -54,8 +70,9 @@ class TaskRenderer extends FlxGroup {
 	}
 
 	override public function update(elapsed:Float):Void {
-		if (!visible)
+		if (!visible) {
 			return;
+		}
 		super.update(elapsed);
 
 		var active = [for (t in taskManager.tasks) if (t.state == Accepted || t.state == PickedUp) t];
@@ -72,11 +89,10 @@ class TaskRenderer extends FlxGroup {
 		}
 	}
 
-	function formatTask(task:Task):String {
+	private function formatTask(task:Task):String {
 		var timer = "";
 		if (task.state == PickedUp && task.timeLimit != null) {
-			var remaining = Std.int(task.timeRemaining());
-			timer = " (${remaining}s)";
+			timer = " (${task.timeRemaining()}s)";
 		}
 
 		return switch task.state {

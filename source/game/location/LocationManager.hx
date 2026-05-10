@@ -1,7 +1,7 @@
 package game.location;
 
 class LocationManager {
-	public var locations:Map<String, Location>;
+	private var locations:Map<String, Location>;
 
 	public function new() {
 		locations = new Map();

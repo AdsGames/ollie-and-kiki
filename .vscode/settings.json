@@ -9,7 +9,8 @@
       "source.sortImports": "explicit"
     }
   },
-  "haxe.displayConfigurations": [["completion.hxml"]],
+  "haxecheckstyle.configurationFile": "checkstyle.json",
+  "haxecheckstyle.sourceFolders": ["source"],
   "haxe.enableDiagnostics": true,
   "haxe.enableExtendedIndentation": true,
   "cmake.configureOnOpen": false,

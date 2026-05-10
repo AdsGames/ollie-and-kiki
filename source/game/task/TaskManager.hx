@@ -5,16 +5,19 @@ import game.item.ItemManager;
 import game.location.Location;
 import game.location.LocationManager;
 import game.store.StoreManager;
-import game.task.Task;
 import openfl.Assets;
 
 class TaskManager {
-	/** Tile-space radius within which the player can interact with a location. */
-	static final INTERACT_RADIUS = 16.0;
+	// Tile-space radius within which the player can interact with a location.
+	private static final INTERACT_RADIUS:Float = 16.0;
 
-	/** Seconds remaining at which the timer warning sound fires. */
-	static final TIMER_WARN_THRESHOLD = 10.0;
+	// UI constants
+	private static final INTERACT_RADIUS_SQ:Float = INTERACT_RADIUS * INTERACT_RADIUS;
 
+	// Seconds remaining at which the timer warning sound fires.
+	private static final TIMER_WARN_THRESHOLD:Float = 10.0;
+
+	// All tasks in the game, loaded from JSON. Only a few will be active at once.
 	public var tasks:Array<Task>;
 
 	// Store manager reference
@@ -27,7 +30,7 @@ class TaskManager {
 
 	/**
 	 * Load tasks from JSON, resolving items, locations, and actor portraits.
-	 */
+	**/
 	public function load(itemManager:ItemManager, locationManager:LocationManager):Void {
 		var raw = Assets.getText(AssetPaths.tasks__json);
 		var data:Array<{
@@ -95,11 +98,7 @@ class TaskManager {
 	 * Check if a task can be activated
 	 */
 	public function canActivate(task:Task):Bool {
-		if (task.state == Idle && isPrecursorComplete(task) && !actorHasActiveTask(task.giverLocation.id)) {
-
-			return true;
-		}
-		return false;
+		return task.state == Idle && isPrecursorComplete(task) && !actorHasActiveTask(task.giverLocation.id);
 	}
 
 	/**
@@ -157,20 +156,10 @@ class TaskManager {
 		return {expired: expired, warned: warned};
 	}
 
-	function countInProgress():Int {
-		var count = 0;
-		for (task in tasks) {
-			if (task.state == Accepted || task.state == PickedUp) {
-				count++;
-			}
-		}
-		return count;
-	}
-
-	inline function isNear(px:Float, py:Float, loc:Location):Bool {
+	private inline function isNear(px:Float, py:Float, loc:Location):Bool {
 		var dx = px - loc.x;
 		var dy = py - loc.y;
-		return dx * dx + dy * dy <= INTERACT_RADIUS * INTERACT_RADIUS;
+		return dx * dx + dy * dy <= INTERACT_RADIUS_SQ;
 	}
 
 	private function maxCarried():Int {
@@ -181,9 +170,13 @@ class TaskManager {
 		return max;
 	}
 
+	private inline function isInProgress(task:Task):Bool {
+		return task.state == Accepted || task.state == PickedUp;
+	}
+
 	private function actorHasActiveTask(actorId:String):Bool {
 		for (task in tasks) {
-			if ((task.state == Accepted || task.state == PickedUp) && task.giverLocation.id == actorId) {
+			if (isInProgress(task) && task.giverLocation.id == actorId) {
 				return true;
 			}
 		}
@@ -200,5 +193,15 @@ class TaskManager {
 			}
 		}
 		return false;
+	}
+
+	private function countInProgress():Int {
+		var count = 0;
+		for (task in tasks) {
+			if (isInProgress(task)) {
+				count++;
+			}
+		}
+		return count;
 	}
 }

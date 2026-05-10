@@ -3,35 +3,61 @@ package game.task;
 import game.dialogue.DialogueLine;
 import game.item.Item;
 import game.location.Location;
-import game.task.TaskState;
 
 /**
  * Task state machine:
  * Idle -> Accepted -> PickedUp -> Delivered
  */
 class Task {
-	public var id:String = "";
-	public var precursorId:Null<String> = null;
+	// Unique identifier for the task, used for saving/loading and referencing in dialogue.
+	public var id:String;
 
+	// Optional identifier of a precursor task that must be completed before this one can be accepted.
+	public var precursorId:Null<String>;
+
+	// Display name and description for the task.
 	public var name:String;
+
+	// Description shown in the task list and dialogue.
 	public var description:String;
 
+	// The item associated with the task.
 	public var item:Item;
+
+	// The location where the task is given.
 	public var giverLocation:Location;
+
+	// The location where the item is picked up.
 	public var from:Location;
+
+	// The location where the item is delivered.
 	public var to:Location;
-	public var state:TaskState = TaskState.Idle;
 
-	/** Seconds allowed between PickedUp and Delivered. Null means no limit. */
-	public var timeLimit:Null<Float> = null;
+	// The current state of the task.
+	public var state:TaskState;
 
-	public var timeElapsed:Float = 0;
-	public var warnPlayed:Bool = false;
+	// Seconds allowed between PickedUp and Delivered. Null means no limit.
+	public var timeLimit:Null<Float>;
 
+	// Time elapsed since the task was picked up. Only relevant if timeLimit is not null.
+	public var timeElapsed:Float;
+
+	// Whether the warning sound has been played for this task (when time is running out).
+	public var warnPlayed:Bool;
+
+	// Dialogue lines to show when the task is accepted and completed.
 	public var startLines:Array<DialogueLine>;
+
+	// Dialogue lines to show when the task is completed.
 	public var completeLines:Array<DialogueLine>;
 
 	public function new() {
+		this.state = TaskState.Idle;
+		this.precursorId = null;
+		this.timeLimit = null;
+		this.timeElapsed = 0;
+		this.warnPlayed = false;
+
 		startLines = [];
 		completeLines = [];
 	}

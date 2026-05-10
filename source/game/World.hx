@@ -3,7 +3,6 @@ package game;
 import flixel.FlxCamera.FlxCameraFollowStyle;
 import flixel.FlxG;
 import flixel.FlxState;
-import game.WorldMap;
 import game.actor.ActorManager;
 import game.actor.ActorRenderer;
 import game.ambience.AmbienceManager;
@@ -48,9 +47,10 @@ class World {
 	public var storeUI:StoreUI;
 
 	// Task to accept once the start dialogue finishes
-	var pendingAcceptTask:Null<Task> = null;
+	private var pendingAcceptTask:Null<Task>;
 
 	public function new(state:FlxState) {
+		pendingAcceptTask = null;
 		map = new WorldMap(state);
 
 		// Data
@@ -135,16 +135,17 @@ class World {
 			storeManager.addCoins(10);
 		}
 
-		// Toggle quest log with Q
-		if (FlxG.keys.justPressed.Q) {
+		// Toggle quest log with Q / Y button
+		if (InputManager.justPressed(QuestLog)) {
 			taskRenderer.toggle();
 		}
 
-		// Toggle minimap with M (requires map upgrade)
-		if (FlxG.keys.justPressed.M && storeManager.isPurchased("map")) {
+		// Toggle minimap with M / START (requires map upgrade)
+		var hasMap = storeManager.isPurchased("map");
+		if (InputManager.justPressed(Minimap) && hasMap) {
 			minimapRenderer.toggle();
 		}
-		if (storeManager.isPurchased("map")) {
+		if (hasMap) {
 			minimapRenderer.updatePlayerPos(player.x, player.y);
 		}
 
@@ -155,41 +156,9 @@ class World {
 				pendingAcceptTask = null;
 			}
 
-			// Interact key
-			if (FlxG.keys.justPressed.Z || FlxG.keys.justPressed.E || FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE) {
-				var task = taskManager.getIdleTaskNearGiver(player.x, player.y);
-				var closestLocation = locationManager.getClosestLocation(player.x, player.y, 16);
-
-				if (task != null) {
-					// Task offer, check if the player can accept
-					if (taskManager.isCarryFull()) {
-						// Already maxxed out quests
-						var giverActor = actorManager.getActorForLocation(task.giverLocation.id);
-						if (giverActor == null) {
-							dialogueManager.startDialogue(([new DialogueLine("kiki", "My paws are full!")]));
-						} else {
-							dialogueManager.startDialogue(([new DialogueLine(giverActor.id, "Looks like your paws are already full!")]));
-						}
-					} else {
-						// Offer the task
-						pendingAcceptTask = task;
-						dialogueManager.startDialogue(task.startLines);
-					}
-				} else if (closestLocation != null) {
-					// Near a location
-					if (closestLocation.id == "store") {
-						// Open the store UI
-						storeUI.open();
-					} else {
-						// Just show the location description
-						var actor = actorManager.getActorForLocation(closestLocation.id);
-						if (actor != null) {
-							dialogueManager.startDialogue(([new DialogueLine(actor.id, actor.defaultLine)]));
-						} else {
-							dialogueManager.startDialogue(([new DialogueLine("kiki", closestLocation.description)]));
-						}
-					}
-				}
+			// Interact key / A button
+			if (InputManager.justPressed(Interact)) {
+				handleInteract();
 			}
 
 			// Proximity tracking
@@ -215,5 +184,40 @@ class World {
 
 		dialogueManager.update(elapsed);
 		ambienceManager.update(player.x, player.y, map.ambienceZones);
+	}
+
+	private function handleInteract():Void {
+		var task = taskManager.getIdleTaskNearGiver(player.x, player.y);
+		var closestLocation = locationManager.getClosestLocation(player.x, player.y, 16);
+
+		if (task != null) {
+			// Task offer, check if the player can accept
+			if (taskManager.isCarryFull()) {
+				// Already maxxed out quests
+				var giverActor = actorManager.getActorForLocation(task.giverLocation.id);
+				if (giverActor == null) {
+					dialogueManager.startDialogue([new DialogueLine("kiki", "My paws are full!")]);
+				} else {
+					dialogueManager.startDialogue([new DialogueLine(giverActor.id, "Looks like your paws are already full!")]);
+				}
+			} else {
+				// Offer the task
+				pendingAcceptTask = task;
+				dialogueManager.startDialogue(task.startLines);
+			}
+		} else if (closestLocation != null) {
+			// Near a location
+			if (closestLocation.id == "store") {
+				storeUI.open();
+			} else {
+				// Just show the location description
+				var actor = actorManager.getActorForLocation(closestLocation.id);
+				if (actor != null) {
+					dialogueManager.startDialogue([new DialogueLine(actor.id, actor.defaultLine)]);
+				} else {
+					dialogueManager.startDialogue([new DialogueLine("kiki", closestLocation.description)]);
+				}
+			}
+		}
 	}
 }

@@ -7,21 +7,22 @@ import game.location.LocationManager;
 import game.ui.NineSlice;
 
 class MinimapRenderer extends FlxGroup {
-	static final X = 172;
-	static final Y = 4;
-	static final W = 64;
-	static final H = 64;
-	static final DOT = 2;
+	private static final X:Int = 172;
+	private static final Y:Int = 4;
+	private static final W:Int = 64;
+	private static final H:Int = 64;
+	private static final DOT:Int = 2;
 
 	// Content area sits inside the NineSlice border
-	static final IX = X + NineSlice.TILE;
-	static final IY = Y + NineSlice.TILE;
-	static final IW = W - NineSlice.TILE * 2;
-	static final IH = H - NineSlice.TILE * 2;
+	private static final IX:Int = X + NineSlice.TILE;
+	private static final IY:Int = Y + NineSlice.TILE;
+	private static final IW:Int = W - NineSlice.TILE * 2;
+	private static final IH:Int = H - NineSlice.TILE * 2;
 
-	var worldW:Int;
-	var worldH:Int;
-	var playerDot:FlxSprite;
+	// World dimensions for scaling the minimap dots
+	private var worldW:Int;
+	private var worldH:Int;
+	private var playerDot:FlxSprite;
 
 	public function new(worldW:Int, worldH:Int, locationManager:LocationManager) {
 		super();

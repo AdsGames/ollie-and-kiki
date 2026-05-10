@@ -4,17 +4,18 @@ import flixel.sound.FlxSound;
 import openfl.Assets;
 
 class AmbienceManager {
-	static inline final K = 3;
-	static inline final MAX_RADIUS = 400.0;
-	static inline final POWER = 2.0;
-	static inline final AMBIENCE_GAIN = 1.5;
+	private static inline final K:Int = 3;
+	private static inline final MAX_RADIUS:Float = 400.0;
+	private static inline final POWER:Float = 2.0;
+	private static inline final AMBIENCE_GAIN:Float = 1.5;
 
 	public var ambiences:Map<String, Ambience>;
 
-	var warnedIds:Map<String, Bool> = [];
+	private var warnedIds:Map<String, Bool>;
 
 	public function new() {
 		ambiences = new Map();
+		warnedIds = new Map();
 	}
 
 	/**
@@ -46,7 +47,7 @@ class AmbienceManager {
 			ambience.gain = entry.gain;
 			ambiences.set(ambience.id, ambience);
 
-			trace('Loaded ambience: ' + ambience.id);
+			trace("Loaded ambience: " + ambience.id);
 		}
 	}
 

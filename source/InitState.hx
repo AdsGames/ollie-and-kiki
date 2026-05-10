@@ -12,7 +12,7 @@ class InitState extends FlxGame {
 		FlxG.mouse.useSystemCursor = true;
 	}
 
-	override function create(_):Void {
+	override private function create(_):Void {
 		super.create(_);
 		stage.quality = StageQuality.LOW;
 		FlxSprite.defaultAntialiasing = false;

@@ -1,25 +1,28 @@
 package game.dialogue;
 
-import flixel.FlxG;
 import flixel.FlxState;
 import game.actor.ActorManager;
-import game.dialogue.DialogueBox;
-import game.dialogue.DialogueLine;
 import game.sfx.SfxManager;
 
 class DialogueManager {
+	private static final MAX_CHARS:Int = 80;
+
+	// Whether a sequence is active.
 	public var active(default, null):Bool = false;
 
-	var box:DialogueBox;
-	var actorManager:ActorManager;
-	var sfxManager:SfxManager;
-	var lines:Array<DialogueLine> = [];
-	var lineIdx:Int = 0;
+	private var box:DialogueBox;
+	private var actorManager:ActorManager;
+	private var sfxManager:SfxManager;
+	private var lines:Array<DialogueLine>;
+	private var lineIdx:Int;
 
 	// Hack to avoid skipping the first window of text animation.
-	var suppressAdvance:Bool = false;
+	private var suppressAdvance:Bool;
 
 	public function new(actorManager:ActorManager, sfxManager:SfxManager) {
+		this.lines = [];
+		this.lineIdx = 0;
+		this.suppressAdvance = false;
 		this.actorManager = actorManager;
 		this.sfxManager = sfxManager;
 		box = new DialogueBox();
@@ -45,8 +48,7 @@ class DialogueManager {
 		showLine(this.lines[0]);
 	}
 
-	static function splitLine(line:DialogueLine):Array<DialogueLine> {
-		final MAX_CHARS = 80;
+	private static function splitLine(line:DialogueLine):Array<DialogueLine> {
 		if (line.text.length <= MAX_CHARS) {
 			return [line];
 		}
@@ -84,7 +86,7 @@ class DialogueManager {
 			return;
 		}
 
-		if (FlxG.keys.justPressed.Z || FlxG.keys.justPressed.E || FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE) {
+		if (InputManager.justPressed(Interact)) {
 			if (!box.advance()) {
 				lineIdx++;
 				if (lineIdx >= lines.length) {
@@ -97,7 +99,7 @@ class DialogueManager {
 		}
 	}
 
-	function showLine(line:DialogueLine):Void {
+	private function showLine(line:DialogueLine):Void {
 		var actor = actorManager.getActorById(line.actorId);
 		box.show(line, actor, sfxManager.playVoiceChar);
 	}

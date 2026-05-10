@@ -9,7 +9,8 @@ import flixel.group.FlxGroup;
  * Minimum usable size is TILE*2 in each dimension.
  */
 class NineSlice extends FlxGroup {
-	public static inline final TILE = 16;
+	// The size of each tile in the source spritesheet.
+	public static inline final TILE:Int = 16;
 
 	public function new(x:Float, y:Float, w:Int, h:Int) {
 		super();
@@ -32,7 +33,7 @@ class NineSlice extends FlxGroup {
 		slice(8, rx, by, TILE, TILE);
 	}
 
-	function slice(frame:Int, x:Float, y:Float, w:Float, h:Float):Void {
+	private function slice(frame:Int, x:Float, y:Float, w:Float, h:Float):Void {
 		var s = new FlxSprite(x, y);
 		s.loadGraphic(AssetPaths.dialogue__png, true, TILE, TILE);
 		s.animation.frameIndex = frame;

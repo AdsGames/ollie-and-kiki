@@ -1,14 +1,13 @@
 package game;
 
-import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.util.FlxDirectionFlags;
 import game.dialogue.DialogueManager;
 import game.store.StoreManager;
 
 class Player extends FlxSprite {
-	var dialogueManager:DialogueManager;
-	var storeManager:StoreManager;
+	private var dialogueManager:DialogueManager;
+	private var storeManager:StoreManager;
 
 	public function new(x:Float, y:Float, dialogueManager:DialogueManager, storeManager:StoreManager) {
 		super(x, y, AssetPaths.cat__png);
@@ -26,7 +25,7 @@ class Player extends FlxSprite {
 		allowCollisions = FlxDirectionFlags.ANY;
 	}
 
-	override public function update(elapsed:Float) {
+	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
 		velocity.set(0, 0);
 
@@ -41,19 +40,19 @@ class Player extends FlxSprite {
 			speed = 100.0;
 		}
 
-		if (FlxG.keys.pressed.UP || FlxG.keys.pressed.W) {
+		if (InputManager.pressed(MoveUp)) {
 			velocity.y = -speed;
-		} else if (FlxG.keys.pressed.DOWN || FlxG.keys.pressed.S) {
+		} else if (InputManager.pressed(MoveDown)) {
 			velocity.y = speed;
 		}
-		if (FlxG.keys.pressed.LEFT || FlxG.keys.pressed.A) {
+		if (InputManager.pressed(MoveLeft)) {
 			velocity.x = -speed;
-		} else if (FlxG.keys.pressed.RIGHT || FlxG.keys.pressed.D) {
+		} else if (InputManager.pressed(MoveRight)) {
 			velocity.x = speed;
 		}
 	}
 
-	override public function draw() {
+	override public function draw():Void {
 		super.draw();
 
 		// Overlay items
@@ -65,7 +64,7 @@ class Player extends FlxSprite {
 		}
 	}
 
-	private function drawItem(overlay:FlxSprite) {
+	private function drawItem(overlay:FlxSprite):Void {
 		overlay.x = x - offset.x;
 		overlay.y = y - offset.y;
 		overlay.draw();

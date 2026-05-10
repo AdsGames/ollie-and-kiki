@@ -10,14 +10,22 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
 class SplashState extends FlxState {
-	static final FADE_DURATION = 0.35;
-	static final HOLD_DURATION = 1.8;
+	private static final FADE_DURATION:Float = 0.35;
+	private static final HOLD_DURATION:Float = 1.8;
 
-	var splashes = [AssetPaths.splash_adsgames__png, AssetPaths.splash_tojam__png];
-	var currentIdx:Int = 0;
-	var sprite:FlxSprite;
-	var citySound:FlxSound;
-	var done:Bool = false;
+	private var splashes:Array<String>;
+	private var currentIdx:Int;
+	private var sprite:FlxSprite;
+	private var citySound:FlxSound;
+	private var holdTimer:FlxTimer;
+	private var done:Bool;
+
+	public function new() {
+		super();
+		splashes = [AssetPaths.splash_adsgames__png, AssetPaths.splash_tojam__png];
+		currentIdx = 0;
+		done = false;
+	}
 
 	override public function create():Void {
 		super.create();
@@ -27,12 +35,12 @@ class SplashState extends FlxState {
 		sprite.scrollFactor.set(0, 0);
 		add(sprite);
 
-		citySound = FlxG.sound.play("assets/sounds/ambience/city.ogg", 0.35, true);
+		citySound = FlxG.sound.play(AssetPaths.city__ogg, 0.35, true);
 
 		showNext();
 	}
 
-	function showNext():Void {
+	private function showNext():Void {
 		if (currentIdx >= splashes.length) {
 			advance();
 			return;
@@ -43,30 +51,46 @@ class SplashState extends FlxState {
 
 		FlxTween.tween(sprite, {alpha: 1.0}, FADE_DURATION, {
 			ease: FlxEase.linear,
-			onComplete: (_) -> new FlxTimer().start(HOLD_DURATION, (_) -> {
-				FlxTween.tween(sprite, {alpha: 0.0}, FADE_DURATION, {
-					ease: FlxEase.linear,
-					onComplete: (_) -> showNext()
+			onComplete: (_) -> {
+				holdTimer = new FlxTimer();
+				holdTimer.start(HOLD_DURATION, (_) -> {
+					FlxTween.tween(sprite, {alpha: 0.0}, FADE_DURATION, {
+						ease: FlxEase.linear,
+						onComplete: (_) -> showNext()
+					});
 				});
-			})
+			}
 		});
 	}
 
-	function advance():Void {
-		if (done) return;
+	private function advance():Void {
+		if (done) {
+			return;
+		}
 		done = true;
+
 		FlxTween.cancelTweensOf(sprite);
-		if (citySound != null) citySound.stop();
+		if (holdTimer != null) {
+			holdTimer.cancel();
+		}
+		if (citySound != null) {
+			citySound.stop();
+			citySound = null;
+		}
 		FlxG.camera.fade(FlxColor.WHITE, 0.4, false, () -> FlxG.switchState(MenuState.new));
 	}
 
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
-		if (!done && FlxG.keys.justPressed.ANY) advance();
+		if (!done && InputManager.justPressed(Any)) {
+			advance();
+		}
 	}
 
 	override public function destroy():Void {
-		if (citySound != null) citySound.stop();
+		if (citySound != null) {
+			citySound.stop();
+		}
 		super.destroy();
 	}
 }

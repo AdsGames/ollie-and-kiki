@@ -9,12 +9,17 @@ import game.Palette;
 import game.location.Location;
 
 class ActorMarker extends FlxGroup {
-	static final LABEL_WIDTH = 8;
+	private static final LABEL_WIDTH:Int = 8;
 
+	// The actor represented by this marker.
 	public var actor:Actor;
+
+	// The location this marker is anchored to.
 	public var location:Location;
 
-	var sprite:FlxSprite;
+	private var sprite:FlxSprite;
+
+	// Exclamation-mark label shown when the actor has an available quest.
 	public var questLabel:FlxBitmapText;
 
 	public function new(actor:Actor, location:Location) {

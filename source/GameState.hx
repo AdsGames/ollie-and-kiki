@@ -1,19 +1,18 @@
 package;
 
-import flixel.FlxG;
 import flixel.FlxState;
-import flixel.sound.FlxSound;
 import game.World;
 
 class GameState extends FlxState {
+	// The game world instance.
 	public var world:World;
 
-	override public function create() {
+	override public function create():Void {
 		super.create();
 		world = new World(this);
 	}
 
-	override public function update(elapsed:Float) {
+	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
 		world.update(elapsed);
 	}

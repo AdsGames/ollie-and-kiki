@@ -33,14 +33,6 @@
       }
     },
     {
-      "type": "ConstantName",
-      "props": {
-        "format": "^[a-z][a-zA-Z0-9]*$",
-        "tokens": ["NOTINLINE"],
-        "ignoreExtern": false
-      }
-    },
-    {
       "type": "Dynamic",
       "props": {}
     },
@@ -97,23 +89,25 @@
         "requireParams": false,
         "requireReturn": false,
         "ignoreOverride": true,
-        "excludeNames": ["new", "toString"]
+        "excludeNames": ["new", "toString"],
+        "severity": "IGNORE"
       }
     },
     {
       "type": "Indentation",
       "props": {
-        "character": "  ",
+        "character": "tab",
         "ignoreConditionals": false,
         "conditionalPolicy": "ignore",
         "ignoreComments": true,
-        "wrapPolicy": "larger"
+        "wrapPolicy": "larger",
+        "severity": "IGNORE"
       }
     },
     {
       "type": "IndentationCharacter",
       "props": {
-        "character": "space",
+        "character": "tab",
         "ignorePattern": "^$"
       }
     },
@@ -148,7 +142,7 @@
     {
       "type": "MethodLength",
       "props": {
-        "max": 60,
+        "max": 80,
         "ignoreEmptyLines": true
       }
     },
@@ -212,7 +206,7 @@
       "type": "Return",
       "props": {
         "allowEmptyReturn": true,
-        "enforceReturnType": false,
+        "enforceReturnType": true,
         "enforceReturnTypeForAnonymous": false
       }
     },
@@ -240,14 +234,16 @@
           "TRY",
           "CATCH"
         ],
-        "option": "aloneorsingle"
+        "option": "aloneorsingle",
+        "severity": "IGNORE"
       }
     },
     {
       "type": "RightCurly",
       "props": {
         "tokens": ["IF"],
-        "option": "aloneorsingle"
+        "option": "same",
+        "severity": "IGNORE"
       }
     },
     {
@@ -256,7 +252,8 @@
         "dotPolicy": "none",
         "commaPolicy": "after",
         "allowTrailingComma": false,
-        "semicolonPolicy": "after"
+        "semicolonPolicy": "after",
+        "severity": "IGNORE"
       }
     },
     {
@@ -287,7 +284,9 @@
     },
     {
       "type": "Trace",
-      "props": {}
+      "props": {
+        "severity": "IGNORE"
+      }
     },
     {
       "type": "TrailingWhitespace",
@@ -361,8 +360,9 @@
     {
       "type": "DocCommentStyle",
       "props": {
-        "lineStyle": "none",
-        "startStyle": "twostars"
+        "lineStyle": "onestar",
+        "startStyle": "twostars",
+        "severity": "IGNORE"
       }
     },
     {

@@ -8,10 +8,10 @@ import game.Palette;
 import game.store.StoreManager;
 
 class CurrencyRenderer extends FlxGroup {
-	static final Y = 4;
+	private static final Y:Int = 4;
 
-	var coinsText:FlxBitmapText;
-	var storeManager:StoreManager;
+	private var coinsText:FlxBitmapText;
+	private var storeManager:StoreManager;
 
 	public function new(storeManager:StoreManager) {
 		super();

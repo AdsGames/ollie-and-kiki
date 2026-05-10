@@ -1,7 +1,6 @@
 package game.dialogue;
 
 import flixel.FlxSprite;
-import flixel.graphics.frames.FlxBitmapFont;
 import flixel.group.FlxGroup;
 import flixel.text.FlxBitmapText;
 import game.Palette;
@@ -10,30 +9,37 @@ import game.ui.NineSlice;
 
 // 9-slice dialogue box using a 48x48 spritesheet (3x3 grid of 16x16 tiles).
 class DialogueBox extends FlxGroup {
-	static final PADDING = 8;
-	static final BOX_X = 0;
-	static final BOX_Y = 96;
-	static final BOX_W = 240;
-	static final BOX_H = 64;
-	static final INNER_W = BOX_W - NineSlice.TILE * 2;
-	static final PORTRAIT_SIZE = 32;
-	static final PORTRAIT_X_OFFSET = -10;
-	static final PORTRAIT_Y_OFFSET = 7;
-	static final CHARS_PER_SEC = 30.0;
+	private static final PADDING:Int = 8;
+	private static final BOX_X:Int = 0;
+	private static final BOX_Y:Int = 96;
+	private static final BOX_W:Int = 240;
+	private static final BOX_H:Int = 64;
+	private static final INNER_W:Int = BOX_W - NineSlice.TILE * 2;
+	private static final PORTRAIT_SIZE:Int = 32;
+	private static final PORTRAIT_X_OFFSET:Int = -10;
+	private static final PORTRAIT_Y_OFFSET:Int = 7;
+	private static final CHARS_PER_SEC:Float = 30.0;
 
-	var actorText:FlxBitmapText;
-	var contentText:FlxBitmapText;
-	var portrait:FlxSprite;
+	private var actorText:FlxBitmapText;
+	private var contentText:FlxBitmapText;
+	private var portrait:FlxSprite;
 
-	var fullText:String = "";
-	var visibleChars:Float = 0;
-	var lastVisibleInt:Int = 0;
-	var typing:Bool = false;
-	var voicePitch:Float = 1.0;
-	var onVoiceChar:Null<(String, Float)->Void> = null;
+	private var fullText:String;
+	private var visibleChars:Float;
+	private var lastVisibleInt:Int;
+	private var typing:Bool;
+	private var voicePitch:Float;
+	private var onVoiceChar:Null<(String, Float) -> Void>;
 
 	public function new() {
 		super();
+
+		this.fullText = "";
+		this.visibleChars = 0;
+		this.lastVisibleInt = 0;
+		this.typing = false;
+		this.voicePitch = 1.0;
+		this.onVoiceChar = null;
 
 		add(new NineSlice(BOX_X, BOX_Y, BOX_W, BOX_H));
 
@@ -72,7 +78,7 @@ class DialogueBox extends FlxGroup {
 	 * @param line The dialogue line to display
 	 * @param actor Resolved actor for this line, or null if unknown.
 	 */
-	public function show(line:DialogueLine, actor:Null<Actor>, onVoiceChar:Null<(String, Float)->Void> = null):Void {
+	public function show(line:DialogueLine, actor:Null<Actor>, onVoiceChar:Null<(String, Float) -> Void> = null):Void {
 		actorText.text = actor != null ? actor.name : line.actorId;
 		fullText = line.text;
 		visibleChars = 0;
@@ -135,7 +141,7 @@ class DialogueBox extends FlxGroup {
 		var newInt = Std.int(visibleChars);
 		if (newInt > lastVisibleInt && onVoiceChar != null) {
 			var ch = fullText.charAt(newInt - 1);
-			if (ch != ' ' && ch != '\n' && ch != '\t') {
+			if (ch != " " && ch != "\n" && ch != "\t") {
 				onVoiceChar(ch, voicePitch);
 			}
 			lastVisibleInt = newInt;
@@ -143,5 +149,4 @@ class DialogueBox extends FlxGroup {
 
 		contentText.text = fullText.substr(0, newInt);
 	}
-
 }

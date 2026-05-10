@@ -9,13 +9,13 @@ import game.Palette;
 import game.location.Location;
 
 class QuestArrowRenderer extends FlxGroup {
-	static final PADDING = 12;
-	static final MAX_ARROWS = 3;
-	static final TIMER_W = 28;
+	private static final PADDING:Int = 12;
+	private static final MAX_ARROWS:Int = 3;
+	private static final TIMER_W:Int = 28;
 
-	var taskManager:TaskManager;
-	var arrows:Array<FlxSprite>;
-	var timerLabels:Array<FlxBitmapText>;
+	private var taskManager:TaskManager;
+	private var arrows:Array<FlxSprite>;
+	private var timerLabels:Array<FlxBitmapText>;
 
 	public function new(taskManager:TaskManager) {
 		super();

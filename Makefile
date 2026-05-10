@@ -11,3 +11,9 @@ html5:
 
 watch:
 	find source -name "*.hx" | entr -r sh -c 'SDL_VIDEODRIVER=x11 lime test neko -debug --connect 6001'
+
+lint:
+	haxelib run checkstyle -s source --config checkstyle.json
+
+format:
+	haxelib run formatter -s source 

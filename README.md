@@ -13,6 +13,13 @@ haxelib run lime setup flixel
 haxelib run flixel-tools setup
 ```
 
+Optionally
+
+```sh
+haxelib install checkstyle
+haxelib install formatter
+```
+
 ## Running
 
 ### Neko
