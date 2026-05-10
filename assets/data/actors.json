@@ -4,7 +4,6 @@
     "id": "ollie",
     "image": "assets/images/actors/ollie.png",
     "image_profile": "assets/images/actors/ollie_profile.png",
-    "description": "Big chunky cat",
     "location_id": "ollies_house",
     "voice_pitch": 0.5
   },
@@ -13,25 +12,78 @@
     "id": "kiki",
     "image": "assets/images/actors/kiki.png",
     "image_profile": "assets/images/actors/kiki_profile.png",
-    "description": "Small fluffy cat",
     "voice_pitch": 1.5
   },
   {
-    "name": "FisherCat",
+    "name": "Wally",
     "id": "fishercat",
     "image": "assets/images/actors/fishercat.png",
     "image_profile": "assets/images/actors/fishercat_profile.png",
-    "description": "Sleek black cat",
     "location_id": "fish_shop",
     "voice_pitch": 0.8
   },
   {
-    "name": "Bakercat",
+    "name": "Miroslav",
     "id": "bakercat",
     "image": "assets/images/actors/baker.png",
     "image_profile": "assets/images/actors/baker_profile.png",
-    "description": "Playful tabby cat",
-    "location_id": "bakers_house",
+    "location_id": "bakery",
+    "voice_pitch": 1.1
+  },
+  {
+    "name": "Cornelius",
+    "id": "wizard",
+    "image": "assets/images/actors/wizard.png",
+    "image_profile": "assets/images/actors/wizard_profile.png",
+    "location_id": "wizard_tower",
+    "voice_pitch": 0.1
+  },
+  {
+    "name": "Tammy",
+    "id": "lifeguard",
+    "image": "assets/images/actors/lifeguard.png",
+    "image_profile": "assets/images/actors/lifeguard_profile.png",
+    "location_id": "pool",
     "voice_pitch": 1.2
+  },
+  {
+    "name": "Marigold",
+    "id": "librarian",
+    "image": "assets/images/actors/librarian.png",
+    "image_profile": "assets/images/actors/librarian_profile.png",
+    "location_id": "library",
+    "voice_pitch": 1.4
+  },
+  {
+    "name": "Dr. Meow",
+    "id": "doctor",
+    "image": "assets/images/actors/doctor.png",
+    "image_profile": "assets/images/actors/doctor_profile.png",
+    "location_id": "hospital",
+    "voice_pitch": 1.3
+  },
+  {
+    "name": "Jake",
+    "id": "postcat",
+    "image": "assets/images/actors/postcat.png",
+    "image_profile": "assets/images/actors/postcat_profile.png",
+    "location_id": "post_office",
+    "voice_pitch": 0.6
+  },
+  {
+    "name": "Ms. Violet",
+    "id": "teacher",
+    "image": "assets/images/actors/teacher.png",
+    "image_profile": "assets/images/actors/teacher_profile.png",
+    "location_id": "school",
+    "voice_pitch": 1.7
+  },
+  {
+    "name": "Moe",
+    "id": "coolcat",
+    "image": "assets/images/actors/coolcat.png",
+    "image_profile": "assets/images/actors/coolcat_profile.png",
+    "location_id": "beach_house",
+    "voice_pitch": 0.7
   }
 ]

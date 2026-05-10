@@ -19,5 +19,47 @@
     "description": "A small toy mouse, great for playtime.",
     "value": 7,
     "image": "assets/images/items/toy_mouse.png"
+  },
+  {
+    "name": "Apple",
+    "id": "apple",
+    "description": "An apple a day...",
+    "value": 3,
+    "image": "assets/images/items/apple.png"
+  },
+  {
+    "name": "Book",
+    "id": "book",
+    "description": "I wonder what I can learn from this...",
+    "value": 15,
+    "image": "assets/images/items/book.png"
+  },
+  {
+    "name": "Letter",
+    "id": "letter",
+    "description": "I want to read it, but I shouldn't!",
+    "value": 0,
+    "image": "assets/images/items/letter.png"
+  },
+  {
+    "name": "Ice Cream",
+    "id": "ice_cream",
+    "description": "It's already melting...",
+    "value": 8,
+    "image": "assets/images/items/ice_cream.png"
+  },
+  {
+    "name": "Medicine",
+    "id": "medicine",
+    "description": "Full of vitamins and minerals, but tastes terrible.",
+    "value": 20,
+    "image": "assets/images/items/medicine.png"
+  },
+  {
+    "name": "Bread",
+    "id": "bread",
+    "description": "Looks fluffy and delicious.",
+    "value": 4,
+    "image": "assets/images/items/bread.png"
   }
 ]
