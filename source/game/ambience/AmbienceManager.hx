@@ -1,5 +1,6 @@
 package game.ambience;
 
+import flixel.FlxG;
 import flixel.sound.FlxSound;
 import openfl.Assets;
 
@@ -41,6 +42,8 @@ class AmbienceManager {
 			var sound = new FlxSound();
 			sound.loadEmbedded(entry.file, true);
 			sound.volume = 0;
+			// Managed sounds get FlxG.sound.onFocusLost / onFocus (same as BGM when game pauses).
+			FlxG.sound.list.add(sound);
 			sound.play();
 			ambience.sound = sound;
 			ambience.id = entry.id;
