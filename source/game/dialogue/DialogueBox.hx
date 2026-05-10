@@ -6,17 +6,16 @@ import flixel.group.FlxGroup;
 import flixel.text.FlxBitmapText;
 import game.Palette;
 import game.actor.Actor;
+import game.ui.NineSlice;
 
 // 9-slice dialogue box using a 48x48 spritesheet (3x3 grid of 16x16 tiles).
 class DialogueBox extends FlxGroup {
-	static final TILE = 16;
 	static final PADDING = 8;
 	static final BOX_X = 0;
 	static final BOX_Y = 96;
 	static final BOX_W = 240;
 	static final BOX_H = 64;
-	static final INNER_W = BOX_W - TILE * 2;
-	static final INNER_H = BOX_H - TILE * 2;
+	static final INNER_W = BOX_W - NineSlice.TILE * 2;
 	static final PORTRAIT_SIZE = 32;
 	static final PORTRAIT_X_OFFSET = -10;
 	static final PORTRAIT_Y_OFFSET = 7;
@@ -36,7 +35,7 @@ class DialogueBox extends FlxGroup {
 	public function new() {
 		super();
 
-		buildSlices();
+		add(new NineSlice(BOX_X, BOX_Y, BOX_W, BOX_H));
 
 		// Portrait floats above the top-right corner of the box
 		portrait = new FlxSprite(BOX_W - PORTRAIT_SIZE + PORTRAIT_X_OFFSET, BOX_Y - PORTRAIT_SIZE + PORTRAIT_Y_OFFSET);
@@ -50,13 +49,13 @@ class DialogueBox extends FlxGroup {
 		actorText.y = BOX_Y + PADDING - 2;
 		actorText.color = Palette.BLACK;
 		actorText.scrollFactor.set(0, 0);
-		actorText.setSize(BOX_W - PADDING * 2, TILE - PADDING * 2);
+		actorText.setSize(BOX_W - PADDING * 2, NineSlice.TILE - PADDING * 2);
 		add(actorText);
 
 		// Content text fills the inner area
 		contentText = new FlxBitmapText(Fonts.glasstown);
 		contentText.x = BOX_X + PADDING;
-		contentText.y = BOX_Y + TILE + PADDING - 2;
+		contentText.y = BOX_Y + NineSlice.TILE + PADDING - 2;
 		contentText.autoSize = false;
 		contentText.fieldWidth = INNER_W - PADDING * 2;
 		contentText.multiLine = true;
@@ -145,42 +144,4 @@ class DialogueBox extends FlxGroup {
 		contentText.text = fullText.substr(0, newInt);
 	}
 
-	/**
-	 * Builds the 9 slice associated with a dialog box.
-	 */
-	function buildSlices():Void {
-		var midX = BOX_X + TILE;
-		var midY = BOX_Y + TILE;
-		var botY = BOX_Y + TILE + INNER_H;
-
-		addSlice(0, BOX_X, BOX_Y, TILE, TILE);
-		addSlice(1, midX, BOX_Y, INNER_W, TILE);
-		addSlice(2, BOX_X + BOX_W - TILE, BOX_Y, TILE, TILE);
-
-		addSlice(3, BOX_X, midY, TILE, INNER_H);
-		addSlice(4, midX, midY, INNER_W, INNER_H);
-		addSlice(5, BOX_X + BOX_W - TILE, midY, TILE, INNER_H);
-
-		addSlice(6, BOX_X, botY, TILE, TILE);
-		addSlice(7, midX, botY, INNER_W, TILE);
-		addSlice(8, BOX_X + BOX_W - TILE, botY, TILE, TILE);
-	}
-
-	/**
-	 * Helper for adding a single slice from the spritesheet. The frame index corresponds to the 3x3 grid of tiles.
-	 * @param frameIdx The index of the tile in the 3x3 grid (0-8)
-	 * @param x X position to place the slice
-	 * @param y Y position to place the slice
-	 * @param w Width to stretch the slice to
-	 * @param h Height to stretch the slice to
-	 */
-	function addSlice(frameIdx:Int, x:Float, y:Float, w:Float, h:Float):Void {
-		var s = new FlxSprite(x, y);
-		s.loadGraphic(AssetPaths.dialogue__png, true, TILE, TILE);
-		s.animation.frameIndex = frameIdx;
-		s.setGraphicSize(Std.int(w), Std.int(h));
-		s.updateHitbox();
-		s.scrollFactor.set(0, 0);
-		add(s);
-	}
 }

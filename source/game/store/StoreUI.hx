@@ -1,12 +1,12 @@
 package game.store;
 
 import flixel.FlxG;
-import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.text.FlxBitmapText;
 import flixel.util.FlxColor;
 import game.Fonts;
 import game.Palette;
+import game.ui.NineSlice;
 
 class StoreUI extends FlxGroup {
 	static final X = 16;
@@ -32,16 +32,13 @@ class StoreUI extends FlxGroup {
 		var items = storeManager.getItems();
 		var H = PADDING * 4 + 12 + items.length * ITEM_H;
 
-		var bg = new FlxSprite(X, Y);
-		bg.makeGraphic(W, H, Palette.BLACK);
-		bg.scrollFactor.set(0, 0);
-		add(bg);
+		add(new NineSlice(X, Y, W, H));
 
-		var title = makeText(X + PADDING, Y + PADDING, "= STORE =", Fonts.glasstownBold, Palette.YELLOW);
+		var title = makeText(X + PADDING, Y + PADDING, "STORE", Fonts.glasstownBold, Palette.BLACK);
 		add(title);
 
 		for (i in 0...items.length) {
-			var t = makeText(X + PADDING, Y + PADDING + 14 + i * ITEM_H, "", Fonts.glasstown, Palette.WHITE);
+			var t = makeText(X + PADDING, Y + PADDING + 14 + i * ITEM_H, "", Fonts.glasstown, Palette.BLACK);
 			itemTexts.push(t);
 			add(t);
 		}
@@ -109,7 +106,7 @@ class StoreUI extends FlxGroup {
 			} else if (i == selectedIdx) {
 				itemTexts[i].color = storeManager.coins >= item.price ? Palette.YELLOW : Palette.RED;
 			} else {
-				itemTexts[i].color = Palette.WHITE;
+				itemTexts[i].color = Palette.BLACK;
 			}
 		}
 	}

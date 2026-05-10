@@ -1,21 +1,17 @@
 package game.item;
 
+import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
-import flixel.text.FlxBitmapText;
-import game.Fonts;
-import game.Palette;
-import game.task.Task;
 import game.task.TaskManager;
+import game.task.TaskState;
 
 class InventoryRenderer extends FlxGroup {
-	static final Y = 48;
-	static final MAX_SLOTS = 3;
+	static final PADDING = 4;
 	static final ICON_SIZE = 8;
 	static final ICON_STEP = ICON_SIZE + 4;
-	static final LABEL_WIDTH = 28;
+	static final MAX_SLOTS = 3;
 
-	var bagText:FlxBitmapText;
 	var slots:Array<FlxSprite>;
 	var lastKey:String = "";
 	var taskManager:TaskManager;
@@ -24,20 +20,11 @@ class InventoryRenderer extends FlxGroup {
 		super();
 		this.taskManager = taskManager;
 
-		bagText = new FlxBitmapText(Fonts.glasstownBold);
-		bagText.x = 8;
-		bagText.y = Y;
-		bagText.fieldWidth = LABEL_WIDTH;
-		bagText.multiLine = false;
-		bagText.color = Palette.YELLOW;
-		bagText.scrollFactor.set(0, 0);
-		bagText.text = "Bag:";
-		bagText.visible = false;
-		add(bagText);
-
 		slots = [];
 		for (i in 0...MAX_SLOTS) {
-			var s = new FlxSprite(8 + LABEL_WIDTH + i * ICON_STEP, Y);
+			var s = new FlxSprite(0, 0);
+			s.x = FlxG.width - PADDING - (MAX_SLOTS - i) * ICON_STEP;
+			s.y = FlxG.height - PADDING - ICON_SIZE;
 			s.scrollFactor.set(0, 0);
 			s.visible = false;
 			add(s);
@@ -49,13 +36,8 @@ class InventoryRenderer extends FlxGroup {
 		super.update(elapsed);
 		var carried = [for (t in taskManager.tasks) if (t.state == PickedUp) t.item];
 		var key = [for (item in carried) item.id].join(",");
-		if (key == lastKey) {
-			return;
-		}
+		if (key == lastKey) return;
 		lastKey = key;
-
-		var hasItems = carried.length > 0;
-		bagText.visible = hasItems;
 
 		for (i in 0...MAX_SLOTS) {
 			if (i < carried.length) {

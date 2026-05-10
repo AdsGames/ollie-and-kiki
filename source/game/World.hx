@@ -18,6 +18,7 @@ import game.minimap.MinimapRenderer;
 import game.sfx.SfxManager;
 import game.store.StoreManager;
 import game.store.StoreUI;
+import game.task.QuestArrowRenderer;
 import game.task.Task;
 import game.task.TaskManager;
 import game.task.TaskRenderer;
@@ -42,6 +43,7 @@ class World {
 	public var taskRenderer:TaskRenderer;
 	public var inventoryRenderer:InventoryRenderer;
 	public var currencyRenderer:CurrencyRenderer;
+	public var questArrowRenderer:QuestArrowRenderer;
 	public var minimapRenderer:MinimapRenderer;
 	public var storeUI:StoreUI;
 
@@ -89,29 +91,37 @@ class World {
 		// Foreground layers render on top of the player
 		map.addForeground(state);
 
-		// Location markers
+		// Quest exclamation marks render above foreground
+		state.add(actorRenderer.questLabels);
+
+		// HUD renders on top of world geometry
 		locationRenderer = new LocationRenderer(locationManager, taskManager);
 		state.add(locationRenderer);
 
-		// HUD renders on top of world geometry
-		taskRenderer = new TaskRenderer(taskManager);
-		state.add(taskRenderer);
-
-		inventoryRenderer = new InventoryRenderer(taskManager);
-		state.add(inventoryRenderer);
+		questArrowRenderer = new QuestArrowRenderer(taskManager);
+		state.add(questArrowRenderer);
 
 		currencyRenderer = new CurrencyRenderer(storeManager);
 		state.add(currencyRenderer);
 
-		// Dialogue box renders on top of everything
-		dialogueManager.addToState(state);
+		// Popup UIs
+		taskRenderer = new TaskRenderer(taskManager);
+		state.add(taskRenderer);
 
-		// Minimap and store UI sit above dialogue
 		minimapRenderer = new MinimapRenderer(map.mapWidth, map.mapHeight, locationManager);
 		state.add(minimapRenderer);
 
 		storeUI = new StoreUI(storeManager);
 		state.add(storeUI);
+
+		inventoryRenderer = new InventoryRenderer(taskManager);
+		state.add(inventoryRenderer);
+
+		// Dialogue box renders on top of everything
+		dialogueManager.addToState(state);
+
+		// Intro dialogue
+		dialogueManager.startDialogue([new DialogueLine("kiki", "I should go see Ollie... I think he needs me.")]);
 	}
 
 	public function update(elapsed:Float):Void {
@@ -124,6 +134,11 @@ class World {
 		// Cheat
 		if (FlxG.keys.justPressed.ONE) {
 			storeManager.addCoins(10);
+		}
+
+		// Toggle quest log with Q
+		if (FlxG.keys.justPressed.Q) {
+			taskRenderer.toggle();
 		}
 
 		// Toggle minimap with M (requires map upgrade)

@@ -15,7 +15,7 @@ class ActorMarker extends FlxGroup {
 	public var location:Location;
 
 	var sprite:FlxSprite;
-	var questLabel:FlxBitmapText;
+	public var questLabel:FlxBitmapText;
 
 	public function new(actor:Actor, location:Location) {
 		super();
@@ -34,7 +34,6 @@ class ActorMarker extends FlxGroup {
 		questLabel.text = "!";
 		questLabel.visible = false;
 		questLabel.scrollFactor.set(1, 1);
-		add(questLabel);
 	}
 
 	public function showQuest():Void {

@@ -9,10 +9,13 @@ class ActorRenderer extends FlxGroup {
 	var markerMap:Map<String, ActorMarker>;
 	var taskManager:TaskManager;
 
+	public var questLabels:FlxGroup;
+
 	public function new(actorManager:ActorManager, locationManager:LocationManager, taskManager:TaskManager) {
 		super();
 		this.taskManager = taskManager;
 		markerMap = new Map();
+		questLabels = new FlxGroup();
 
 		for (actor in actorManager.actors) {
 			if (actor.locationId == null) {
@@ -26,6 +29,7 @@ class ActorRenderer extends FlxGroup {
 
 			var marker = new ActorMarker(actor, location);
 			add(marker);
+			questLabels.add(marker.questLabel);
 			markerMap[actor.locationId] = marker;
 		}
 	}
@@ -38,7 +42,7 @@ class ActorRenderer extends FlxGroup {
 		}
 
 		for (task in taskManager.tasks) {
-			if (task.state == TaskState.Idle) {
+			if (task.state == TaskState.Idle && taskManager.isPrecursorComplete(task)) {
 				var marker = markerMap[task.giverLocation.id];
 				if (marker != null) {
 					marker.showQuest();

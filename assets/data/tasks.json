@@ -1,5 +1,45 @@
 [
   {
+    "id": "intro",
+    "name": "Visit Ollie",
+    "description": "Ollie seems to need help. Head over to his house and see what's going on.",
+    "itemId": "fish",
+    "giverLocationId": "ollies_house",
+    "fromId": "fish_shop",
+    "toId": "bakery",
+    "conversation": {
+      "start": [
+        {
+          "actor": "ollie",
+          "text": "Kiki! I'm so glad you're here. I have a favour to ask."
+        },
+        { "actor": "kiki", "text": "I had a feeling. What's up?" },
+        {
+          "actor": "ollie",
+          "text": "Wally at the fish shop has a delivery for the bakery, but he can't leave. Could you pick it up and run it over?"
+        },
+        { "actor": "kiki", "text": "Sure, sounds simple enough." },
+        {
+          "actor": "ollie",
+          "text": "An arrow will point you where to go. Pick up the fish, then follow it to the bakery. Cats around town will always need your help, and they'll pay for it!"
+        }
+      ],
+      "complete": [
+        {
+          "actor": "ollie",
+          "text": "You did it! See? That's all there is to it."
+        },
+        { "actor": "kiki", "text": "That wasn't so hard." },
+        {
+          "actor": "ollie",
+          "text": "Now that you've got the hang of it, I am sure there is no shortage of work!"
+        }
+      ]
+    }
+  },
+  {
+    "id": "fresh_fish_delivery",
+    "precursorId": "intro",
     "name": "Fresh Fish Delivery",
     "description": "Pick up the fresh fish from the fish shop and bring it to the bakery.",
     "itemId": "fish",
@@ -13,10 +53,7 @@
           "actor": "fishercat",
           "text": "Hey there! I just caught some fresh fish and I need someone to deliver it to the bakery. Can you help me out?"
         },
-        {
-          "actor": "kiki",
-          "text": "Sure, I can do that!"
-        },
+        { "actor": "kiki", "text": "Sure, I can do that!" },
         {
           "actor": "fishercat",
           "text": "Great! Just pick up the fish from the fish shop and bring it to the bakery. Thanks!"
@@ -27,16 +64,15 @@
           "actor": "fishercat",
           "text": "Thanks for delivering the fish! I really appreciate it."
         },
-        {
-          "actor": "kiki",
-          "text": "No problem! Happy to help."
-        }
+        { "actor": "kiki", "text": "No problem! Happy to help." }
       ]
     }
   },
   {
+    "id": "catnip_run",
+    "precursorId": "intro",
     "name": "Catnip Run",
-    "description": "Pick up the catnip from Big Chungus's house and bring it to the hospital.",
+    "description": "Pick up the catnip from the beach house and bring it to the hospital.",
     "itemId": "catnip",
     "giverLocationId": "bakery",
     "fromId": "beach_house",
@@ -47,13 +83,10 @@
           "actor": "bakercat",
           "text": "Hey there! The hospital needs catnip urgently. Big Chungus has some at his place. Can you pick it up?"
         },
-        {
-          "actor": "kiki",
-          "text": "Sure, I can do that!"
-        },
+        { "actor": "kiki", "text": "Sure, I can do that!" },
         {
           "actor": "bakercat",
-          "text": "Great! Grab the catnip from Big Chungus's house and bring it straight to the hospital. Thanks!"
+          "text": "Great! Grab the catnip from the beach house and bring it straight to the hospital. Thanks!"
         }
       ],
       "complete": [
@@ -61,14 +94,13 @@
           "actor": "bakercat",
           "text": "Thanks for bringing the catnip! The hospital really needed it."
         },
-        {
-          "actor": "kiki",
-          "text": "No problem! Happy to help."
-        }
+        { "actor": "kiki", "text": "No problem! Happy to help." }
       ]
     }
   },
   {
+    "id": "midnight_snack",
+    "precursorId": "intro",
     "name": "Midnight Snack",
     "description": "Ollie has the munchies. Grab a fish from the shop and bring it back to him.",
     "itemId": "fish",
@@ -82,10 +114,7 @@
           "actor": "ollie",
           "text": "Kiki! I've got the worst case of the midnight munchies. Could you run to the fish shop and grab me a nice fresh fish?"
         },
-        {
-          "actor": "kiki",
-          "text": "It's the middle of the day, Ollie..."
-        },
+        { "actor": "kiki", "text": "It's the middle of the day, Ollie..." },
         {
           "actor": "ollie",
           "text": "Don't judge me. Just get the fish, please!"
@@ -96,14 +125,13 @@
           "actor": "ollie",
           "text": "Oh wow, that smells amazing! You're the best, Kiki!"
         },
-        {
-          "actor": "kiki",
-          "text": "Try to leave some for tomorrow, please."
-        }
+        { "actor": "kiki", "text": "Try to leave some for tomorrow, please." }
       ]
     }
   },
   {
+    "id": "rescue_mr_whiskers",
+    "precursorId": "intro",
     "name": "Rescue Mr. Whiskers",
     "description": "Ollie's toy mouse rolled into the haunted house. Someone has to go get it.",
     "itemId": "toy_mouse",
@@ -116,10 +144,7 @@
           "actor": "ollie",
           "text": "Kiki, have you seen Mr. Whiskers? My toy mouse! I think it rolled into the haunted house and I'm too scared to go get it."
         },
-        {
-          "actor": "kiki",
-          "text": "You named your toy mouse Mr. Whiskers?"
-        },
+        { "actor": "kiki", "text": "You named your toy mouse Mr. Whiskers?" },
         {
           "actor": "ollie",
           "text": "He has a very distinguished personality. Will you please go get him?"
@@ -134,14 +159,13 @@
           "actor": "kiki",
           "text": "He was just sitting by the front door. I don't think the haunted house is actually haunted."
         },
-        {
-          "actor": "ollie",
-          "text": "Kiki, please don't ruin this for me."
-        }
+        { "actor": "ollie", "text": "Kiki, please don't ruin this for me." }
       ]
     }
   },
   {
+    "id": "catnip_cookies",
+    "precursorId": "intro",
     "name": "Catnip Cookies",
     "description": "Bakercat is baking catnip cookies but needs a fresh supply from the hospital.",
     "itemId": "catnip",
@@ -154,10 +178,7 @@
           "actor": "bakercat",
           "text": "Hello! I'm baking a special batch of catnip cookies today but I've run out of catnip. The hospital keeps some in their supply room."
         },
-        {
-          "actor": "kiki",
-          "text": "You're baking with medical catnip?"
-        },
+        { "actor": "kiki", "text": "You're baking with medical catnip?" },
         {
           "actor": "bakercat",
           "text": "It's the finest grade! Only the best for my cookies. Could you fetch some from the hospital and bring it to the bakery?"
@@ -168,14 +189,982 @@
           "actor": "bakercat",
           "text": "Perfect! These cookies are going to be legendary. Here, take one as thanks!"
         },
-        {
-          "actor": "kiki",
-          "text": "Oh, these are actually really good!"
-        },
+        { "actor": "kiki", "text": "Oh, these are actually really good!" },
         {
           "actor": "bakercat",
           "text": "Of course they are. I'm a professional."
         }
+      ]
+    }
+  },
+
+  {
+    "id": "lost_package",
+    "precursorId": "intro",
+    "name": "Lost Package",
+    "description": "A package at the post office never got delivered to Moe at the beach. Take it over.",
+    "itemId": "letter",
+    "giverLocationId": "post_office",
+    "fromId": "post_office",
+    "toId": "beach_house",
+    "conversation": {
+      "start": [
+        {
+          "actor": "postcat",
+          "text": "Kiki! This package has been sitting on the shelf for three weeks. It's addressed to Moe."
+        },
+        { "actor": "kiki", "text": "Did you just... not deliver it?" },
+        {
+          "actor": "postcat",
+          "text": "I got distracted! Can you take it over to the beach house for me? Please?"
+        }
+      ],
+      "complete": [
+        {
+          "actor": "postcat",
+          "text": "Moe got it? Great! You're a lifesaver, Kiki."
+        },
+        {
+          "actor": "kiki",
+          "text": "He seemed very confused about what was inside."
+        }
+      ]
+    }
+  },
+  {
+    "id": "package_forward",
+    "precursorId": "lost_package",
+    "name": "Forward the Package",
+    "description": "Turns out the package was meant for the school. Moe asks you to bring the book over.",
+    "itemId": "book",
+    "giverLocationId": "beach_house",
+    "fromId": "beach_house",
+    "toId": "school",
+    "conversation": {
+      "start": [
+        {
+          "actor": "coolcat",
+          "text": "Oh hey Kiki. That package Jake sent? It's actually a book for the school. Total mixup."
+        },
+        {
+          "actor": "kiki",
+          "text": "So you've had the school's book for three weeks?"
+        },
+        {
+          "actor": "coolcat",
+          "text": "I didn't open it! Well. I opened it. But I didn't read it. Much. Can you bring it over?"
+        }
+      ],
+      "complete": [
+        {
+          "actor": "coolcat",
+          "text": "Good look Kiki. That had been stressing me out a little."
+        },
+        { "actor": "kiki", "text": "A little." }
+      ]
+    }
+  },
+  {
+    "id": "school_receipt",
+    "precursorId": "package_forward",
+    "name": "School Receipt",
+    "description": "Ms. Violet needs to send a receipt back to the post office confirming the book arrived.",
+    "itemId": "letter",
+    "giverLocationId": "school",
+    "fromId": "school",
+    "toId": "post_office",
+    "conversation": {
+      "start": [
+        {
+          "actor": "teacher",
+          "text": "Kiki, we finally received our missing library book. Only three weeks late!"
+        },
+        {
+          "actor": "kiki",
+          "text": "I may have had something to do with that."
+        },
+        {
+          "actor": "teacher",
+          "text": "Could you bring this signed receipt to Jake at the post office? Closure is important."
+        }
+      ],
+      "complete": [
+        {
+          "actor": "teacher",
+          "text": "Filed and documented. Order is restored. Thank you, Kiki."
+        },
+        { "actor": "kiki", "text": "Glad it's sorted." }
+      ]
+    }
+  },
+
+  {
+    "id": "wizard_fish",
+    "precursorId": "intro",
+    "name": "Wizard Needs Fish",
+    "description": "Cornelius is working on a new spell and urgently needs a fresh fish from the shop.",
+    "itemId": "fish",
+    "giverLocationId": "wizard_tower",
+    "fromId": "fish_shop",
+    "toId": "wizard_tower",
+    "conversation": {
+      "start": [
+        {
+          "actor": "wizard",
+          "text": "... grumble grumble...        Oh. Kiki. Good. I require a fresh fish. From the shop. Immediately."
+        },
+        { "actor": "kiki", "text": "What's the fish for?" },
+        {
+          "actor": "wizard",
+          "text": "Spell components. Do not ask follow-up questions. Please."
+        }
+      ],
+      "complete": [
+        {
+          "actor": "wizard",
+          "text": "Good. Yes. This will do. The experiment continues."
+        },
+        { "actor": "kiki", "text": "You're welcome, Cornelius." }
+      ]
+    }
+  },
+  {
+    "id": "wizard_catnip",
+    "precursorId": "wizard_fish",
+    "name": "Wizard Needs Catnip",
+    "description": "The first ingredient worked. Now Cornelius needs catnip from the hospital to finish his spell.",
+    "itemId": "catnip",
+    "giverLocationId": "wizard_tower",
+    "fromId": "hospital",
+    "toId": "wizard_tower",
+    "conversation": {
+      "start": [
+        {
+          "actor": "wizard",
+          "text": "Phase one: complete. Now I require catnip. The hospital keeps pharmaceutical grade. Fetch it."
+        },
+        { "actor": "kiki", "text": "Is this spell dangerous?" },
+        { "actor": "wizard", "text": "Statistically? Probably not. Go." }
+      ],
+      "complete": [
+        {
+          "actor": "wizard",
+          "text": "Excellent. The mixture reacts correctly. One final component remains."
+        },
+        { "actor": "kiki", "text": "There's a final component." }
+      ]
+    }
+  },
+  {
+    "id": "enchanted_bread",
+    "precursorId": "wizard_catnip",
+    "name": "Enchanted Bread",
+    "description": "Cornelius accidentally enchanted a loaf of bread. He wants Miroslav to taste-test it.",
+    "itemId": "bread",
+    "giverLocationId": "wizard_tower",
+    "fromId": "wizard_tower",
+    "toId": "bakery",
+    "conversation": {
+      "start": [
+        {
+          "actor": "wizard",
+          "text": "The spell... worked. Mostly. It produced bread. Enchanted bread. I cannot eat it myself."
+        },
+        { "actor": "kiki", "text": "You accidentally baked bread?" },
+        {
+          "actor": "wizard",
+          "text": "I deliberately produced an edible arcane byproduct. Bring it to Miroslav. For analysis."
+        }
+      ],
+      "complete": [
+        {
+          "actor": "wizard",
+          "text": "Did Miroslav approve of the loaf? I will record his assessment."
+        },
+        {
+          "actor": "kiki",
+          "text": "He ate the whole thing in about ten seconds, so I think yes."
+        }
+      ]
+    }
+  },
+
+  {
+    "id": "apples_for_kids",
+    "precursorId": "intro",
+    "name": "Apples for the Kids",
+    "description": "Dr. Meow wants Moe's donated apples brought to the school for the students.",
+    "itemId": "apple",
+    "giverLocationId": "hospital",
+    "fromId": "beach_house",
+    "toId": "school",
+    "conversation": {
+      "start": [
+        {
+          "actor": "doctor",
+          "text": "Kiki! Moe donated a batch of apples as part of our community health drive. Could you collect them and bring them to the school?"
+        },
+        { "actor": "kiki", "text": "Sure. A for effort from Moe." },
+        {
+          "actor": "doctor",
+          "text": "Indeed. The children could use the vitamins."
+        }
+      ],
+      "complete": [
+        {
+          "actor": "doctor",
+          "text": "Wonderful. The school should have them now. Healthy habits start young!"
+        },
+        { "actor": "kiki", "text": "Ms. Violet seemed very pleased." }
+      ]
+    }
+  },
+  {
+    "id": "medicine_supply",
+    "precursorId": "apples_for_kids",
+    "name": "Medicine Supply Run",
+    "description": "A few students ate too many apples. Dr. Meow needs medicine brought to the school fast.",
+    "itemId": "medicine",
+    "giverLocationId": "hospital",
+    "fromId": "hospital",
+    "toId": "school",
+    "timeLimit": 50,
+    "conversation": {
+      "start": [
+        {
+          "actor": "doctor",
+          "text": "Kiki. Those apples I sent to the school. Apparently the children ate ALL of them in one sitting."
+        },
+        { "actor": "kiki", "text": "That does sound like kids." },
+        {
+          "actor": "doctor",
+          "text": "I need you to bring this medicine to the school. Quickly please."
+        }
+      ],
+      "complete": [
+        {
+          "actor": "doctor",
+          "text": "You made it in time. The students will recover. I am... not surprised this happened."
+        },
+        { "actor": "kiki", "text": "No apples next time?" },
+        { "actor": "doctor", "text": "No apples next time." }
+      ]
+    }
+  },
+  {
+    "id": "health_certificate",
+    "precursorId": "medicine_supply",
+    "name": "Health Certificate",
+    "description": "Ms. Violet is sending a health report back to Dr. Meow for his records.",
+    "itemId": "book",
+    "giverLocationId": "school",
+    "fromId": "school",
+    "toId": "hospital",
+    "conversation": {
+      "start": [
+        {
+          "actor": "teacher",
+          "text": "Kiki, I've written up a full health incident report from today's apple situation. Dr. Meow requested it for his records."
+        },
+        {
+          "actor": "kiki",
+          "text": "You wrote an incident report about kids eating too many apples?"
+        },
+        {
+          "actor": "teacher",
+          "text": "Documentation is important, Kiki. Could you bring it to the hospital please?"
+        }
+      ],
+      "complete": [
+        {
+          "actor": "teacher",
+          "text": "Good. Properly filed. I've also noted a request that future donations be pre-portioned."
+        },
+        { "actor": "kiki", "text": "Probably wise." }
+      ]
+    }
+  },
+
+  {
+    "id": "overdue_book",
+    "precursorId": "intro",
+    "name": "Overdue Book",
+    "description": "Ollie has had a library book checked out for months. Marigold wants it back.",
+    "itemId": "book",
+    "giverLocationId": "library",
+    "fromId": "ollies_house",
+    "toId": "library",
+    "conversation": {
+      "start": [
+        {
+          "actor": "librarian",
+          "text": "Kiki! Just the cat I wanted to see. Ollie still has 'The Complete History of Napping' checked out. It's been four months."
+        },
+        { "actor": "kiki", "text": "I'll be honest, I'm not surprised." },
+        {
+          "actor": "librarian",
+          "text": "Could you pick it up from his place and bring it back? I have a waiting list!"
+        }
+      ],
+      "complete": [
+        {
+          "actor": "librarian",
+          "text": "Finally! And it's in perfect condition. I suppose he really did read it cover to cover."
+        },
+        { "actor": "kiki", "text": "He had dog-eared at least forty pages." }
+      ]
+    }
+  },
+  {
+    "id": "recipe_book",
+    "precursorId": "overdue_book",
+    "name": "Recipe Book Recommendation",
+    "description": "While reshelving, Marigold found a recipe book Miroslav would love. Deliver it to the bakery.",
+    "itemId": "book",
+    "giverLocationId": "library",
+    "fromId": "library",
+    "toId": "bakery",
+    "conversation": {
+      "start": [
+        {
+          "actor": "librarian",
+          "text": "Oh Kiki, perfect timing. While reshelving I found this old recipe book, 'Ancient Cat Cuisine.' Miroslav would adore it."
+        },
+        { "actor": "kiki", "text": "You're giving away a library book?" },
+        {
+          "actor": "librarian",
+          "text": "It's a duplicate copy! Would you bring it to the bakery for me?"
+        }
+      ],
+      "complete": [
+        {
+          "actor": "librarian",
+          "text": "I do hope Miroslav enjoys it. Those ancient recipes are fascinating."
+        },
+        {
+          "actor": "kiki",
+          "text": "He started reading it before I could even hand it to him."
+        }
+      ]
+    }
+  },
+
+  {
+    "id": "bait_run",
+    "precursorId": "intro",
+    "name": "Bait Run",
+    "description": "Wally needs bread from the bakery to use as bait for the big fishing contest.",
+    "itemId": "bread",
+    "giverLocationId": "fish_shop",
+    "fromId": "bakery",
+    "toId": "fish_shop",
+    "conversation": {
+      "start": [
+        {
+          "actor": "fishercat",
+          "text": "Kiki! There's a fishing contest today and my secret bait is bread crumbs. I need a fresh loaf from Miroslav."
+        },
+        { "actor": "kiki", "text": "You're using bread as bait?" },
+        {
+          "actor": "fishercat",
+          "text": "Don't knock it 'til you've tried it. First place, every time. Grab me a loaf, will you?"
+        }
+      ],
+      "complete": [
+        {
+          "actor": "fishercat",
+          "text": "Perfect! Now we wait. The fish will come to me. They always do."
+        },
+        {
+          "actor": "kiki",
+          "text": "You look very confident for someone using sandwich ingredients."
+        }
+      ]
+    }
+  },
+  {
+    "id": "contest_prize",
+    "precursorId": "bait_run",
+    "name": "Contest Prize",
+    "description": "Wally won the fishing contest! He wants to donate his trophy to the school's display case.",
+    "itemId": "toy_mouse",
+    "giverLocationId": "fish_shop",
+    "fromId": "fish_shop",
+    "toId": "school",
+    "conversation": {
+      "start": [
+        {
+          "actor": "fishercat",
+          "text": "Kiki! I won! First place, biggest catch, just like every year. The prize is a little trophy."
+        },
+        {
+          "actor": "kiki",
+          "text": "Congratulations Wally! Are you keeping it?"
+        },
+        {
+          "actor": "fishercat",
+          "text": "I've got a shelf full. Would you bring this one to the school's trophy case? The kids love that stuff."
+        }
+      ],
+      "complete": [
+        {
+          "actor": "fishercat",
+          "text": "It's in the case? Good. Maybe it'll inspire the next generation of anglers."
+        },
+        {
+          "actor": "kiki",
+          "text": "Ms. Violet gave a whole speech about perseverance."
+        }
+      ]
+    }
+  },
+
+  {
+    "id": "pool_snacks",
+    "precursorId": "intro",
+    "name": "Pool Snacks",
+    "description": "Tammy needs a fresh loaf of bread from the bakery for the swimmers' snack break.",
+    "itemId": "bread",
+    "giverLocationId": "pool",
+    "fromId": "bakery",
+    "toId": "pool",
+    "conversation": {
+      "start": [
+        {
+          "actor": "lifeguard",
+          "text": "Kiki! I forgot to pick up snacks for the afternoon swim session. Could you grab a loaf of bread from Miroslav?"
+        },
+        { "actor": "kiki", "text": "Sure. How many swimmers are we feeding?" },
+        {
+          "actor": "lifeguard",
+          "text": "Six. But honestly, I might eat half of it myself. It's been a long shift."
+        }
+      ],
+      "complete": [
+        {
+          "actor": "lifeguard",
+          "text": "Perfect timing, they just got out of the water. You're a star, Kiki!"
+        },
+        { "actor": "kiki", "text": "Don't forget to eat some yourself." }
+      ]
+    }
+  },
+  {
+    "id": "ollie_ice_cream",
+    "precursorId": "intro",
+    "name": "Ollie's Sweet Tooth",
+    "description": "Ollie has been craving ice cream all morning. Make a run to the bakery for him.",
+    "itemId": "ice_cream",
+    "giverLocationId": "ollies_house",
+    "fromId": "bakery",
+    "toId": "ollies_house",
+    "conversation": {
+      "start": [
+        {
+          "actor": "ollie",
+          "text": "Kiki, I have been thinking about ice cream since I woke up. I cannot stop. It's a medical emergency."
+        },
+        { "actor": "kiki", "text": "It really isn't." },
+        {
+          "actor": "ollie",
+          "text": "Emotionally it is! Please, one scoop from Miroslav. I'll owe you forever."
+        }
+      ],
+      "complete": [
+        {
+          "actor": "ollie",
+          "text": "OH. This is everything. This is the best day of my life."
+        },
+        { "actor": "kiki", "text": "You said that yesterday about the fish." }
+      ]
+    }
+  },
+  {
+    "id": "midnight_meds",
+    "precursorId": "intro",
+    "name": "Under the Weather",
+    "description": "Ollie isn't feeling well and needs medicine from the hospital quickly.",
+    "itemId": "medicine",
+    "giverLocationId": "ollies_house",
+    "fromId": "hospital",
+    "toId": "ollies_house",
+    "timeLimit": 40,
+    "conversation": {
+      "start": [
+        {
+          "actor": "ollie",
+          "text": "Kiki... I don't feel so good. Could you run to the hospital and get me some medicine?"
+        },
+        {
+          "actor": "kiki",
+          "text": "What happened? Did you eat too much fish again?"
+        },
+        {
+          "actor": "ollie",
+          "text": "...That is not relevant right now. Please hurry."
+        }
+      ],
+      "complete": [
+        {
+          "actor": "ollie",
+          "text": "Thank you. I feel a tiny bit better already."
+        },
+        { "actor": "kiki", "text": "Next time maybe stop at two fish." }
+      ]
+    }
+  },
+  {
+    "id": "wizard_apple",
+    "precursorId": "intro",
+    "name": "Offering Apple",
+    "description": "Cornelius needs an apple from the beach house for an obscure arcane ritual.",
+    "itemId": "apple",
+    "giverLocationId": "wizard_tower",
+    "fromId": "beach_house",
+    "toId": "wizard_tower",
+    "conversation": {
+      "start": [
+        {
+          "actor": "wizard",
+          "text": "The ritual requires an apple. Specifically from the beach. Something about the salt air. Don't ask."
+        },
+        { "actor": "kiki", "text": "I wasn't going to ask." },
+        {
+          "actor": "wizard",
+          "text": "Moe usually has some. Fetch one and bring it here before the moon shifts."
+        }
+      ],
+      "complete": [
+        {
+          "actor": "wizard",
+          "text": "Yes. This has the right resonance. The ritual may proceed."
+        },
+        { "actor": "kiki", "text": "Great. Happy to help with the ritual." }
+      ]
+    }
+  },
+  {
+    "id": "bread_donation",
+    "precursorId": "intro",
+    "name": "Bread Donation",
+    "description": "Miroslav baked extra and wants to donate a fresh loaf to the hospital patients.",
+    "itemId": "bread",
+    "giverLocationId": "bakery",
+    "fromId": "bakery",
+    "toId": "hospital",
+    "conversation": {
+      "start": [
+        {
+          "actor": "bakercat",
+          "text": "Kiki! I had an inspired baking session this morning and made far too much bread. The patients at the hospital deserve a treat."
+        },
+        { "actor": "kiki", "text": "That's really kind of you, Miroslav." },
+        {
+          "actor": "bakercat",
+          "text": "Kindness is an ingredient! Would you take a loaf over for me?"
+        }
+      ],
+      "complete": [
+        {
+          "actor": "bakercat",
+          "text": "Did they enjoy it? I used a new recipe. Extra fluffy."
+        },
+        {
+          "actor": "kiki",
+          "text": "Dr. Meow said, and I quote: 'this is adequate.'"
+        },
+        { "actor": "bakercat", "text": "High praise from that one." }
+      ]
+    }
+  },
+  {
+    "id": "swim_manual",
+    "precursorId": "intro",
+    "name": "Swim Manual",
+    "description": "Tammy needs a swimming technique book from the library for a new training class.",
+    "itemId": "book",
+    "giverLocationId": "pool",
+    "fromId": "library",
+    "toId": "pool",
+    "conversation": {
+      "start": [
+        {
+          "actor": "lifeguard",
+          "text": "Kiki! I'm starting an advanced swimming class next week and I need the stroke technique manual from the library."
+        },
+        { "actor": "kiki", "text": "Marigold should have that." },
+        {
+          "actor": "lifeguard",
+          "text": "She always does. Could you pick it up and bring it here? I need to review before tomorrow."
+        }
+      ],
+      "complete": [
+        {
+          "actor": "lifeguard",
+          "text": "Yes! This is exactly it. Chapter seven alone is going to revolutionise my class."
+        },
+        { "actor": "kiki", "text": "Chapter seven about the backstroke?" },
+        {
+          "actor": "lifeguard",
+          "text": "The backstroke mindset. Very different."
+        }
+      ]
+    }
+  },
+  {
+    "id": "ice_cream_beach",
+    "precursorId": "intro",
+    "name": "Melting Fast",
+    "description": "Miroslav made a special beach order. The ice cream needs to get there before it melts!",
+    "itemId": "ice_cream",
+    "giverLocationId": "bakery",
+    "fromId": "bakery",
+    "toId": "beach_house",
+    "timeLimit": 25,
+    "conversation": {
+      "start": [
+        {
+          "actor": "bakercat",
+          "text": "Kiki! Moe ordered ice cream and I just scooped it. You need to run, it'll melt if you're not quick!"
+        },
+        { "actor": "kiki", "text": "How fast?" },
+        { "actor": "bakercat", "text": "Very fast. Go go go!" }
+      ],
+      "complete": [
+        { "actor": "bakercat", "text": "Did it survive? Tell me it survived." },
+        { "actor": "kiki", "text": "It was... mostly intact." }
+      ]
+    }
+  },
+  {
+    "id": "letter_for_ollie",
+    "precursorId": "intro",
+    "name": "Letter for Ollie",
+    "description": "Jake finally found Ollie's missing letter. It's been at the post office for weeks.",
+    "itemId": "letter",
+    "giverLocationId": "post_office",
+    "fromId": "post_office",
+    "toId": "ollies_house",
+    "conversation": {
+      "start": [
+        {
+          "actor": "postcat",
+          "text": "Kiki! Great news. I found that letter I mentioned to Ollie months ago. It was under a pile of forms. Could you deliver it?"
+        },
+        { "actor": "kiki", "text": "Months ago?" },
+        {
+          "actor": "postcat",
+          "text": "Filing systems are a process. Will you take it to him?"
+        }
+      ],
+      "complete": [
+        {
+          "actor": "postcat",
+          "text": "He got it okay? Wonderful. I feel much better about that now."
+        },
+        {
+          "actor": "kiki",
+          "text": "He was surprised. I don't think he remembered expecting one."
+        }
+      ]
+    }
+  },
+  {
+    "id": "haunted_toy",
+    "precursorId": "intro",
+    "name": "Spooked Toy",
+    "description": "A toy washed up near the haunted house. Tammy wants it for pool activities.",
+    "itemId": "toy_mouse",
+    "giverLocationId": "pool",
+    "fromId": "haunted_house",
+    "toId": "pool",
+    "conversation": {
+      "start": [
+        {
+          "actor": "lifeguard",
+          "text": "Kiki, someone reported a toy washed up near the haunted house. It'd be great for the pool's diving exercises."
+        },
+        { "actor": "kiki", "text": "Near the haunted house." },
+        {
+          "actor": "lifeguard",
+          "text": "It's just a building, Kiki. Could you grab it?"
+        }
+      ],
+      "complete": [
+        {
+          "actor": "lifeguard",
+          "text": "This is perfect! The little ones will love diving for this."
+        },
+        {
+          "actor": "kiki",
+          "text": "For the record, there were definitely weird noises in there."
+        },
+        { "actor": "lifeguard", "text": "Old pipes. Carry on." }
+      ]
+    }
+  },
+  {
+    "id": "doctor_apple",
+    "precursorId": "intro",
+    "name": "Doctor's Apple",
+    "description": "Ms. Violet has apples left over from a class project. Dr. Meow wants them for patients.",
+    "itemId": "apple",
+    "giverLocationId": "hospital",
+    "fromId": "school",
+    "toId": "hospital",
+    "conversation": {
+      "start": [
+        {
+          "actor": "doctor",
+          "text": "Kiki! Ms. Violet has leftover apples from a science experiment. I'd like to use them for our vitamin programme."
+        },
+        { "actor": "kiki", "text": "I thought you didn't like apples?" },
+        {
+          "actor": "doctor",
+          "text": "I don't eat them. Patients are different. Could you collect them from the school?"
+        }
+      ],
+      "complete": [
+        {
+          "actor": "doctor",
+          "text": "Excellent. These will be distributed at afternoon rounds."
+        },
+        {
+          "actor": "kiki",
+          "text": "Ms. Violet said they're very nutritious. She had charts."
+        }
+      ]
+    }
+  },
+  {
+    "id": "catnip_science",
+    "precursorId": "intro",
+    "name": "Science Class Catnip",
+    "description": "Ms. Violet is running a biology lesson and needs a catnip sample from the hospital.",
+    "itemId": "catnip",
+    "giverLocationId": "school",
+    "fromId": "hospital",
+    "toId": "school",
+    "conversation": {
+      "start": [
+        {
+          "actor": "teacher",
+          "text": "Kiki! I'm doing a plant biology lesson tomorrow and I'd love to use catnip as the specimen. The hospital has proper samples."
+        },
+        {
+          "actor": "kiki",
+          "text": "Are you sure using catnip in a classroom is a good idea?"
+        },
+        {
+          "actor": "teacher",
+          "text": "We are professionals. The children will remain composed. Probably. Could you fetch some?"
+        }
+      ],
+      "complete": [
+        {
+          "actor": "teacher",
+          "text": "Wonderful! The lesson will be very hands-on. And nose-on, I suppose."
+        },
+        { "actor": "kiki", "text": "Good luck maintaining order." }
+      ]
+    }
+  },
+  {
+    "id": "postcat_lunch",
+    "precursorId": "intro",
+    "name": "Jake's Lunch",
+    "description": "Jake got so busy sorting mail that he forgot his lunch. Grab him a loaf from the bakery.",
+    "itemId": "bread",
+    "giverLocationId": "post_office",
+    "fromId": "bakery",
+    "toId": "post_office",
+    "conversation": {
+      "start": [
+        {
+          "actor": "postcat",
+          "text": "Kiki, I am absolutely starving. I was so busy this morning I didn't even stop for breakfast."
+        },
+        {
+          "actor": "kiki",
+          "text": "Jake, it's nearly three in the afternoon."
+        },
+        {
+          "actor": "postcat",
+          "text": "Could you please grab something from Miroslav? Anything. I'm desperate."
+        }
+      ],
+      "complete": [
+        {
+          "actor": "postcat",
+          "text": "Oh thank goodness. You are a wonderful person, Kiki."
+        },
+        { "actor": "kiki", "text": "Please eat regularly, Jake." }
+      ]
+    }
+  },
+  {
+    "id": "moe_medicine",
+    "precursorId": "intro",
+    "name": "Beach House Blues",
+    "description": "Moe caught a summer cold. He needs medicine from the hospital.",
+    "itemId": "medicine",
+    "giverLocationId": "beach_house",
+    "fromId": "hospital",
+    "toId": "beach_house",
+    "conversation": {
+      "start": [
+        {
+          "actor": "coolcat",
+          "text": "Hey Kiki. Don't come too close. I've got a cold. Very uncool."
+        },
+        { "actor": "kiki", "text": "A summer cold? That's rough, Moe." },
+        {
+          "actor": "coolcat",
+          "text": "Could you grab me some medicine from the hospital? I can barely get off the couch."
+        }
+      ],
+      "complete": [
+        { "actor": "coolcat", "text": "Thanks. You're a real one, Kiki." },
+        { "actor": "kiki", "text": "Rest up. Drink water." },
+        { "actor": "coolcat", "text": "Already on it. Stay frosty." }
+      ]
+    }
+  },
+  {
+    "id": "ollie_letter",
+    "precursorId": "intro",
+    "name": "Ollie's Letter",
+    "description": "Ollie finally wrote a letter he's been putting off. Take it to the post office for him.",
+    "itemId": "letter",
+    "giverLocationId": "ollies_house",
+    "fromId": "ollies_house",
+    "toId": "post_office",
+    "conversation": {
+      "start": [
+        {
+          "actor": "ollie",
+          "text": "Kiki! I finally wrote my letter. It only took me six weeks. Could you take it to Jake at the post office?"
+        },
+        { "actor": "kiki", "text": "Six weeks, Ollie?" },
+        {
+          "actor": "ollie",
+          "text": "It had to be perfect. I did seven drafts."
+        }
+      ],
+      "complete": [
+        {
+          "actor": "ollie",
+          "text": "It's sent? Good. A weight off my shoulders. Did Jake say when it might arrive?"
+        },
+        {
+          "actor": "kiki",
+          "text": "He said 'eventually.' With his track record I'd say six to eight weeks."
+        }
+      ]
+    }
+  },
+  {
+    "id": "fish_for_wizard",
+    "precursorId": "intro",
+    "name": "Wizard's Fish Order",
+    "description": "Cornelius put in a standing order for weekly fish. Wally needs someone to run the delivery.",
+    "itemId": "fish",
+    "giverLocationId": "fish_shop",
+    "fromId": "fish_shop",
+    "toId": "wizard_tower",
+    "conversation": {
+      "start": [
+        {
+          "actor": "fishercat",
+          "text": "Kiki! Cornelius put in a weekly fish order and I can't leave the shop. Could you run this one up to the tower?"
+        },
+        { "actor": "kiki", "text": "What does he need fish for every week?" },
+        {
+          "actor": "fishercat",
+          "text": "He pays well and doesn't ask for discounts. That's enough for me."
+        }
+      ],
+      "complete": [
+        {
+          "actor": "fishercat",
+          "text": "He take it alright? He always acts like the fish is barely sufficient."
+        },
+        {
+          "actor": "kiki",
+          "text": "He said 'this will suffice' and closed the door."
+        },
+        {
+          "actor": "fishercat",
+          "text": "That's a glowing review from Cornelius."
+        }
+      ]
+    }
+  },
+  {
+    "id": "catnip_craving",
+    "precursorId": "intro",
+    "name": "Stress Relief",
+    "description": "Ollie is having a stressful day and really needs catnip from the hospital to calm down.",
+    "itemId": "catnip",
+    "giverLocationId": "ollies_house",
+    "fromId": "hospital",
+    "toId": "ollies_house",
+    "timeLimit": 35,
+    "conversation": {
+      "start": [
+        {
+          "actor": "ollie",
+          "text": "Kiki. Everything is going wrong. I knocked over my water bowl, I lost my favourite cushion, and I can't nap. I need catnip."
+        },
+        { "actor": "kiki", "text": "That does sound awful, Ollie." },
+        {
+          "actor": "ollie",
+          "text": "The hospital has some. Please hurry. I am unravelling."
+        }
+      ],
+      "complete": [
+        {
+          "actor": "ollie",
+          "text": "Oh. Oh that's better. Everything is fine. Everything is wonderful."
+        },
+        {
+          "actor": "kiki",
+          "text": "Glad to hear it. Try not to knock anything else over."
+        }
+      ]
+    }
+  },
+  {
+    "id": "library_bread",
+    "precursorId": "intro",
+    "name": "Library Book Sale",
+    "description": "Marigold is hosting a book sale and needs bread from the bakery to feed the visitors.",
+    "itemId": "bread",
+    "giverLocationId": "library",
+    "fromId": "bakery",
+    "toId": "library",
+    "conversation": {
+      "start": [
+        {
+          "actor": "librarian",
+          "text": "Kiki! I'm holding a charity book sale this afternoon and I thought refreshments would encourage browsing."
+        },
+        { "actor": "kiki", "text": "That's a lovely idea." },
+        {
+          "actor": "librarian",
+          "text": "Would you pick up a loaf from Miroslav? Readers read better on a full stomach, I always say."
+        }
+      ],
+      "complete": [
+        {
+          "actor": "librarian",
+          "text": "Perfect! I'll slice it up. We've already had three visitors and it's not even started yet."
+        },
+        {
+          "actor": "kiki",
+          "text": "I think the bread might be the bigger draw than the books."
+        },
+        { "actor": "librarian", "text": "Whatever gets them through the door." }
       ]
     }
   }

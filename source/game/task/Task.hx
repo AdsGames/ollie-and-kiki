@@ -10,6 +10,9 @@ import game.task.TaskState;
  * Idle -> Accepted -> PickedUp -> Delivered
  */
 class Task {
+	public var id:String = "";
+	public var precursorId:Null<String> = null;
+
 	public var name:String;
 	public var description:String;
 

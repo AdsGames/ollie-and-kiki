@@ -31,6 +31,8 @@ class TaskManager {
 	public function load(itemManager:ItemManager, locationManager:LocationManager):Void {
 		var raw = Assets.getText(AssetPaths.tasks__json);
 		var data:Array<{
+			id:String,
+			?precursorId:String,
 			name:String,
 			description:String,
 			itemId:String,
@@ -38,7 +40,10 @@ class TaskManager {
 			fromId:String,
 			toId:String,
 			?timeLimit:Float,
-			conversation:{start:Array<{actor:String, text:String}>, complete:Array<{actor:String, text:String}>}
+			conversation:{
+				start:Array<{actor:String, text:String}>,
+				complete:Array<{actor:String, text:String}>
+			}
 		}> = haxe.Json.parse(raw);
 
 		for (entry in data) {
@@ -49,6 +54,8 @@ class TaskManager {
 
 			if (item != null && giver != null && from != null && to != null) {
 				var task = new Task();
+				task.id = entry.id;
+				task.precursorId = entry.precursorId;
 				task.name = entry.name;
 				task.description = entry.description;
 				task.item = item;
@@ -73,11 +80,23 @@ class TaskManager {
 	 */
 	public function getIdleTaskNearGiver(playerX:Float, playerY:Float):Null<Task> {
 		for (task in tasks) {
-			if (task.state == Idle && isNear(playerX, playerY, task.giverLocation)) {
+			if (task.state == Idle && isNear(playerX, playerY, task.giverLocation) && isPrecursorComplete(task)) {
 				return task;
 			}
 		}
 		return null;
+	}
+
+	public function isPrecursorComplete(task:Task):Bool {
+		if (task.precursorId == null) {
+			return true;
+		}
+		for (t in tasks) {
+			if (t.id == task.precursorId) {
+				return t.isComplete();
+			}
+		}
+		return false;
 	}
 
 	/**
