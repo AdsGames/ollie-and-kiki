@@ -4,7 +4,7 @@ import flixel.FlxSprite;
 import flixel.graphics.frames.FlxBitmapFont;
 import flixel.group.FlxGroup;
 import flixel.text.FlxBitmapText;
-import flixel.util.FlxColor;
+import game.Palette;
 import game.actor.Actor;
 
 // 9-slice dialogue box using a 48x48 spritesheet (3x3 grid of 16x16 tiles).
@@ -48,7 +48,7 @@ class DialogueBox extends FlxGroup {
 		actorText = new FlxBitmapText(Fonts.glasstownBold);
 		actorText.x = BOX_X + PADDING;
 		actorText.y = BOX_Y + PADDING - 2;
-		actorText.color = FlxColor.BLACK;
+		actorText.color = Palette.BLACK;
 		actorText.scrollFactor.set(0, 0);
 		actorText.setSize(BOX_W - PADDING * 2, TILE - PADDING * 2);
 		add(actorText);
@@ -61,7 +61,7 @@ class DialogueBox extends FlxGroup {
 		contentText.fieldWidth = INNER_W - PADDING * 2;
 		contentText.multiLine = true;
 		contentText.wrap = WORD(WordSplitConditions.LINE_WIDTH);
-		contentText.color = FlxColor.BLACK;
+		contentText.color = Palette.BLACK;
 		contentText.scrollFactor.set(0, 0);
 		add(contentText);
 

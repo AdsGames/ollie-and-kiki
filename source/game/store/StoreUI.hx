@@ -6,6 +6,7 @@ import flixel.group.FlxGroup;
 import flixel.text.FlxBitmapText;
 import flixel.util.FlxColor;
 import game.Fonts;
+import game.Palette;
 
 class StoreUI extends FlxGroup {
 	static final X = 16;
@@ -32,20 +33,20 @@ class StoreUI extends FlxGroup {
 		var H = PADDING * 4 + 12 + items.length * ITEM_H;
 
 		var bg = new FlxSprite(X, Y);
-		bg.makeGraphic(W, H, FlxColor.fromRGB(10, 10, 30));
+		bg.makeGraphic(W, H, Palette.BLACK);
 		bg.scrollFactor.set(0, 0);
 		add(bg);
 
-		var title = makeText(X + PADDING, Y + PADDING, "= STORE =", Fonts.glasstownBold, FlxColor.YELLOW);
+		var title = makeText(X + PADDING, Y + PADDING, "= STORE =", Fonts.glasstownBold, Palette.YELLOW);
 		add(title);
 
 		for (i in 0...items.length) {
-			var t = makeText(X + PADDING, Y + PADDING + 14 + i * ITEM_H, "", Fonts.glasstown, FlxColor.WHITE);
+			var t = makeText(X + PADDING, Y + PADDING + 14 + i * ITEM_H, "", Fonts.glasstown, Palette.WHITE);
 			itemTexts.push(t);
 			add(t);
 		}
 
-		hintText = makeText(X + PADDING, Y + PADDING + 14 + items.length * ITEM_H, "E/Z:Buy  ESC:Close", Fonts.glasstown, FlxColor.fromRGB(140, 140, 140));
+		hintText = makeText(X + PADDING, Y + PADDING + 14 + items.length * ITEM_H, "E/Z:Buy  ESC:Close", Fonts.glasstown, Palette.DARK_GREY);
 		add(hintText);
 	}
 
@@ -104,11 +105,11 @@ class StoreUI extends FlxGroup {
 			var status = owned ? "[owned]" : '${item.price}c';
 			itemTexts[i].text = '${prefix} ${item.name} - ${status}';
 			if (owned) {
-				itemTexts[i].color = FlxColor.GRAY;
+				itemTexts[i].color = Palette.DARK_GREY;
 			} else if (i == selectedIdx) {
-				itemTexts[i].color = storeManager.coins >= item.price ? FlxColor.YELLOW : FlxColor.RED;
+				itemTexts[i].color = storeManager.coins >= item.price ? Palette.YELLOW : Palette.RED;
 			} else {
-				itemTexts[i].color = FlxColor.WHITE;
+				itemTexts[i].color = Palette.WHITE;
 			}
 		}
 	}

@@ -3,8 +3,8 @@ package game.economy;
 import flixel.FlxG;
 import flixel.group.FlxGroup;
 import flixel.text.FlxBitmapText;
-import flixel.util.FlxColor;
 import game.Fonts;
+import game.Palette;
 import game.store.StoreManager;
 
 class CurrencyRenderer extends FlxGroup {
@@ -19,7 +19,7 @@ class CurrencyRenderer extends FlxGroup {
 		coinsText = new FlxBitmapText(Fonts.glasstownBold);
 		coinsText.y = Y;
 		coinsText.alignment = RIGHT;
-		coinsText.color = FlxColor.YELLOW;
+		coinsText.color = Palette.YELLOW;
 		coinsText.scrollFactor.set(0, 0);
 		coinsText.text = "Coins: 0";
 		add(coinsText);

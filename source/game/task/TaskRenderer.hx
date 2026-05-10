@@ -2,8 +2,8 @@ package game.task;
 
 import flixel.group.FlxGroup;
 import flixel.text.FlxBitmapText;
-import flixel.util.FlxColor;
 import game.Fonts;
+import game.Palette;
 
 class TaskRenderer extends FlxGroup {
 	static final MAX_TASKS = 3;
@@ -22,7 +22,7 @@ class TaskRenderer extends FlxGroup {
 			t.y = 8 + i * LINE_HEIGHT;
 			t.fieldWidth = 224;
 			t.multiLine = false;
-			t.color = FlxColor.WHITE;
+			t.color = Palette.WHITE;
 			t.scrollFactor.set(0, 0);
 			t.visible = false;
 			add(t);
@@ -37,9 +37,9 @@ class TaskRenderer extends FlxGroup {
 			if (i < active.length) {
 				taskTexts[i].visible = true;
 				taskTexts[i].text = formatTask(active[i]);
-				taskTexts[i].color = FlxColor.WHITE;
+				taskTexts[i].color = Palette.WHITE;
 				if (active[i].state == PickedUp && active[i].timeLimit != null && active[i].timeRemaining() < 10) {
-					taskTexts[i].color = FlxColor.RED;
+					taskTexts[i].color = Palette.RED;
 				}
 			} else {
 				taskTexts[i].visible = false;

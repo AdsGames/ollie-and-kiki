@@ -2,7 +2,7 @@ package game.minimap;
 
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
-import flixel.util.FlxColor;
+import game.Palette;
 import game.location.LocationManager;
 
 class MinimapRenderer extends FlxGroup {
@@ -22,7 +22,7 @@ class MinimapRenderer extends FlxGroup {
 		this.worldH = worldH;
 
 		var bg = new FlxSprite(X, Y);
-		bg.makeGraphic(W, H, FlxColor.fromRGB(0, 0, 0));
+		bg.makeGraphic(W, H, Palette.BLACK);
 		bg.scrollFactor.set(0, 0);
 		add(bg);
 
@@ -30,13 +30,13 @@ class MinimapRenderer extends FlxGroup {
 		var scaleY = H / (worldH * 8.0);
 		for (loc in locationManager.getAllLocations()) {
 			var dot = new FlxSprite(X + loc.x * scaleX - DOT * 0.5, Y + loc.y * scaleY - DOT * 0.5);
-			dot.makeGraphic(DOT, DOT, FlxColor.WHITE);
+			dot.makeGraphic(DOT, DOT, Palette.WHITE);
 			dot.scrollFactor.set(0, 0);
 			add(dot);
 		}
 
 		playerDot = new FlxSprite(X + W * 0.5, Y + H * 0.5);
-		playerDot.makeGraphic(DOT, DOT, FlxColor.YELLOW);
+		playerDot.makeGraphic(DOT, DOT, Palette.YELLOW);
 		playerDot.scrollFactor.set(0, 0);
 		add(playerDot);
 

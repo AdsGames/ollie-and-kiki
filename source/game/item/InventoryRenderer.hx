@@ -3,8 +3,8 @@ package game.item;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.text.FlxBitmapText;
-import flixel.util.FlxColor;
 import game.Fonts;
+import game.Palette;
 import game.task.Task;
 import game.task.TaskManager;
 
@@ -29,7 +29,7 @@ class InventoryRenderer extends FlxGroup {
 		bagText.y = Y;
 		bagText.fieldWidth = LABEL_WIDTH;
 		bagText.multiLine = false;
-		bagText.color = FlxColor.YELLOW;
+		bagText.color = Palette.YELLOW;
 		bagText.scrollFactor.set(0, 0);
 		bagText.text = "Bag:";
 		bagText.visible = false;

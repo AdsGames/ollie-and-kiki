@@ -4,8 +4,8 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.text.FlxBitmapText;
-import flixel.util.FlxColor;
 import game.Fonts;
+import game.Palette;
 
 class LocationMarker extends FlxGroup {
 	public var location:Location;
@@ -27,7 +27,7 @@ class LocationMarker extends FlxGroup {
 		label.autoSize = true;
 		label.multiLine = true;
 		label.alignment = CENTER;
-		label.color = FlxColor.WHITE;
+		label.color = Palette.WHITE;
 		label.scrollFactor.set(1, 1);
 		add(label);
 

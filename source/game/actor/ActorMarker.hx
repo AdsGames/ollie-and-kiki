@@ -4,8 +4,8 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.text.FlxBitmapText;
-import flixel.util.FlxColor;
 import game.Fonts;
+import game.Palette;
 import game.location.Location;
 
 class ActorMarker extends FlxGroup {
@@ -30,7 +30,7 @@ class ActorMarker extends FlxGroup {
 		questLabel = new FlxBitmapText(Fonts.glasstownBold);
 		questLabel.fieldWidth = LABEL_WIDTH;
 		questLabel.alignment = CENTER;
-		questLabel.color = FlxColor.YELLOW;
+		questLabel.color = Palette.YELLOW;
 		questLabel.text = "!";
 		questLabel.visible = false;
 		questLabel.scrollFactor.set(1, 1);
