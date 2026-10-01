@@ -8,23 +8,30 @@ import game.actor.ActorRenderer;
 import game.ambience.AmbienceManager;
 import game.dialogue.DialogueLine;
 import game.dialogue.DialogueManager;
-import game.economy.CurrencyRenderer;
+import game.event.EventBus;
 import game.item.InventoryRenderer;
 import game.item.ItemManager;
 import game.location.LocationManager;
 import game.location.LocationRenderer;
 import game.minimap.MinimapRenderer;
 import game.sfx.SfxManager;
+import game.state.DialogueState;
+import game.state.ExploringState;
+import game.state.GameStateStack;
+import game.state.StoreState;
+import game.store.CurrencyRenderer;
 import game.store.StoreManager;
 import game.store.StoreUI;
 import game.task.QuestArrowRenderer;
-import game.task.Task;
 import game.task.TaskManager;
 import game.task.TaskRenderer;
 
 class World {
 	public var map:WorldMap;
 	public var player:Player;
+
+	// Event bus
+	public var events:EventBus;
 
 	// Data managers
 	public var sfxManager:SfxManager;
@@ -46,12 +53,13 @@ class World {
 	public var minimapRenderer:MinimapRenderer;
 	public var storeUI:StoreUI;
 
-	// Task to accept once the start dialogue finishes
-	private var pendingAcceptTask:Null<Task>;
+	// State stack
+	private var stack:GameStateStack;
 
 	public function new(state:FlxState) {
-		pendingAcceptTask = null;
 		map = new WorldMap(state);
+
+		events = new EventBus();
 
 		// Data
 		sfxManager = new SfxManager();
@@ -68,12 +76,14 @@ class World {
 		locationManager = new LocationManager();
 		locationManager.loadFromWorldMap(map.locations);
 
-		dialogueManager = new DialogueManager(actorManager, sfxManager);
+		dialogueManager = new DialogueManager(actorManager, sfxManager, events);
 
-		storeManager = new StoreManager(dialogueManager);
+		storeManager = new StoreManager(dialogueManager, events);
 
 		taskManager = new TaskManager(storeManager);
 		taskManager.load(itemManager, locationManager);
+
+		subscribeTaskEvents();
 
 		// Actor sprites at their home locations
 		actorRenderer = new ActorRenderer(actorManager, locationManager, taskManager);
@@ -81,7 +91,7 @@ class World {
 
 		// Player initialization
 		var kikisHouse = locationManager.getLocationById("kikis_house");
-		player = new Player(kikisHouse.x, kikisHouse.y, dialogueManager, storeManager);
+		player = new Player(kikisHouse.x, kikisHouse.y, storeManager);
 		state.add(player);
 
 		// Camera follow
@@ -100,7 +110,7 @@ class World {
 		questArrowRenderer = new QuestArrowRenderer(taskManager);
 		state.add(questArrowRenderer);
 
-		currencyRenderer = new CurrencyRenderer(storeManager);
+		currencyRenderer = new CurrencyRenderer(storeManager, events);
 		state.add(currencyRenderer);
 
 		// Popup UIs
@@ -119,105 +129,58 @@ class World {
 		// Dialogue box renders on top of everything
 		dialogueManager.addToState(state);
 
-		// Intro dialogue
+		// Set up state stack with Exploring as the base, then wire transitions.
+		stack = new GameStateStack();
+		stack.push(new ExploringState(this));
+		subscribeStateTransitions();
+
+		// Intro dialogue. Flush so the resulting DialogueStarted event applies
+		// before the first update tick.
 		dialogueManager.startDialogue([new DialogueLine("kiki", "I should go see Ollie... I think he needs me.")]);
+		events.flush();
 	}
 
 	public function update(elapsed:Float):Void {
 		FlxG.collide(player, map.collision);
-
-		if (storeManager.isOpen) {
-			return;
-		}
-
-		// Cheat
-		if (FlxG.keys.justPressed.ONE) {
-			storeManager.addCoins(10);
-		}
-
-		// Toggle quest log with Q / Y button
-		if (InputManager.justPressed(QuestLog)) {
-			taskRenderer.toggle();
-		}
-
-		// Toggle minimap with M / START (requires map upgrade)
-		var hasMap = storeManager.isPurchased("map");
-		if (InputManager.justPressed(Minimap) && hasMap) {
-			minimapRenderer.toggle();
-		}
-		if (hasMap) {
-			minimapRenderer.updatePlayerPos(player.x, player.y);
-		}
-
-		if (!dialogueManager.active) {
-			// Accept the pending task now that its start dialogue has finished
-			if (pendingAcceptTask != null) {
-				pendingAcceptTask.accept();
-				pendingAcceptTask = null;
-			}
-
-			// Interact key / A button
-			if (InputManager.justPressed(Interact)) {
-				handleInteract();
-			}
-
-			// Proximity tracking
-			var proximity = taskManager.updateProximity(player.x, player.y);
-			if (proximity.pickedUp != null) {
-				sfxManager.playTaskPickup();
-			}
-			if (proximity.delivered != null) {
-				storeManager.addCoins(proximity.delivered.item.value);
-				sfxManager.playTaskDelivered();
-				dialogueManager.startDialogue(proximity.delivered.completeLines);
-			}
-
-			// Tick delivery timers
-			var timerResult = taskManager.updateTimers(elapsed);
-			if (timerResult.expired != null) {
-				sfxManager.playTaskExpired();
-			}
-			if (timerResult.warned != null) {
-				sfxManager.playTimerWarning();
-			}
-		}
-
-		dialogueManager.update(elapsed);
+		stack.update(elapsed);
+		events.flush();
 		ambienceManager.update(player.x, player.y, map.ambienceZones);
 	}
 
-	private function handleInteract():Void {
-		var task = taskManager.getIdleTaskNearGiver(player.x, player.y);
-		var closestLocation = locationManager.getClosestLocation(player.x, player.y, 16);
+	private function subscribeTaskEvents():Void {
+		events.on("TaskPickedUp", function(_) sfxManager.playTaskPickup());
+		events.on("TaskExpired", function(_) sfxManager.playTaskExpired());
+		events.on("TaskTimerWarned", function(_) sfxManager.playTimerWarning());
+		events.on("TaskDelivered", function(event) switch (event) {
+			case TaskDelivered(task):
+				storeManager.addCoins(task.item.value);
+				sfxManager.playTaskDelivered();
+				dialogueManager.startDialogue(task.completeLines);
+			default:
+		});
+	}
 
-		if (task != null) {
-			// Task offer, check if the player can accept
-			if (taskManager.isCarryFull()) {
-				// Already maxxed out quests
-				var giverActor = actorManager.getActorForLocation(task.giverLocation.id);
-				if (giverActor == null) {
-					dialogueManager.startDialogue([new DialogueLine("kiki", "My paws are full!")]);
-				} else {
-					dialogueManager.startDialogue([new DialogueLine(giverActor.id, "Looks like your paws are already full!")]);
-				}
-			} else {
-				// Offer the task
-				pendingAcceptTask = task;
-				dialogueManager.startDialogue(task.startLines);
-			}
-		} else if (closestLocation != null) {
-			// Near a location
-			if (closestLocation.id == "store") {
-				storeUI.open();
-			} else {
-				// Just show the location description
-				var actor = actorManager.getActorForLocation(closestLocation.id);
-				if (actor != null) {
-					dialogueManager.startDialogue([new DialogueLine(actor.id, actor.defaultLine)]);
-				} else {
-					dialogueManager.startDialogue([new DialogueLine("kiki", closestLocation.description)]);
-				}
-			}
-		}
+	private function subscribeStateTransitions():Void {
+		events.on("DialogueStarted", function(_) {
+			stack.push(new DialogueState(this));
+			refreshFrozen();
+		});
+		events.on("DialogueEnded", function(_) {
+			stack.popOfType(DialogueState);
+			refreshFrozen();
+		});
+		events.on("StoreOpened", function(_) {
+			stack.push(new StoreState(this));
+			refreshFrozen();
+		});
+		events.on("StoreClosed", function(_) {
+			stack.popOfType(StoreState);
+			refreshFrozen();
+		});
+	}
+
+	private function refreshFrozen():Void {
+		// Player can only move during the base Exploring state.
+		player.frozen = !Std.isOfType(stack.current(), ExploringState);
 	}
 }

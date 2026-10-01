@@ -2,6 +2,7 @@ package game.dialogue;
 
 import flixel.FlxState;
 import game.actor.ActorManager;
+import game.event.EventBus;
 import game.sfx.SfxManager;
 
 class DialogueManager {
@@ -13,18 +14,20 @@ class DialogueManager {
 	private var box:DialogueBox;
 	private var actorManager:ActorManager;
 	private var sfxManager:SfxManager;
+	private var events:EventBus;
 	private var lines:Array<DialogueLine>;
 	private var lineIdx:Int;
 
 	// Hack to avoid skipping the first window of text animation.
 	private var suppressAdvance:Bool;
 
-	public function new(actorManager:ActorManager, sfxManager:SfxManager) {
+	public function new(actorManager:ActorManager, sfxManager:SfxManager, events:EventBus) {
 		this.lines = [];
 		this.lineIdx = 0;
 		this.suppressAdvance = false;
 		this.actorManager = actorManager;
 		this.sfxManager = sfxManager;
+		this.events = events;
 		box = new DialogueBox();
 	}
 
@@ -33,19 +36,28 @@ class DialogueManager {
 	}
 
 	/**
-	 * Kick off a dialogue sequence. If a dialogue is already active, this will be ignored.
+	 * Kick off a dialogue sequence. If a dialogue is already active, the lines are queued after it.
 	 * @param lines
 	 */
 	public function startDialogue(lines:Array<DialogueLine>):Void {
-		if (active || lines.length == 0) {
+		if (lines.length == 0) {
 			return;
 		}
 
-		this.lines = [for (line in lines) for (split in splitLine(line)) split];
+		var split = [for (line in lines) for (s in splitLine(line)) s];
+
+		// Queue so back-to-back sequences (e.g. two deliveries in one frame) all play
+		if (active) {
+			this.lines = this.lines.concat(split);
+			return;
+		}
+
+		this.lines = split;
 		lineIdx = 0;
 		active = true;
 		suppressAdvance = true;
 		showLine(this.lines[0]);
+		events.emit(DialogueStarted);
 	}
 
 	private static function splitLine(line:DialogueLine):Array<DialogueLine> {
@@ -79,7 +91,7 @@ class DialogueManager {
 			return;
 		}
 
-		box.update(elapsed);
+		// The box is a state member, so Flixel already ticks its typewriter each frame.
 
 		if (suppressAdvance) {
 			suppressAdvance = false;
@@ -92,6 +104,7 @@ class DialogueManager {
 				if (lineIdx >= lines.length) {
 					active = false;
 					box.hide();
+					events.emit(DialogueEnded);
 				} else {
 					showLine(lines[lineIdx]);
 				}

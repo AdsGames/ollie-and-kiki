@@ -2,17 +2,18 @@ package game;
 
 import flixel.FlxSprite;
 import flixel.util.FlxDirectionFlags;
-import game.dialogue.DialogueManager;
 import game.store.StoreManager;
 
 class Player extends FlxSprite {
-	private var dialogueManager:DialogueManager;
 	private var storeManager:StoreManager;
 
-	public function new(x:Float, y:Float, dialogueManager:DialogueManager, storeManager:StoreManager) {
+	/** Set externally (by World event subscriptions) to gate movement during modal screens. */
+	public var frozen:Bool;
+
+	public function new(x:Float, y:Float, storeManager:StoreManager) {
 		super(x, y, AssetPaths.cat__png);
-		this.dialogueManager = dialogueManager;
 		this.storeManager = storeManager;
+		this.frozen = false;
 
 		// Collision
 		width = 6;
@@ -29,8 +30,7 @@ class Player extends FlxSprite {
 		super.update(elapsed);
 		velocity.set(0, 0);
 
-		// Do not move when dialogue or store UI is active
-		if (dialogueManager.active || storeManager.isOpen) {
+		if (frozen) {
 			return;
 		}
 
