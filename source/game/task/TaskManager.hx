@@ -51,6 +51,18 @@ class TaskManager {
 		trace('Loaded ${tasks.length} tasks.');
 	}
 
+	/**
+	 * Restore task states from a save, keyed by task id. Emits no events.
+	 */
+	public function restoreStates(states:Map<String, TaskState>):Void {
+		for (task in tasks) {
+			var state = states.get(task.id);
+			if (state != null) {
+				task.state = state;
+			}
+		}
+	}
+
 	private function parseTask(entry:Dynamic, itemManager:ItemManager, locationManager:LocationManager):Null<Task> {
 		var task = new Task();
 		task.id = entry.id;

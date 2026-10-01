@@ -125,6 +125,19 @@ class StoreManager {
 		return null;
 	}
 
+	/**
+	 * Restore coins and owned upgrades from a save. Emits no events.
+	 */
+	public function restore(coins:Int, purchasedIds:Array<String>):Void {
+		this.coins = coins;
+		purchased.clear();
+		for (id in purchasedIds) {
+			if (itemMap.exists(id)) {
+				purchased.set(id, true);
+			}
+		}
+	}
+
 	public function getAllPurchased():Array<String> {
 		return [for (id in purchased.keys()) id];
 	}
