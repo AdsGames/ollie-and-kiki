@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Ollie &amp; Kiki — Quest / Location / Actor Graph</title>
+<script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+<style>
+  html, body { margin: 0; height: 100%; font-family: system-ui, sans-serif; background: #1e1e24; color: #eee; }
+  #app { display: flex; height: 100vh; }
+  #graph { flex: 1; background: #15151a; }
+  #side { width: 320px; padding: 12px 16px; box-sizing: border-box; overflow-y: auto; border-left: 1px solid #333; }
+  h1 { font-size: 14px; margin: 0 0 8px; letter-spacing: 1px; text-transform: uppercase; color: #aaa; }
+  h2 { font-size: 16px; margin: 12px 0 4px; }
+  .legend span { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
+  .row { margin: 4px 0; font-size: 13px; }
+  .muted { color: #888; font-size: 12px; }
+  .filters label { display: block; font-size: 13px; margin: 4px 0; cursor: pointer; }
+  .filters input { margin-right: 6px; }
+  pre { background: #0f0f13; padding: 8px; border-radius: 4px; font-size: 12px; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="graph"></div>
+  <div id="side">
+    <h1>Graph</h1>
+    <div class="legend">
+      <div class="row"><span style="background:#f0b400"></span> Location</div>
+      <div class="row"><span style="background:#4aa3ff"></span> Actor</div>
+      <div class="row"><span style="background:#7ad17a"></span> delivery task</div>
+      <div class="row"><span style="background:#5ad1d1"></span> find task</div>
+      <div class="row"><span style="background:#e07ad1"></span> photo task</div>
+      <div class="row"><span style="background:#e8a04a"></span> escort task</div>
+      <div class="row" style="color:#aaa">- - precursor</div>
+      <div class="row" style="color:#aaa">- - blocked-by</div>
+    </div>
+    <div class="filters">
+      <h2>Show</h2>
+      <label><input type="checkbox" id="show-actors" checked> Actors</label>
+      <label><input type="checkbox" id="show-tasks" checked> Task edges</label>
+      <label><input type="checkbox" id="show-precursors" checked> Precursor edges</label>
+      <label><input type="checkbox" id="show-blocked" checked> Blocked-by edges</label>
+    </div>
+    <h2>Selection</h2>
+    <div id="details"><span class="muted">Click a node or edge.</span></div>
+  </div>
+</div>
+
+<script>
+const LOCATION_COLOR = '#f0b400';
+const ACTOR_COLOR    = '#4aa3ff';
+const TYPE_COLORS = {
+  delivery: '#7ad17a',
+  find:     '#5ad1d1',
+  photo:    '#e07ad1',
+  escort:   '#e8a04a',
+};
+const PRE_COLOR     = '#c97aff';
+const BLOCKED_COLOR = '#ff6a6a';
+
+function taskType(t) {
+  return t.type || 'delivery';
+}
+function taskDests(t) {
+  return Array.isArray(t.toIds) ? t.toIds : [];
+}
+function taskOrigin(t) {
+  return t.fromId || t.giverLocationId || null;
+}
+
+async function loadJSON(path) {
+  const r = await fetch(path);
+  if (!r.ok) throw new Error(`${path}: ${r.status}`);
+  return r.json();
+}
+
+function prettyId(id) {
+  return id.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
+async function main() {
+  const [tasks, actors] = await Promise.all([
+    loadJSON('../assets/data/tasks.json'),
+    loadJSON('../assets/data/actors.json'),
+  ]);
+
+  // Collect all location ids referenced anywhere.
+  const locationIds = new Set();
+  for (const a of actors) if (a.location_id) locationIds.add(a.location_id);
+  for (const t of tasks) {
+    for (const k of ['giverLocationId', 'fromId']) {
+      if (t[k]) locationIds.add(t[k]);
+    }
+    for (const id of taskDests(t)) locationIds.add(id);
+  }
+
+  const nodes = new vis.DataSet();
+  const edges = new vis.DataSet();
+
+  for (const id of locationIds) {
+    nodes.add({
+      id: `loc:${id}`,
+      label: prettyId(id),
+      group: 'location',
+      shape: 'box',
+      color: { background: LOCATION_COLOR, border: '#a87a00' },
+      font: { color: '#222', size: 16, bold: true },
+      _kind: 'location',
+      _data: { id },
+    });
+  }
+
+  for (const a of actors) {
+    nodes.add({
+      id: `actor:${a.id}`,
+      label: a.name,
+      group: 'actor',
+      shape: 'dot',
+      size: 14,
+      color: { background: ACTOR_COLOR, border: '#1a5fb0' },
+      font: { color: '#eee', size: 13 },
+      _kind: 'actor',
+      _data: a,
+    });
+    if (a.location_id) {
+      edges.add({
+        id: `lives:${a.id}`,
+        from: `actor:${a.id}`,
+        to: `loc:${a.location_id}`,
+        dashes: [2, 4],
+        color: { color: '#666' },
+        width: 1,
+        _kind: 'lives',
+      });
+    }
+  }
+
+  const taskById = new Map(tasks.map(t => [t.id, t]));
+
+  for (const t of tasks) {
+    const type = taskType(t);
+    const color = TYPE_COLORS[type] || TYPE_COLORS.delivery;
+    const origin = taskOrigin(t);
+    const dests = taskDests(t);
+    const label = t.availableAt ? `${t.name} [${t.availableAt.join(',')}]` : t.name;
+
+    dests.forEach((dest, i) => {
+      if (!origin) return;
+      edges.add({
+        id: `task:${t.id}:${i}`,
+        from: `loc:${origin}`,
+        to: `loc:${dest}`,
+        label: i === 0 ? label : '',
+        arrows: 'to',
+        color: { color },
+        font: { color: '#ddd', size: 11, background: 'rgba(0,0,0,0.4)', strokeWidth: 0 },
+        smooth: { type: 'curvedCW', roundness: 0.15 + i * 0.08 },
+        _kind: 'task',
+        _data: t,
+      });
+    });
+
+    if (t.precursorId) {
+      const prev = taskById.get(t.precursorId);
+      const prevDest = prev ? (taskDests(prev)[0] || taskOrigin(prev)) : null;
+      const myStart = origin;
+      if (prevDest && myStart) {
+        edges.add({
+          id: `pre:${t.id}`,
+          from: `loc:${prevDest}`,
+          to: `loc:${myStart}`,
+          dashes: true,
+          arrows: 'to',
+          color: { color: PRE_COLOR, opacity: 0.6 },
+          width: 1,
+          smooth: { type: 'curvedCCW', roundness: 0.3 },
+          _kind: 'precursor',
+          _data: { from: prev.id, to: t.id },
+        });
+      }
+    }
+
+    if (Array.isArray(t.blockedByTasks)) {
+      for (const blockerId of t.blockedByTasks) {
+        const blocker = taskById.get(blockerId);
+        const blockerDest = blocker ? (taskDests(blocker)[0] || taskOrigin(blocker)) : null;
+        if (blockerDest && origin) {
+          edges.add({
+            id: `blocked:${t.id}:${blockerId}`,
+            from: `loc:${blockerDest}`,
+            to: `loc:${origin}`,
+            dashes: [4, 4],
+            arrows: 'to',
+            color: { color: BLOCKED_COLOR, opacity: 0.5 },
+            width: 1,
+            smooth: { type: 'curvedCW', roundness: 0.45 },
+            _kind: 'blocked',
+            _data: { blocker: blockerId, blocks: t.id },
+          });
+        }
+      }
+    }
+  }
+
+  const container = document.getElementById('graph');
+  const network = new vis.Network(container, { nodes, edges }, {
+    physics: {
+      solver: 'forceAtlas2Based',
+      forceAtlas2Based: { gravitationalConstant: -60, springLength: 140 },
+      stabilization: { iterations: 400 },
+    },
+    interaction: { hover: true, tooltipDelay: 200 },
+    edges: { selectionWidth: 2 },
+  });
+
+  // Filter toggles.
+  function applyFilters() {
+    const showActors    = document.getElementById('show-actors').checked;
+    const showTasks     = document.getElementById('show-tasks').checked;
+    const showPrecursor = document.getElementById('show-precursors').checked;
+    const showBlocked   = document.getElementById('show-blocked').checked;
+
+    nodes.forEach(n => {
+      if (n._kind === 'actor') nodes.update({ id: n.id, hidden: !showActors });
+    });
+    edges.forEach(e => {
+      let hidden = false;
+      if (e._kind === 'lives' && !showActors) hidden = true;
+      if (e._kind === 'task' && !showTasks) hidden = true;
+      if (e._kind === 'precursor' && !showPrecursor) hidden = true;
+      if (e._kind === 'blocked' && !showBlocked) hidden = true;
+      edges.update({ id: e.id, hidden });
+    });
+  }
+  for (const id of ['show-actors', 'show-tasks', 'show-precursors', 'show-blocked']) {
+    document.getElementById(id).addEventListener('change', applyFilters);
+  }
+
+  // Details panel.
+  const details = document.getElementById('details');
+  function renderDetails(item) {
+    if (!item) {
+      details.innerHTML = '<span class="muted">Click a node or edge.</span>';
+      return;
+    }
+    const kind = item._kind || 'unknown';
+    if (kind === 'location') {
+      const locId = item._data.id;
+      const here = actors.filter(a => a.location_id === locId).map(a => a.name);
+      const taskFrom = tasks.filter(t => taskOrigin(t) === locId).map(t => t.name);
+      const taskTo   = tasks.filter(t => taskDests(t).includes(locId)).map(t => t.name);
+      const givenAt  = tasks.filter(t => t.giverLocationId === locId).map(t => t.name);
+      details.innerHTML = `
+        <h2>${prettyId(locId)}</h2>
+        <div class="muted">location</div>
+        <div class="row"><b>Residents:</b> ${here.join(', ') || '—'}</div>
+        <div class="row"><b>Tasks given here:</b> ${givenAt.join(', ') || '—'}</div>
+        <div class="row"><b>Pickup for:</b> ${taskFrom.join(', ') || '—'}</div>
+        <div class="row"><b>Drop-off for:</b> ${taskTo.join(', ') || '—'}</div>
+      `;
+    } else if (kind === 'actor') {
+      const a = item._data;
+      details.innerHTML = `
+        <h2>${a.name}</h2>
+        <div class="muted">actor — ${a.id}</div>
+        <div class="row"><b>Lives at:</b> ${a.location_id ? prettyId(a.location_id) : '—'}</div>
+        <div class="row"><b>Default line:</b> "${a.default_line || ''}"</div>
+      `;
+    } else if (kind === 'task') {
+      const t = item._data;
+      const dests = taskDests(t).map(prettyId).join(', ') || '—';
+      const origin = taskOrigin(t);
+      details.innerHTML = `
+        <h2>${t.name}</h2>
+        <div class="muted">task — ${t.id} · type: ${taskType(t)}</div>
+        <div class="row">${t.description || ''}</div>
+        <div class="row"><b>Item:</b> ${t.itemId || '—'}</div>
+        <div class="row"><b>Target actor:</b> ${t.targetActorId || '—'}</div>
+        <div class="row"><b>Giver:</b> ${t.giverLocationId ? prettyId(t.giverLocationId) : '—'}</div>
+        <div class="row"><b>From → To:</b> ${origin ? prettyId(origin) : '—'} → ${dests}</div>
+        ${t.availableAt ? `<div class="row"><b>Available at:</b> ${t.availableAt.join(', ')}</div>` : ''}
+        ${t.precursorId ? `<div class="row"><b>Precursor:</b> ${t.precursorId}</div>` : ''}
+        ${t.blockedByTasks ? `<div class="row"><b>Blocked by:</b> ${t.blockedByTasks.join(', ')}</div>` : ''}
+        ${t.timeLimit ? `<div class="row"><b>Time limit:</b> ${t.timeLimit}</div>` : ''}
+      `;
+    } else {
+      details.innerHTML = `<pre>${JSON.stringify(item._data || item, null, 2)}</pre>`;
+    }
+  }
+
+  network.on('selectNode', params => {
+    const n = nodes.get(params.nodes[0]);
+    renderDetails(n);
+  });
+  network.on('selectEdge', params => {
+    if (params.nodes.length) return;
+    const e = edges.get(params.edges[0]);
+    renderDetails(e);
+  });
+  network.on('deselectNode', () => renderDetails(null));
+}
+
+main().catch(err => {
+  document.getElementById('details').innerHTML =
+    `<pre style="color:#ff8a8a">${err.message}\n\nTip: serve the repo with a static server, e.g.\n  python3 -m http.server\nthen open http://localhost:8000/tools/graph.html</pre>`;
+});
+</script>
+</body>
+</html>
