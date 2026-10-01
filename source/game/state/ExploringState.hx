@@ -47,6 +47,12 @@ class ExploringState extends GameStateBase {
 		}
 		#end
 
+		if (InputManager.justPressed(Pause)) {
+			world.interactPrompt.hide();
+			world.pauseMenu.open();
+			return;
+		}
+
 		// Toggle quest log with Q / Y button
 		if (InputManager.justPressed(QuestLog)) {
 			world.taskRenderer.toggle();

@@ -15,6 +15,8 @@ enum GameEvent {
 	StoreClosed;
 	CoinsChanged(delta:Int, total:Int);
 	ItemPurchased(item:StoreItem);
+	PauseOpened;
+	PauseClosed;
 	DayEnded(day:Int);
 	DaySummaryClosed;
 }

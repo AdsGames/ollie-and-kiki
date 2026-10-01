@@ -16,12 +16,14 @@ import game.item.ItemManager;
 import game.location.LocationManager;
 import game.location.LocationRenderer;
 import game.minimap.MinimapRenderer;
+import game.save.SaveManager;
 import game.sfx.SfxManager;
 import game.shader.DayNightShader;
 import game.state.DaySummaryState;
 import game.state.DialogueState;
 import game.state.ExploringState;
 import game.state.GameStateStack;
+import game.state.PauseState;
 import game.state.StoreState;
 import game.store.CurrencyRenderer;
 import game.store.StoreManager;
@@ -34,6 +36,7 @@ import game.time.DaySummary;
 import game.time.TimeController;
 import game.time.TimeRenderer;
 import game.ui.InteractPrompt;
+import game.ui.PauseMenu;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import openfl.filters.ShaderFilter;
@@ -68,6 +71,7 @@ class World {
 	public var minimapRenderer:MinimapRenderer;
 	public var storeUI:StoreUI;
 	public var interactPrompt:InteractPrompt;
+	public var pauseMenu:PauseMenu;
 	public var daySummary:DaySummary;
 
 	// Escort followers. Drawn just under the player, below foreground and HUD.
@@ -79,7 +83,7 @@ class World {
 	// Day/night tint shader instance; uniforms updated each frame
 	private var dayNightShader:DayNightShader;
 
-	// Music volume during free roam, and while a modal (dialogue, store, summary) is open.
+	// Music volume during free roam, and while a modal (dialogue, pause, summary) is open.
 	private static final MUSIC_VOLUME:Float = 0.5;
 	private static final MUSIC_DUCKED_VOLUME:Float = 0.25;
 	private static final AMBIENCE_DUCKED_GAIN:Float = 0.5;
@@ -117,8 +121,10 @@ class World {
 		taskManager.load(itemManager, locationManager, actorManager);
 
 		dayStats = new DayStats();
+		var loadedSave = SaveManager.load(storeManager, taskManager, timeController, dayStats);
 
 		subscribeTaskEvents();
+		subscribeSaveEvents();
 
 		// Actor sprites at their home locations
 		actorRenderer = new ActorRenderer(actorManager, locationManager, taskManager);
@@ -178,6 +184,9 @@ class World {
 		daySummary = new DaySummary(events);
 		state.add(daySummary);
 
+		pauseMenu = new PauseMenu(events, quitToTitle);
+		state.add(pauseMenu);
+
 		// Install day/night tint.
 		dayNightShader = new DayNightShader();
 		FlxG.game.setFilters([new ShaderFilter(dayNightShader)]);
@@ -189,10 +198,26 @@ class World {
 
 		ducked = false;
 
-		// Intro dialogue. Flush so the resulting DialogueStarted event applies
-		// before the first update tick.
-		dialogueManager.startDialogue([new DialogueLine("kiki", "I should go see Ollie... I think he needs me.")]);
+		// Intro dialogue for a new game. Flush so the resulting DialogueStarted
+		// event applies before the first update tick.
+		// Also replay it when a save was made before talking to Ollie.
+		if (!loadedSave || isIntroIdle()) {
+			dialogueManager.startDialogue([new DialogueLine("kiki", "I should go see Ollie... I think he needs me.")]);
+		}
 		events.flush();
+	}
+
+	private function isIntroIdle():Bool {
+		for (task in taskManager.tasks) {
+			if (task.id == "intro") {
+				return task.state == Idle;
+			}
+		}
+		return false;
+	}
+
+	public function save():Void {
+		SaveManager.save(storeManager, taskManager, timeController, dayStats);
 	}
 
 	public function update(elapsed:Float):Void {
@@ -230,6 +255,18 @@ class World {
 				dialogueManager.startDialogue(task.resolveCompleteLines());
 			default:
 		});
+	}
+
+	// Save after anything that changes progress.
+	private function subscribeSaveEvents():Void {
+		for (name in ["TaskAccepted", "TaskDelivered", "TaskExpired", "ItemPurchased", "PauseOpened"]) {
+			events.on(name, function(_) save());
+		}
+	}
+
+	private function quitToTitle():Void {
+		save();
+		FlxG.camera.fade(FlxColor.BLACK, 0.4, false, function() FlxG.switchState(MenuState.new));
 	}
 
 	// Quick camera "snapshot" zoom: punch in on the subject, hold, ease back out.
@@ -277,6 +314,14 @@ class World {
 			stack.popOfType(StoreState);
 			refreshFrozen();
 		});
+		events.on("PauseOpened", function(_) {
+			stack.push(new PauseState(this));
+			refreshFrozen();
+		});
+		events.on("PauseClosed", function(_) {
+			stack.popOfType(PauseState);
+			refreshFrozen();
+		});
 		events.on("DayEnded", function(event) switch (event) {
 			case DayEnded(day):
 				daySummary.open(day, dayStats);
@@ -286,6 +331,7 @@ class World {
 		});
 		events.on("DaySummaryClosed", function(_) {
 			dayStats.reset();
+			save();
 			stack.popOfType(DaySummaryState);
 			refreshFrozen();
 		});
