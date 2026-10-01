@@ -6,7 +6,9 @@
     "image_profile": "assets/images/actors/ollie_profile.png",
     "location_id": "ollies_house",
     "voice_pitch": 0.5,
-    "default_line": "Hi Kiki, how are you doing today?"
+    "default_line": "Hi Kiki, how are you doing today?",
+    "offset_y": 8,
+    "offset_x": 4
   },
   {
     "name": "Kiki",
@@ -14,7 +16,9 @@
     "image": "assets/images/actors/kiki.png",
     "image_profile": "assets/images/actors/kiki_profile.png",
     "voice_pitch": 1.5,
-    "default_line": "Talking to myself again..."
+    "default_line": "Talking to myself again...",
+    "offset_y": 0,
+    "offset_x": 0
   },
   {
     "name": "Wally",
@@ -23,7 +27,9 @@
     "image_profile": "assets/images/actors/fishercat_profile.png",
     "location_id": "fish_shop",
     "voice_pitch": 0.8,
-    "default_line": "Shh you will scare the fish away!"
+    "default_line": "Shh you will scare the fish away!",
+    "offset_y": 24,
+    "offset_x": 4
   },
   {
     "name": "Miroslav",
@@ -32,7 +38,9 @@
     "image_profile": "assets/images/actors/baker_profile.png",
     "location_id": "bakery",
     "voice_pitch": 1.1,
-    "default_line": "Hi Kiki! I just made a fresh batch of bread!"
+    "default_line": "Hi Kiki! I just made a fresh batch of bread!",
+    "offset_y": 4,
+    "offset_x": 4
   },
   {
     "name": "Cornelius",
@@ -41,7 +49,9 @@
     "image_profile": "assets/images/actors/wizard_profile.png",
     "location_id": "wizard_tower",
     "voice_pitch": 0.1,
-    "default_line": "... grumble grumble...                 ... grumble grumble...            ... grumble grumble...        Oh hi Kiki."
+    "default_line": "... grumble grumble...                 ... grumble grumble...            ... grumble grumble...        Oh hi Kiki.",
+    "offset_y": 0,
+    "offset_x": 0
   },
   {
     "name": "Tammy",
@@ -50,7 +60,9 @@
     "image_profile": "assets/images/actors/lifeguard_profile.png",
     "location_id": "pool",
     "voice_pitch": 2.2,
-    "default_line": "Ensuring the safety of swimmers is no easy task."
+    "default_line": "Ensuring the safety of swimmers is no easy task.",
+    "offset_y": 0,
+    "offset_x": 8
   },
   {
     "name": "Marigold",
@@ -59,7 +71,9 @@
     "image_profile": "assets/images/actors/librarian_profile.png",
     "location_id": "library",
     "voice_pitch": 1.4,
-    "default_line": "Kiki, don't you still have that book checked out? It's been a while!"
+    "default_line": "Kiki, don't you still have that book checked out? It's been a while!",
+    "offset_y": 4,
+    "offset_x": 0
   },
   {
     "name": "Dr. Meow",
@@ -68,7 +82,9 @@
     "image_profile": "assets/images/actors/doctor_profile.png",
     "location_id": "hospital",
     "voice_pitch": 1.3,
-    "default_line": "No apples please!"
+    "default_line": "No apples please!",
+    "offset_y": 0,
+    "offset_x": 4
   },
   {
     "name": "Jake",
@@ -77,7 +93,9 @@
     "image_profile": "assets/images/actors/postcat_profile.png",
     "location_id": "post_office",
     "voice_pitch": 0.6,
-    "default_line": "Hey Kiki, I think I have a letter for you! ... If I could just find it... ahh maybe not."
+    "default_line": "Hey Kiki, I think I have a letter for you! ... If I could just find it... ahh maybe not.",
+    "offset_y": 8,
+    "offset_x": 0
   },
   {
     "name": "Ms. Violet",
@@ -86,7 +104,9 @@
     "image_profile": "assets/images/actors/teacher_profile.png",
     "location_id": "school",
     "voice_pitch": 1.7,
-    "default_line": "I remember when you were just a little kitten, Kiki. Now look at you!"
+    "default_line": "I remember when you were just a little kitten, Kiki. Now look at you!",
+    "offset_y": 8,
+    "offset_x": 4
   },
   {
     "name": "Moe",
@@ -95,6 +115,8 @@
     "image_profile": "assets/images/actors/coolcat_profile.png",
     "location_id": "beach_house",
     "voice_pitch": 0.7,
-    "default_line": "Stay frosty, Kiki."
+    "default_line": "Stay frosty, Kiki.",
+    "offset_y": 4,
+    "offset_x": -8
   }
 ]

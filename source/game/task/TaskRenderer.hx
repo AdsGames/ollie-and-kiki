@@ -105,10 +105,25 @@ class TaskRenderer extends FlxGroup {
 			timer = " (${Math.ceil(task.timeRemaining())}s)";
 		}
 
-		return switch task.state {
-			case Accepted: '> Pick up ${task.item.name} at ${task.from.name}';
-			case PickedUp: '> Deliver ${task.item.name} to ${task.to.name}${timer}';
+		var destName = destinationLabel(task);
+		return switch [task.type, task.state] {
+			case [Delivery, Accepted]: '> Pick up ${task.item.name} at ${task.from.name}';
+			case [Delivery, PickedUp]: '> Deliver ${task.item.name} to ${destName}${timer}';
+			case [Escort, Accepted]: '> Meet at ${task.from.name}';
+			case [Escort, PickedUp]: '> Escort to ${destName}${timer}';
+			case [Find, _]: '> Find ${destName}';
+			case [Photo, _]: '> Snap a photo at ${destName}';
 			default: "";
 		};
+	}
+
+	private function destinationLabel(task:Task):String {
+		if (task.tos.length == 0) {
+			return "?";
+		}
+		if (task.tos.length == 1) {
+			return task.tos[0].name;
+		}
+		return [for (l in task.tos) l.name].join(" or ");
 	}
 }

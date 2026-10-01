@@ -6,74 +6,98 @@ import game.location.Location;
 
 /**
  * Task state machine:
- * Idle -> Accepted -> PickedUp -> Delivered
+ * - Delivery/Escort: Idle -> Accepted -> PickedUp -> Delivered
+ * - Find/Photo:      Idle -> Accepted -> Delivered (no PickedUp)
  */
 class Task {
-	// Unique identifier for the task, used for saving/loading and referencing in dialogue.
 	public var id:String;
 
-	// Optional identifier of a precursor task that must be completed before this one can be accepted.
+	// Task variant — drives proximity logic and completion flow.
+	public var type:TaskType;
+
+	// Optional precursor that must be complete before this can be accepted.
 	public var precursorId:Null<String>;
 
-	// Display name and description for the task.
-	public var name:String;
+	// Optional set of task ids that lock this one out once they enter or pass
+	// in-progress state. Used for branching/exclusive quest lines.
+	public var blockedByTasks:Null<Array<String>>;
 
-	// Description shown in the task list and dialogue.
+	public var name:String;
 	public var description:String;
 
-	// The item associated with the task.
-	public var item:Item;
+	// Item carried for Delivery tasks. Null for Find/Photo/Escort.
+	public var item:Null<Item>;
 
-	// The location where the task is given.
+	// Where the task is offered.
 	public var giverLocation:Location;
 
-	// The location where the item is picked up.
-	public var from:Location;
+	// Where the carried thing (item or escortee) is picked up. Null for Find/Photo.
+	public var from:Null<Location>;
 
-	// The location where the item is delivered.
-	public var to:Location;
+	// Candidate completion targets. Player picks implicitly by reaching one first.
+	public var tos:Array<Location>;
 
-	// The current state of the task.
+	// The recipient the player actually reached. Set on delivery; null until then.
+	public var activeTo:Null<Location>;
+
+	// Photo-only: id of the actor whose location must be approached.
+	public var targetActorId:Null<String>;
+
 	public var state:TaskState;
 
-	// Seconds allowed between PickedUp and Delivered. Null means no limit.
 	public var timeLimit:Null<Float>;
-
-	// Time elapsed since the task was picked up. Only relevant if timeLimit is not null.
 	public var timeElapsed:Float;
-
-	// Whether the warning sound has been played for this task (when time is running out).
 	public var warnPlayed:Bool;
 
-	// Dialogue lines to show when the task is accepted and completed.
+	public var availableAt:Null<Array<String>>;
+
 	public var startLines:Array<DialogueLine>;
 
-	// Dialogue lines to show when the task is completed.
+	// Default completion lines (used when no recipient-specific lines exist).
 	public var completeLines:Array<DialogueLine>;
 
+	// Optional per-recipient overrides keyed by location id.
+	public var completeLinesByTo:Map<String, Array<DialogueLine>>;
+	public var rewardsByTo:Map<String, Int>;
+
+	// Flat coin reward, used when no per-recipient reward exists. Needed for tasks without an item.
+	public var reward:Null<Int>;
+
+	// Escort runtime position, written by EscortFollower, read by TaskManager
+	// for completion-proximity checks. Defaults to from-location coords.
+	public var escortX:Float;
+	public var escortY:Float;
+
 	public function new() {
+		this.type = TaskType.Delivery;
 		this.state = TaskState.Idle;
 		this.precursorId = null;
+		this.blockedByTasks = null;
+		this.item = null;
+		this.from = null;
+		this.tos = [];
+		this.activeTo = null;
+		this.targetActorId = null;
 		this.timeLimit = null;
 		this.timeElapsed = 0;
 		this.warnPlayed = false;
+		this.availableAt = null;
+		this.reward = null;
+		this.escortX = 0;
+		this.escortY = 0;
 
 		startLines = [];
 		completeLines = [];
+		completeLinesByTo = new Map();
+		rewardsByTo = new Map();
 	}
 
-	/**
-	 * Player accepts the task — enables proximity tracking to `from`.
-	 */
 	public function accept():Void {
 		if (state == Idle) {
 			state = Accepted;
 		}
 	}
 
-	/**
-	 * Player is at `from` and interacts — pick up the item.
-	 */
 	public function pickUp():Void {
 		if (state == Accepted) {
 			state = PickedUp;
@@ -83,15 +107,15 @@ class Task {
 	}
 
 	/**
-	 * Player is at `to` and interacts — deliver the item.
+	 * Mark the recipient and transition to Delivered.
 	 */
-	public function deliver():Void {
-		if (state == PickedUp) {
+	public function deliverAt(to:Location):Void {
+		if (state == Accepted || state == PickedUp) {
+			activeTo = to;
 			state = Delivered;
 		}
 	}
 
-	/** Time ran out */
 	public function expire():Void {
 		if (state == PickedUp) {
 			state = Accepted;
@@ -100,17 +124,12 @@ class Task {
 		}
 	}
 
-	/** Tick the delivery timer forward */
 	public function update(elapsed:Float):Void {
 		if (state == PickedUp && timeLimit != null) {
 			timeElapsed += elapsed;
 		}
 	}
 
-	/**
-	 * Checks if the task is expired
-	 * @return True if the task is expired, false otherwise.
-	 */
 	public function isExpired():Bool {
 		return timeLimit != null && state == PickedUp && timeElapsed >= timeLimit;
 	}
@@ -122,11 +141,40 @@ class Task {
 		return Math.max(0.0, timeLimit - timeElapsed);
 	}
 
-	/**
-	 * Checks if the task is complete (i.e., item has been delivered).
-	 * @return True if the task is complete, false otherwise.
-	 */
 	public function isComplete():Bool {
 		return state == Delivered;
+	}
+
+	/**
+	 * Whether this task occupies a paw slot (carry capacity).
+	 */
+	public function consumesCarry():Bool {
+		return type == Delivery || type == Escort;
+	}
+
+	/**
+	 * Lines to play on completion, picking recipient-specific lines when available.
+	 */
+	public function resolveCompleteLines():Array<DialogueLine> {
+		if (activeTo != null && completeLinesByTo.exists(activeTo.id)) {
+			return completeLinesByTo.get(activeTo.id);
+		}
+		return completeLines;
+	}
+
+	/**
+	 * Coin reward for completion. Falls back to the flat reward, then item value, then 0.
+	 */
+	public function resolveReward():Int {
+		if (activeTo != null && rewardsByTo.exists(activeTo.id)) {
+			return rewardsByTo.get(activeTo.id);
+		}
+		if (reward != null) {
+			return reward;
+		}
+		if (item != null) {
+			return item.value;
+		}
+		return 0;
 	}
 }

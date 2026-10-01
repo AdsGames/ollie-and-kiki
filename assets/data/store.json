@@ -5,7 +5,8 @@
     "dialogue": "Wow, new running shoes! I feel like I could run forever in these!",
     "image": "assets/images/store/running_shoes.png",
     "overlay": "assets/images/cat_running_shoes.png",
-    "price": 100
+    "price": 100,
+    "speedBonus": 40
   },
   {
     "id": "backpack",
@@ -13,15 +14,17 @@
     "dialogue": "A backpack! Now I can carry even more deliveries at once!",
     "image": "assets/images/store/backpack.png",
     "overlay": "assets/images/cat_backpack.png",
-    "price": 30
+    "price": 30,
+    "carryBonus": 2
   },
   {
     "id": "map",
     "name": "Map",
-    "dialogue": "Wow, a map! To open it press M.",
+    "dialogue": "Wow, a map! To open it press {Minimap}.",
     "image": "assets/images/store/map.png",
     "overlay": "assets/images/cat_map.png",
-    "price": 10
+    "price": 10,
+    "unlocks": ["minimap"]
   },
   {
     "id": "hat",

@@ -3,7 +3,8 @@ package game;
 import flixel.FlxCamera.FlxCameraFollowStyle;
 import flixel.FlxG;
 import flixel.FlxState;
-import flixel.tweens.FlxTween;
+import flixel.util.FlxColor;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import game.actor.ActorManager;
 import game.actor.ActorRenderer;
 import game.ambience.AmbienceManager;
@@ -33,6 +34,8 @@ import game.time.DaySummary;
 import game.time.TimeController;
 import game.time.TimeRenderer;
 import game.ui.InteractPrompt;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import openfl.filters.ShaderFilter;
 
 class World {
@@ -67,13 +70,16 @@ class World {
 	public var interactPrompt:InteractPrompt;
 	public var daySummary:DaySummary;
 
+	// Escort followers. Drawn just under the player, below foreground and HUD.
+	private var escorts:FlxTypedGroup<game.task.EscortFollower>;
+
 	// State stack
 	private var stack:GameStateStack;
 
 	// Day/night tint shader instance; uniforms updated each frame
 	private var dayNightShader:DayNightShader;
 
-	// Music volume during free roam, and while a modal (dialogue, store) is open.
+	// Music volume during free roam, and while a modal (dialogue, store, summary) is open.
 	private static final MUSIC_VOLUME:Float = 0.5;
 	private static final MUSIC_DUCKED_VOLUME:Float = 0.25;
 	private static final AMBIENCE_DUCKED_GAIN:Float = 0.5;
@@ -105,10 +111,11 @@ class World {
 
 		storeManager = new StoreManager(dialogueManager, events);
 
-		taskManager = new TaskManager(storeManager);
-		taskManager.load(itemManager, locationManager);
-
 		timeController = new TimeController();
+
+		taskManager = new TaskManager(storeManager, events, timeController);
+		taskManager.load(itemManager, locationManager, actorManager);
+
 		dayStats = new DayStats();
 
 		subscribeTaskEvents();
@@ -117,6 +124,9 @@ class World {
 		actorRenderer = new ActorRenderer(actorManager, locationManager, taskManager);
 		state.add(actorRenderer);
 
+		escorts = new FlxTypedGroup<game.task.EscortFollower>();
+		state.add(escorts);
+
 		// Player initialization
 		var kikisHouse = locationManager.getLocationById("kikis_house");
 		player = new Player(kikisHouse.x, kikisHouse.y, storeManager);
@@ -124,6 +134,7 @@ class World {
 
 		// Camera follow
 		FlxG.camera.follow(player, FlxCameraFollowStyle.LOCKON, 1.0);
+		FlxG.camera.pixelPerfectRender = true;
 
 		// Foreground layers render on top of the player
 		map.addForeground(state);
@@ -160,7 +171,7 @@ class World {
 		inventoryRenderer = new InventoryRenderer(taskManager);
 		state.add(inventoryRenderer);
 
-		// Dialogue box renders on top of everything
+		// Dialogue box renders on top of the HUD
 		dialogueManager.addToState(state);
 
 		// Full-screen modals render on top of everything
@@ -193,18 +204,60 @@ class World {
 	}
 
 	private function subscribeTaskEvents():Void {
-		events.on("TaskPickedUp", function(_) sfxManager.playTaskPickup());
+		events.on("TaskPickedUp", function(event) {
+			sfxManager.playTaskPickup();
+			switch (event) {
+				case TaskPickedUp(task) if (task.type == Escort):
+					spawnEscort(task);
+				default:
+			}
+		});
 		events.on("TaskExpired", function(_) sfxManager.playTaskExpired());
 		events.on("TaskTimerWarned", function(_) sfxManager.playTimerWarning());
 		events.on("TaskDelivered", function(event) switch (event) {
 			case TaskDelivered(task):
-				storeManager.addCoins(task.item.value);
+				var reward = task.resolveReward();
+				storeManager.addCoins(reward);
 				dayStats.tasksCompleted++;
-				dayStats.coinsEarned += task.item.value;
-				sfxManager.playTaskDelivered();
-				dialogueManager.startDialogue(task.completeLines);
+				dayStats.coinsEarned += reward;
+				if (task.type == Photo) {
+					sfxManager.playCameraShutter();
+					FlxG.camera.flash(FlxColor.WHITE, 0.3);
+					playPhotoZoom();
+				} else {
+					sfxManager.playTaskDelivered();
+				}
+				dialogueManager.startDialogue(task.resolveCompleteLines());
 			default:
 		});
+	}
+
+	// Quick camera "snapshot" zoom: punch in on the subject, hold, ease back out.
+	// Centered on the player since the photo target is always within interact range.
+	private function playPhotoZoom():Void {
+		var cam = FlxG.camera;
+		FlxTween.cancelTweensOf(cam);
+		FlxTween.tween(cam, {zoom: 2.0}, 0.15, {
+			ease: FlxEase.quadOut,
+			onComplete: function(_) {
+				FlxTween.tween(cam, {zoom: 1.0}, 0.35, {
+					startDelay: 0.15,
+					ease: FlxEase.quadIn,
+				});
+			},
+		});
+	}
+
+	private function spawnEscort(task:game.task.Task):Void {
+		var actor = task.from != null ? actorManager.getActorForLocation(task.from.id) : null;
+		// Followers kill themselves when their task leaves PickedUp; free those first.
+		for (old in escorts.members.copy()) {
+			if (old != null && !old.alive) {
+				escorts.remove(old, true);
+				old.destroy();
+			}
+		}
+		escorts.add(new game.task.EscortFollower(task, player, actor));
 	}
 
 	private function subscribeStateTransitions():Void {

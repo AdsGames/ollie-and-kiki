@@ -53,6 +53,46 @@ class StoreManager {
 		return purchased.exists(id);
 	}
 
+	/** Sum of `speedBonus` fields on every owned upgrade. */
+	public function totalSpeedBonus():Float {
+		var total = 0.0;
+		for (id in purchased.keys()) {
+			var item = itemMap.get(id);
+			if (item != null && item.speedBonus != null) {
+				total += item.speedBonus;
+			}
+		}
+		return total;
+	}
+
+	/** Sum of `carryBonus` fields on every owned upgrade. */
+	public function totalCarryBonus():Int {
+		var total = 0;
+		for (id in purchased.keys()) {
+			var item = itemMap.get(id);
+			if (item != null && item.carryBonus != null) {
+				total += item.carryBonus;
+			}
+		}
+		return total;
+	}
+
+	/** Returns true if any owned upgrade lists `name` in its `unlocks` array. */
+	public function hasUnlock(name:String):Bool {
+		for (id in purchased.keys()) {
+			var item = itemMap.get(id);
+			if (item == null || item.unlocks == null) {
+				continue;
+			}
+			for (unlock in item.unlocks) {
+				if (unlock == name) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public function setOpen(value:Bool):Void {
 		if (isOpen == value) {
 			return;

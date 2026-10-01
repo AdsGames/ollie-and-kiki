@@ -6,7 +6,7 @@
     "itemId": "fish",
     "giverLocationId": "ollies_house",
     "fromId": "fish_shop",
-    "toId": "bakery",
+    "toIds": ["bakery"],
     "conversation": {
       "start": [
         {
@@ -25,7 +25,7 @@
         },
         {
           "actor": "ollie",
-          "text": "One more thing, at any time press Q to see all of your active tasks. Good luck, Kiki!"
+          "text": "One more thing, at any time press {QuestLog} to see all of your active tasks. Good luck, Kiki!"
         }
       ],
       "complete": [
@@ -54,7 +54,7 @@
     "itemId": "fish",
     "giverLocationId": "fish_shop",
     "fromId": "fish_shop",
-    "toId": "bakery",
+    "toIds": ["bakery"],
     "timeLimit": 30,
     "conversation": {
       "start": [
@@ -85,12 +85,12 @@
     "itemId": "catnip",
     "giverLocationId": "bakery",
     "fromId": "beach_house",
-    "toId": "hospital",
+    "toIds": ["hospital"],
     "conversation": {
       "start": [
         {
           "actor": "bakercat",
-          "text": "Hey there! The hospital needs catnip urgently. Coolcat has some at his place. Can you pick it up?"
+          "text": "Hey there! The hospital needs catnip urgently. Moe has some at his place. Can you pick it up?"
         },
         { "actor": "kiki", "text": "Sure, I can do that!" },
         {
@@ -108,6 +108,347 @@
     }
   },
   {
+    "id": "check_on_wizard",
+    "type": "find",
+    "precursorId": "intro",
+    "name": "Check on Cornelius",
+    "description": "Marigold hasn't seen the wizard in days. Pop by the tower and make sure he's still breathing.",
+    "giverLocationId": "library",
+    "toIds": ["wizard_tower"],
+    "reward": 10,
+    "conversation": {
+      "start": [
+        {
+          "actor": "librarian",
+          "text": "Kiki — I haven't seen Cornelius at the library in over a week. That's unusual, even for him."
+        },
+        { "actor": "kiki", "text": "Want me to check on him?" },
+        {
+          "actor": "librarian",
+          "text": "If you wouldn't mind. No package to deliver, just... look him in the eye and confirm he's still on this plane of existence."
+        }
+      ],
+      "complete": [
+        {
+          "actor": "wizard",
+          "text": "Marigold sent you? Hmph. Tell her the experiments are FINE."
+        },
+        { "actor": "kiki", "text": "She'll be relieved to hear that." },
+        {
+          "actor": "wizard",
+          "text": "Also tell her I'll return the book. Eventually. Time is a wheel."
+        }
+      ]
+    }
+  },
+  {
+    "id": "haunted_house_dare",
+    "type": "find",
+    "precursorId": "intro",
+    "availableAt": ["Night"],
+    "name": "The Dare",
+    "description": "Moe bet you couldn't make it to the haunted house at night. Prove him wrong.",
+    "giverLocationId": "beach_house",
+    "toIds": ["haunted_house"],
+    "reward": 15,
+    "conversation": {
+      "start": [
+        {
+          "actor": "coolcat",
+          "text": "Hey Kiki. Quick one — you ever been up to the haunted house after dark?"
+        },
+        { "actor": "kiki", "text": "...no?" },
+        {
+          "actor": "coolcat",
+          "text": "Bet you couldn't. Go touch the door. That's it. Come back and I'll buy you a smoothie."
+        }
+      ],
+      "complete": [
+        {
+          "actor": "kiki",
+          "text": "Okay. Door. Touched. I am leaving now. Right now."
+        }
+      ]
+    }
+  },
+  {
+    "id": "proof_of_napping",
+    "type": "photo",
+    "precursorId": "check_on_wizard",
+    "availableAt": ["Afternoon"],
+    "targetActorId": "wizard",
+    "name": "Caught in the Act",
+    "description": "Marigold wants photographic evidence that Cornelius naps every afternoon. Press {Photo} near him in the afternoon.",
+    "giverLocationId": "library",
+    "toIds": ["wizard_tower"],
+    "reward": 15,
+    "conversation": {
+      "start": [
+        {
+          "actor": "librarian",
+          "text": "I have a theory that Cornelius is napping every afternoon and pretending to be 'in deep study'."
+        },
+        { "actor": "kiki", "text": "You want me to..." },
+        {
+          "actor": "librarian",
+          "text": "Photograph him. Discreetly. Get close in the afternoon and press {Photo}. For science. And blackmail."
+        }
+      ],
+      "complete": [
+        {
+          "actor": "librarian",
+          "text": "HA! Look at that drool. I'm framing this."
+        },
+        { "actor": "kiki", "text": "I feel a little bad." },
+        {
+          "actor": "librarian",
+          "text": "Don't. He owes me sixteen overdue books."
+        }
+      ]
+    }
+  },
+  {
+    "id": "bakery_at_dawn",
+    "type": "photo",
+    "precursorId": "intro",
+    "availableAt": ["Morning"],
+    "targetActorId": "bakercat",
+    "name": "Morning Routine",
+    "description": "Ollie wants a snapshot of Miroslav at work in the morning rush for his town newsletter.",
+    "giverLocationId": "ollies_house",
+    "toIds": ["bakery"],
+    "reward": 15,
+    "conversation": {
+      "start": [
+        {
+          "actor": "ollie",
+          "text": "I'm putting together a little town newsletter and I need a 'morning local' photo."
+        },
+        {
+          "actor": "ollie",
+          "text": "Catch Miroslav in the bakery before noon — press {Photo} when you're close."
+        },
+        { "actor": "kiki", "text": "Front-page Kiki, on the job." }
+      ],
+      "complete": [
+        {
+          "actor": "ollie",
+          "text": "Oh, this is PERFECT. Flour on his nose and everything."
+        },
+        { "actor": "kiki", "text": "He's going to be famous." },
+        { "actor": "ollie", "text": "Locally famous. The best kind." }
+      ]
+    }
+  },
+  {
+    "id": "walk_ollie_to_pool",
+    "type": "escort",
+    "precursorId": "intro",
+    "availableAt": ["Afternoon"],
+    "name": "Pool Buddy",
+    "description": "Ollie wants to try the pool but he's nervous. Walk with him from his house to the pool.",
+    "giverLocationId": "ollies_house",
+    "fromId": "ollies_house",
+    "toIds": ["pool"],
+    "reward": 15,
+    "conversation": {
+      "start": [
+        {
+          "actor": "ollie",
+          "text": "Don't laugh — I want to go to the pool today. But I'm... a cat. Cats and pools."
+        },
+        { "actor": "kiki", "text": "I'll walk you over. You'll be fine." },
+        { "actor": "ollie", "text": "Just stay close, okay? Lead the way." }
+      ],
+      "complete": [
+        {
+          "actor": "lifeguard",
+          "text": "Welcome, Ollie! First swim's on the house."
+        },
+        {
+          "actor": "ollie",
+          "text": "I'm doing this. I'm actually doing this. Kiki, I owe you."
+        }
+      ]
+    }
+  },
+  {
+    "id": "escort_wizard_to_help",
+    "type": "escort",
+    "precursorId": "check_on_wizard",
+    "name": "A Wizard in Need",
+    "description": "Cornelius muttered something about needing help. Lead him from his tower to either Dr. Meow or Marigold — they'll know what to do.",
+    "giverLocationId": "wizard_tower",
+    "fromId": "wizard_tower",
+    "toIds": ["hospital", "library"],
+    "timeLimit": 90,
+    "conversation": {
+      "start": [
+        {
+          "actor": "wizard",
+          "text": "Kiki. I... appear to be unwell. Or cursed. Possibly both."
+        },
+        {
+          "actor": "kiki",
+          "text": "Do you want to see the doctor, or the librarian?"
+        },
+        {
+          "actor": "wizard",
+          "text": "I leave that judgment to you. Take me wherever seems wisest."
+        }
+      ],
+      "complete": {
+        "hospital": {
+          "reward": 25,
+          "lines": [
+            {
+              "actor": "doctor",
+              "text": "Cornelius! Sit. Let me look at you. Hmm. Have you been eating anything besides moon-dust and regret?"
+            },
+            { "actor": "wizard", "text": "...occasionally toast." },
+            {
+              "actor": "doctor",
+              "text": "Thank you, Kiki. Honest medicine for an honest reward."
+            }
+          ]
+        },
+        "library": {
+          "reward": 15,
+          "lines": [
+            {
+              "actor": "librarian",
+              "text": "Cornelius! You look terrible. I have just the book on this."
+            },
+            {
+              "actor": "wizard",
+              "text": "A book? Yes. A book will fix it. Books always fix it."
+            },
+            {
+              "actor": "librarian",
+              "text": "Thanks Kiki. Slightly less reward — books aren't medicine — but the company helps."
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "id": "rare_catch",
+    "type": "delivery",
+    "precursorId": "intro",
+    "name": "The Rare Catch",
+    "description": "Wally landed a glimmering rare fish. Cornelius wants it for a ritual; Miroslav wants it for a once-in-a-lifetime pastry. Your call.",
+    "itemId": "fish",
+    "giverLocationId": "fish_shop",
+    "fromId": "fish_shop",
+    "toIds": ["wizard_tower", "bakery"],
+    "timeLimit": 60,
+    "conversation": {
+      "start": [
+        {
+          "actor": "fishercat",
+          "text": "Kiki. Come here. Look at this thing — silvery, perfect, glows a little if you tilt it."
+        },
+        { "actor": "kiki", "text": "Whoa." },
+        {
+          "actor": "fishercat",
+          "text": "Two cats have asked about it. Cornelius for some spell, Miroslav for a fancy pastry. Take it to whichever you like — but it spoils fast, so hurry."
+        }
+      ],
+      "complete": {
+        "wizard_tower": {
+          "reward": 40,
+          "lines": [
+            {
+              "actor": "wizard",
+              "text": "Yesss. Look at the scales. The Moon-Trout cometh. Here — coin for your discretion."
+            },
+            { "actor": "kiki", "text": "That's a lot of coin." },
+            {
+              "actor": "wizard",
+              "text": "It will be worth ten times this by Tuesday. Possibly. Quantum baking is unpredictable."
+            }
+          ]
+        },
+        "bakery": {
+          "reward": 20,
+          "lines": [
+            {
+              "actor": "bakercat",
+              "text": "Oh wow — Wally outdid himself. This is going in the festival pastry. You'll get the first slice."
+            },
+            {
+              "actor": "kiki",
+              "text": "Honestly, that might be worth more than coin."
+            },
+            {
+              "actor": "bakercat",
+              "text": "Here, take some coin AND a slice promise. Best of both."
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "id": "wizards_favor",
+    "type": "delivery",
+    "precursorId": "rare_catch",
+    "blockedByTasks": ["bakers_favor"],
+    "name": "A Wizard's Favor",
+    "description": "Cornelius is brewing something with that fish and needs catnip from the hospital to finish it.",
+    "itemId": "catnip",
+    "giverLocationId": "wizard_tower",
+    "fromId": "hospital",
+    "toIds": ["wizard_tower"],
+    "timeLimit": 45,
+    "conversation": {
+      "start": [
+        {
+          "actor": "wizard",
+          "text": "The Moon-Trout brews. To finish I require catnip — Dr. Meow keeps the medicinal kind. Fetch it, please."
+        },
+        { "actor": "kiki", "text": "On it." }
+      ],
+      "complete": [
+        {
+          "actor": "wizard",
+          "text": "Perfect. Now stand back. ... or actually, come closer, this is the safe bit."
+        },
+        { "actor": "kiki", "text": "Define 'safe'." }
+      ]
+    }
+  },
+  {
+    "id": "bakers_favor",
+    "type": "delivery",
+    "precursorId": "rare_catch",
+    "blockedByTasks": ["wizards_favor"],
+    "name": "A Baker's Favor",
+    "description": "Miroslav is finishing the festival pastry and needs an apple from Dr. Meow's garden.",
+    "itemId": "apple",
+    "giverLocationId": "bakery",
+    "fromId": "hospital",
+    "toIds": ["bakery"],
+    "timeLimit": 45,
+    "conversation": {
+      "start": [
+        {
+          "actor": "bakercat",
+          "text": "The pastry needs one last thing — an apple from Dr. Meow's garden. She always has the best."
+        },
+        { "actor": "kiki", "text": "Be right back." }
+      ],
+      "complete": [
+        {
+          "actor": "bakercat",
+          "text": "PERFECT. Into the oven. Smell that? That's the smell of something legendary."
+        },
+        { "actor": "kiki", "text": "I'm holding you to that slice." }
+      ]
+    }
+  },
+  {
     "id": "midnight_snack",
     "precursorId": "intro",
     "name": "Midnight Snack",
@@ -115,7 +456,7 @@
     "itemId": "fish",
     "giverLocationId": "ollies_house",
     "fromId": "fish_shop",
-    "toId": "ollies_house",
+    "toIds": ["ollies_house"],
     "timeLimit": 45,
     "conversation": {
       "start": [
@@ -146,7 +487,7 @@
     "itemId": "toy_mouse",
     "giverLocationId": "ollies_house",
     "fromId": "haunted_house",
-    "toId": "ollies_house",
+    "toIds": ["ollies_house"],
     "conversation": {
       "start": [
         {
@@ -180,7 +521,7 @@
     "itemId": "catnip",
     "giverLocationId": "bakery",
     "fromId": "hospital",
-    "toId": "bakery",
+    "toIds": ["bakery"],
     "conversation": {
       "start": [
         {
@@ -215,7 +556,7 @@
     "itemId": "letter",
     "giverLocationId": "post_office",
     "fromId": "post_office",
-    "toId": "beach_house",
+    "toIds": ["beach_house"],
     "conversation": {
       "start": [
         {
@@ -252,7 +593,7 @@
     "itemId": "book",
     "giverLocationId": "beach_house",
     "fromId": "beach_house",
-    "toId": "school",
+    "toIds": ["school"],
     "conversation": {
       "start": [
         {
@@ -289,7 +630,7 @@
     "itemId": "letter",
     "giverLocationId": "school",
     "fromId": "school",
-    "toId": "post_office",
+    "toIds": ["post_office"],
     "conversation": {
       "start": [
         {
@@ -323,7 +664,7 @@
     "itemId": "fish",
     "giverLocationId": "wizard_tower",
     "fromId": "fish_shop",
-    "toId": "wizard_tower",
+    "toIds": ["wizard_tower"],
     "conversation": {
       "start": [
         {
@@ -353,7 +694,7 @@
     "itemId": "catnip",
     "giverLocationId": "wizard_tower",
     "fromId": "hospital",
-    "toId": "wizard_tower",
+    "toIds": ["wizard_tower"],
     "conversation": {
       "start": [
         {
@@ -380,7 +721,7 @@
     "itemId": "bread",
     "giverLocationId": "wizard_tower",
     "fromId": "wizard_tower",
-    "toId": "bakery",
+    "toIds": ["bakery"],
     "conversation": {
       "start": [
         {
@@ -418,7 +759,7 @@
     "itemId": "apple",
     "giverLocationId": "hospital",
     "fromId": "beach_house",
-    "toId": "school",
+    "toIds": ["school"],
     "conversation": {
       "start": [
         {
@@ -449,7 +790,7 @@
     "itemId": "medicine",
     "giverLocationId": "hospital",
     "fromId": "hospital",
-    "toId": "school",
+    "toIds": ["school"],
     "timeLimit": 50,
     "conversation": {
       "start": [
@@ -484,7 +825,7 @@
     "itemId": "book",
     "giverLocationId": "school",
     "fromId": "school",
-    "toId": "hospital",
+    "toIds": ["hospital"],
     "conversation": {
       "start": [
         {
@@ -525,7 +866,7 @@
     "itemId": "book",
     "giverLocationId": "library",
     "fromId": "ollies_house",
-    "toId": "library",
+    "toIds": ["library"],
     "conversation": {
       "start": [
         {
@@ -555,7 +896,7 @@
     "itemId": "book",
     "giverLocationId": "library",
     "fromId": "library",
-    "toId": "bakery",
+    "toIds": ["bakery"],
     "conversation": {
       "start": [
         {
@@ -593,7 +934,7 @@
     "itemId": "bread",
     "giverLocationId": "fish_shop",
     "fromId": "bakery",
-    "toId": "fish_shop",
+    "toIds": ["fish_shop"],
     "conversation": {
       "start": [
         {
@@ -626,7 +967,7 @@
     "itemId": "toy_mouse",
     "giverLocationId": "fish_shop",
     "fromId": "fish_shop",
-    "toId": "school",
+    "toIds": ["school"],
     "conversation": {
       "start": [
         {
@@ -664,7 +1005,7 @@
     "itemId": "bread",
     "giverLocationId": "pool",
     "fromId": "bakery",
-    "toId": "pool",
+    "toIds": ["pool"],
     "conversation": {
       "start": [
         {
@@ -694,7 +1035,7 @@
     "itemId": "ice_cream",
     "giverLocationId": "ollies_house",
     "fromId": "bakery",
-    "toId": "ollies_house",
+    "toIds": ["ollies_house"],
     "conversation": {
       "start": [
         {
@@ -724,7 +1065,7 @@
     "itemId": "medicine",
     "giverLocationId": "ollies_house",
     "fromId": "hospital",
-    "toId": "ollies_house",
+    "toIds": ["ollies_house"],
     "timeLimit": 40,
     "conversation": {
       "start": [
@@ -758,7 +1099,7 @@
     "itemId": "apple",
     "giverLocationId": "wizard_tower",
     "fromId": "beach_house",
-    "toId": "wizard_tower",
+    "toIds": ["wizard_tower"],
     "conversation": {
       "start": [
         {
@@ -788,7 +1129,7 @@
     "itemId": "bread",
     "giverLocationId": "bakery",
     "fromId": "bakery",
-    "toId": "hospital",
+    "toIds": ["hospital"],
     "conversation": {
       "start": [
         {
@@ -825,7 +1166,7 @@
     "itemId": "book",
     "giverLocationId": "pool",
     "fromId": "library",
-    "toId": "pool",
+    "toIds": ["pool"],
     "conversation": {
       "start": [
         {
@@ -859,7 +1200,7 @@
     "itemId": "ice_cream",
     "giverLocationId": "bakery",
     "fromId": "bakery",
-    "toId": "beach_house",
+    "toIds": ["beach_house"],
     "timeLimit": 25,
     "conversation": {
       "start": [
@@ -891,7 +1232,7 @@
     "itemId": "letter",
     "giverLocationId": "post_office",
     "fromId": "post_office",
-    "toId": "ollies_house",
+    "toIds": ["ollies_house"],
     "conversation": {
       "start": [
         {
@@ -928,7 +1269,7 @@
     "itemId": "toy_mouse",
     "giverLocationId": "pool",
     "fromId": "haunted_house",
-    "toId": "pool",
+    "toIds": ["pool"],
     "conversation": {
       "start": [
         {
@@ -962,7 +1303,7 @@
     "itemId": "apple",
     "giverLocationId": "hospital",
     "fromId": "school",
-    "toId": "hospital",
+    "toIds": ["hospital"],
     "conversation": {
       "start": [
         {
@@ -995,7 +1336,7 @@
     "itemId": "catnip",
     "giverLocationId": "school",
     "fromId": "hospital",
-    "toId": "school",
+    "toIds": ["school"],
     "conversation": {
       "start": [
         {
@@ -1028,7 +1369,7 @@
     "itemId": "bread",
     "giverLocationId": "post_office",
     "fromId": "bakery",
-    "toId": "post_office",
+    "toIds": ["post_office"],
     "conversation": {
       "start": [
         {
@@ -1061,7 +1402,7 @@
     "itemId": "medicine",
     "giverLocationId": "beach_house",
     "fromId": "hospital",
-    "toId": "beach_house",
+    "toIds": ["beach_house"],
     "conversation": {
       "start": [
         {
@@ -1089,7 +1430,7 @@
     "itemId": "letter",
     "giverLocationId": "ollies_house",
     "fromId": "ollies_house",
-    "toId": "post_office",
+    "toIds": ["post_office"],
     "conversation": {
       "start": [
         {
@@ -1123,7 +1464,7 @@
     "itemId": "fish",
     "giverLocationId": "fish_shop",
     "fromId": "fish_shop",
-    "toId": "wizard_tower",
+    "toIds": ["wizard_tower"],
     "conversation": {
       "start": [
         {
@@ -1154,7 +1495,7 @@
     "itemId": "catnip",
     "giverLocationId": "ollies_house",
     "fromId": "hospital",
-    "toId": "ollies_house",
+    "toIds": ["ollies_house"],
     "timeLimit": 35,
     "conversation": {
       "start": [
@@ -1188,7 +1529,7 @@
     "itemId": "bread",
     "giverLocationId": "library",
     "fromId": "bakery",
-    "toId": "library",
+    "toIds": ["library"],
     "conversation": {
       "start": [
         {

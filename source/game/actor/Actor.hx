@@ -12,5 +12,18 @@ class Actor {
 	public var voicePitch:Float;
 	public var defaultLine:String;
 
-	public function new() {}
+	// Offset applied to the home-location anchor when this actor is stationary.
+	public var offsetX:Float;
+	public var offsetY:Float;
+
+	// Live world coordinates. Seeded from location + offset, can be moved at runtime.
+	public var x:Float;
+	public var y:Float;
+
+	public function new() {
+		offsetX = 0;
+		offsetY = 0;
+		x = 0;
+		y = 0;
+	}
 }
