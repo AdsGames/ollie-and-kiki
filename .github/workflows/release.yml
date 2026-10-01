@@ -1,0 +1,27 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  release:
+    uses: adsgames/deploy-to-adsgames/.github/workflows/release-haxe-game.yml@v1
+    permissions:
+      id-token: write
+      contents: read
+    with:
+      project-id: kikis-delivery-day
+    secrets:
+      ADSGAMES_API_KEY: ${{ secrets.ADSGAMES_API_KEY }}
+
+  itch:
+    needs: release
+    uses: adsgames/deploy-to-adsgames/.github/workflows/deploy-itch.yml@v1
+    with:
+      itch-project: ads-games/kikis-delivery-day
+      # Keeps the web build on the existing HTML5 channel
+      channels: '{"WEB": "HTML5", "LINUX": "linux", "WINDOWS": "windows", "MAC": "mac"}'
+    secrets:
+      BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
