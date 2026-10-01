@@ -150,7 +150,7 @@ class WorldMap {
 		switch (obj.name) {
 			case "location":
 				var locationName = obj.properties.get("enemy_name");
-				if (locationName.length == 0) {
+				if (locationName == null || locationName.length == 0) {
 					trace("Patrol point " + obj.gid + " has no enemy_name");
 					return;
 				}

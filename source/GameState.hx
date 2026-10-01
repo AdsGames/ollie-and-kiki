@@ -1,6 +1,8 @@
 package;
 
+import flixel.FlxG;
 import flixel.FlxState;
+import flixel.util.FlxColor;
 import game.World;
 
 class GameState extends FlxState {
@@ -10,6 +12,7 @@ class GameState extends FlxState {
 	override public function create():Void {
 		super.create();
 		world = new World(this);
+		FlxG.camera.fade(FlxColor.BLACK, 0.4, true);
 	}
 
 	override public function update(elapsed:Float):Void {
