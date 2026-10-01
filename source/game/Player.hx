@@ -21,7 +21,7 @@ class Player extends FlxSprite {
 
 		// Center sprite on tile
 		offset.x = 1;
-		offset.y = 1;
+		offset.y = 3;
 
 		allowCollisions = FlxDirectionFlags.ANY;
 	}
@@ -35,21 +35,22 @@ class Player extends FlxSprite {
 		}
 
 		// Calculate speed
-		var speed = 60.0;
-		if (storeManager.isPurchased("running_shoes")) {
-			speed = 100.0;
-		}
+		var speed = 60.0 + storeManager.totalSpeedBonus();
 
+		var dx = 0.0;
+		var dy = 0.0;
 		if (InputManager.pressed(MoveUp)) {
-			velocity.y = -speed;
+			dy = -1;
 		} else if (InputManager.pressed(MoveDown)) {
-			velocity.y = speed;
+			dy = 1;
 		}
 		if (InputManager.pressed(MoveLeft)) {
-			velocity.x = -speed;
+			dx = -1;
 		} else if (InputManager.pressed(MoveRight)) {
-			velocity.x = speed;
+			dx = 1;
 		}
+
+		velocity.set(dx * speed, dy * speed);
 	}
 
 	override public function draw():Void {

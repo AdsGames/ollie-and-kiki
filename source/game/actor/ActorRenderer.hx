@@ -27,6 +27,9 @@ class ActorRenderer extends FlxGroup {
 				continue;
 			}
 
+			actor.x = location.x + actor.offsetX;
+			actor.y = location.y + actor.offsetY;
+
 			var marker = new ActorMarker(actor, location);
 			add(marker);
 			questLabels.add(marker.questLabel);
@@ -37,17 +40,17 @@ class ActorRenderer extends FlxGroup {
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
 
-		for (id in markerMap.keys()) {
-			markerMap[id].hideQuest();
-		}
-
+		var questGivers = new Map<String, Bool>();
 		for (task in taskManager.tasks) {
 			if (taskManager.canActivate(task)) {
-				var marker = markerMap[task.giverLocation.id];
-				if (marker != null) {
-					marker.showQuest();
-				}
+				questGivers[task.giverLocation.id] = true;
 			}
+		}
+
+		for (id in markerMap.keys()) {
+			var marker = markerMap[id];
+			marker.setVisible(!taskManager.isLocationActorEscorting(id));
+			marker.setQuest(questGivers.exists(id));
 		}
 	}
 }

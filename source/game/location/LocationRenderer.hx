@@ -27,11 +27,20 @@ class LocationRenderer extends FlxGroup {
 		}
 
 		for (task in taskManager.tasks) {
+			var label = task.item != null ? task.item.name : task.name;
 			switch task.state {
 				case Accepted:
-					showMarker(task.from.id, task.item.name);
+					if (task.from != null) {
+						showMarker(task.from.id, label);
+					} else {
+						for (loc in task.tos) {
+							showMarker(loc.id, label);
+						}
+					}
 				case PickedUp:
-					showMarker(task.to.id, task.item.name);
+					for (loc in task.tos) {
+						showMarker(loc.id, label);
+					}
 				case Delivered:
 				case Idle:
 			}

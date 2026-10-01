@@ -7,4 +7,8 @@ typedef StoreItem = {
 	image:String,
 	price:Int,
 	overlay:Null<String>,
+	// Gameplay effects, additive when the item is owned. All optional.
+	?speedBonus:Float,
+	?carryBonus:Int,
+	?unlocks:Array<String>,
 }
