@@ -3,6 +3,7 @@ package game;
 import flixel.FlxCamera.FlxCameraFollowStyle;
 import flixel.FlxG;
 import flixel.FlxState;
+import flixel.tweens.FlxTween;
 import game.actor.ActorManager;
 import game.actor.ActorRenderer;
 import game.ambience.AmbienceManager;
@@ -25,6 +26,7 @@ import game.store.StoreUI;
 import game.task.QuestArrowRenderer;
 import game.task.TaskManager;
 import game.task.TaskRenderer;
+import game.ui.InteractPrompt;
 
 class World {
 	public var map:WorldMap;
@@ -52,9 +54,18 @@ class World {
 	public var questArrowRenderer:QuestArrowRenderer;
 	public var minimapRenderer:MinimapRenderer;
 	public var storeUI:StoreUI;
+	public var interactPrompt:InteractPrompt;
 
 	// State stack
 	private var stack:GameStateStack;
+
+	// Music volume during free roam, and while a modal (dialogue, store) is open.
+	private static final MUSIC_VOLUME:Float = 0.5;
+	private static final MUSIC_DUCKED_VOLUME:Float = 0.25;
+	private static final AMBIENCE_DUCKED_GAIN:Float = 0.5;
+	private static final DUCK_DURATION:Float = 0.4;
+
+	private var ducked:Bool;
 
 	public function new(state:FlxState) {
 		map = new WorldMap(state);
@@ -103,6 +114,9 @@ class World {
 		// Quest exclamation marks render above foreground
 		state.add(actorRenderer.questLabels);
 
+		interactPrompt = new InteractPrompt();
+		state.add(interactPrompt);
+
 		// HUD renders on top of world geometry
 		locationRenderer = new LocationRenderer(locationManager, taskManager);
 		state.add(locationRenderer);
@@ -133,6 +147,8 @@ class World {
 		stack = new GameStateStack();
 		stack.push(new ExploringState(this));
 		subscribeStateTransitions();
+
+		ducked = false;
 
 		// Intro dialogue. Flush so the resulting DialogueStarted event applies
 		// before the first update tick.
@@ -181,6 +197,27 @@ class World {
 
 	private function refreshFrozen():Void {
 		// Player can only move during the base Exploring state.
-		player.frozen = !Std.isOfType(stack.current(), ExploringState);
+		var exploring = Std.isOfType(stack.current(), ExploringState);
+		player.frozen = !exploring;
+		if (!exploring) {
+			interactPrompt.hide();
+		}
+		setDucked(!exploring);
+	}
+
+	// Lower music and ambience while a modal is open so voices and UI stand out.
+	private function setDucked(value:Bool):Void {
+		if (ducked == value) {
+			return;
+		}
+		ducked = value;
+
+		var music = FlxG.sound.music;
+		if (music != null) {
+			FlxTween.cancelTweensOf(music);
+			FlxTween.tween(music, {volume: value ? MUSIC_DUCKED_VOLUME : MUSIC_VOLUME}, DUCK_DURATION);
+		}
+		FlxTween.cancelTweensOf(ambienceManager);
+		FlxTween.tween(ambienceManager, {gainScale: value ? AMBIENCE_DUCKED_GAIN : 1.0}, DUCK_DURATION);
 	}
 }

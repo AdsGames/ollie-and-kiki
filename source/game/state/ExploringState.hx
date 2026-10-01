@@ -66,6 +66,31 @@ class ExploringState extends GameStateBase {
 		if (timerResult.warned != null) {
 			world.events.emit(TaskTimerWarned(timerResult.warned));
 		}
+
+		updatePrompt();
+	}
+
+	/**
+	 * Place the button bubble over whatever Interact would act on.
+	 */
+	private function updatePrompt():Void {
+		var px = world.player.x;
+		var py = world.player.y;
+		var label = InputManager.label(Interact);
+
+		var task = world.taskManager.getIdleTaskNearGiver(px, py);
+		if (task != null) {
+			world.interactPrompt.showAt(task.giverLocation.x + 4, task.giverLocation.y - 2, label);
+			return;
+		}
+
+		var location = world.locationManager.getClosestLocation(px, py, INTERACT_RANGE);
+		if (location != null) {
+			world.interactPrompt.showAt(location.x + 4, location.y - 2, label);
+			return;
+		}
+
+		world.interactPrompt.hide();
 	}
 
 	private function acceptPendingTask():Void {

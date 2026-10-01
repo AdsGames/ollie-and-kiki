@@ -12,11 +12,15 @@ class AmbienceManager {
 
 	public var ambiences:Map<String, Ambience>;
 
+	// Extra volume multiplier, tweened by World to duck ambience under dialogue.
+	public var gainScale:Float;
+
 	private var warnedIds:Map<String, Bool>;
 
 	public function new() {
 		ambiences = new Map();
 		warnedIds = new Map();
+		gainScale = 1.0;
 	}
 
 	/**
@@ -96,7 +100,7 @@ class AmbienceManager {
 
 		// Mix ambience based on weight (inverse of distance), sample gain, and base gain.
 		for (i in 0...candidates.length) {
-			candidates[i].ambience.sound.volume = (weights[i] / totalWeight) * candidates[i].ambience.gain * AMBIENCE_GAIN;
+			candidates[i].ambience.sound.volume = (weights[i] / totalWeight) * candidates[i].ambience.gain * AMBIENCE_GAIN * gainScale;
 		}
 	}
 }
