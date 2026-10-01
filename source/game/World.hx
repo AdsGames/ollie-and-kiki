@@ -16,6 +16,8 @@ import game.location.LocationManager;
 import game.location.LocationRenderer;
 import game.minimap.MinimapRenderer;
 import game.sfx.SfxManager;
+import game.shader.DayNightShader;
+import game.state.DaySummaryState;
 import game.state.DialogueState;
 import game.state.ExploringState;
 import game.state.GameStateStack;
@@ -26,7 +28,12 @@ import game.store.StoreUI;
 import game.task.QuestArrowRenderer;
 import game.task.TaskManager;
 import game.task.TaskRenderer;
+import game.time.DayStats;
+import game.time.DaySummary;
+import game.time.TimeController;
+import game.time.TimeRenderer;
 import game.ui.InteractPrompt;
+import openfl.filters.ShaderFilter;
 
 class World {
 	public var map:WorldMap;
@@ -44,6 +51,8 @@ class World {
 	public var itemManager:ItemManager;
 	public var taskManager:TaskManager;
 	public var storeManager:StoreManager;
+	public var timeController:TimeController;
+	public var dayStats:DayStats;
 
 	// Rendering
 	public var actorRenderer:ActorRenderer;
@@ -51,13 +60,18 @@ class World {
 	public var taskRenderer:TaskRenderer;
 	public var inventoryRenderer:InventoryRenderer;
 	public var currencyRenderer:CurrencyRenderer;
+	public var timeRenderer:TimeRenderer;
 	public var questArrowRenderer:QuestArrowRenderer;
 	public var minimapRenderer:MinimapRenderer;
 	public var storeUI:StoreUI;
 	public var interactPrompt:InteractPrompt;
+	public var daySummary:DaySummary;
 
 	// State stack
 	private var stack:GameStateStack;
+
+	// Day/night tint shader instance; uniforms updated each frame
+	private var dayNightShader:DayNightShader;
 
 	// Music volume during free roam, and while a modal (dialogue, store) is open.
 	private static final MUSIC_VOLUME:Float = 0.5;
@@ -94,6 +108,9 @@ class World {
 		taskManager = new TaskManager(storeManager);
 		taskManager.load(itemManager, locationManager);
 
+		timeController = new TimeController();
+		dayStats = new DayStats();
+
 		subscribeTaskEvents();
 
 		// Actor sprites at their home locations
@@ -127,6 +144,9 @@ class World {
 		currencyRenderer = new CurrencyRenderer(storeManager, events);
 		state.add(currencyRenderer);
 
+		timeRenderer = new TimeRenderer(timeController);
+		state.add(timeRenderer);
+
 		// Popup UIs
 		taskRenderer = new TaskRenderer(taskManager);
 		state.add(taskRenderer);
@@ -142,6 +162,14 @@ class World {
 
 		// Dialogue box renders on top of everything
 		dialogueManager.addToState(state);
+
+		// Full-screen modals render on top of everything
+		daySummary = new DaySummary(events);
+		state.add(daySummary);
+
+		// Install day/night tint.
+		dayNightShader = new DayNightShader();
+		FlxG.game.setFilters([new ShaderFilter(dayNightShader)]);
 
 		// Set up state stack with Exploring as the base, then wire transitions.
 		stack = new GameStateStack();
@@ -161,6 +189,7 @@ class World {
 		stack.update(elapsed);
 		events.flush();
 		ambienceManager.update(player.x, player.y, map.ambienceZones);
+		dayNightShader.setPhase(timeController.getPhase());
 	}
 
 	private function subscribeTaskEvents():Void {
@@ -170,6 +199,8 @@ class World {
 		events.on("TaskDelivered", function(event) switch (event) {
 			case TaskDelivered(task):
 				storeManager.addCoins(task.item.value);
+				dayStats.tasksCompleted++;
+				dayStats.coinsEarned += task.item.value;
 				sfxManager.playTaskDelivered();
 				dialogueManager.startDialogue(task.completeLines);
 			default:
@@ -191,6 +222,18 @@ class World {
 		});
 		events.on("StoreClosed", function(_) {
 			stack.popOfType(StoreState);
+			refreshFrozen();
+		});
+		events.on("DayEnded", function(event) switch (event) {
+			case DayEnded(day):
+				daySummary.open(day, dayStats);
+				stack.push(new DaySummaryState(this));
+				refreshFrozen();
+			default:
+		});
+		events.on("DaySummaryClosed", function(_) {
+			dayStats.reset();
+			stack.popOfType(DaySummaryState);
 			refreshFrozen();
 		});
 	}
