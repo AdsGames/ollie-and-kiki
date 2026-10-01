@@ -37,7 +37,7 @@ class InventoryRenderer extends FlxGroup {
 		var key = "";
 		var carried = [];
 		for (t in taskManager.tasks) {
-			if (t.state == PickedUp) {
+			if (t.state == PickedUp && t.item != null) {
 				key += t.item.id + ",";
 				carried.push(t.item);
 			}
@@ -50,7 +50,8 @@ class InventoryRenderer extends FlxGroup {
 		for (i in 0...MAX_SLOTS) {
 			if (i < carried.length) {
 				slots[i].loadGraphic(carried[i].image);
-				slots[i].scale.set(ICON_SIZE / carried[i].image.width, ICON_SIZE / carried[i].image.height);
+				slots[i].setGraphicSize(ICON_SIZE, ICON_SIZE);
+				slots[i].updateHitbox();
 				slots[i].visible = true;
 			} else {
 				slots[i].visible = false;

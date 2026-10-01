@@ -8,7 +8,10 @@ import openfl.display.StageQuality;
 class InitState extends FlxGame {
 	public function new() {
 		super(240, 160, SplashState, 60, 60, true, false);
-		FlxG.sound.volume = 1.0;
+		// Flixel restores the saved volume during init; only default it on first launch.
+		if (FlxG.save.data.volume == null) {
+			FlxG.sound.volume = 1.0;
+		}
 		FlxG.mouse.useSystemCursor = true;
 	}
 
