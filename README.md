@@ -13,7 +13,7 @@ haxelib run lime setup flixel
 haxelib run flixel-tools setup
 ```
 
-Optionally
+Optional:
 
 ```sh
 haxelib install checkstyle
@@ -25,13 +25,13 @@ haxelib install formatter
 ### Neko
 
 ```sh
-lime test neko
+haxelib run lime test neko
 ```
 
 ### Native
 
 ```sh
-lime test cpp
+haxelib run lime test cpp
 ```
 
 ### HTML5
@@ -39,7 +39,7 @@ lime test cpp
 ```sh
 # Not required if using vscode
 haxe --wait 6000
-lime test html5 --connect 6000
+haxelib run lime test html5 --connect 6000
 ```
 
 or in vscode

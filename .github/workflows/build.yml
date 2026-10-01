@@ -62,17 +62,15 @@ jobs:
           PACKAGE: export/html5/bin
           VERSION: ${{ github.ref_name }}
 
-      # - name: Deploy to A.D.S. Games
-      #   if: startsWith(github.ref, 'refs/tags/v')
-      #   uses: adsgames/deploy-to-adsgames@main
-      #   with:
-      #     project-id: kikis-delivery-day
-      #     version: ${{ github.ref_name }}
-      #     build-dir: export/html5/bin
-      #     platform: WEB
-      #     bucket-access-key: ${{ secrets.LINODE_BUCKET_ACCESS_KEY }}
-      #     bucket-secret-key: ${{ secrets.LINODE_BUCKET_SECRET_KEY }}
-      #     api-key: ${{ secrets.ADSGAMES_API_KEY }}
+      - name: Deploy to A.D.S. Games
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: adsgames/deploy-to-adsgames@main
+        with:
+          project-id: kikis-delivery-day
+          version: ${{ github.ref_name }}
+          build-dir: export/html5/bin
+          platform: WEB
+          api-key: ${{ secrets.ADSGAMES_API_KEY }}
 
   deploy:
     name: Deploy to Pages

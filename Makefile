@@ -1,4 +1,4 @@
-.PHONY: server neko html5 watch
+.PHONY: server neko html5 watch lint format watch-web
 
 server:
 	haxe --wait 6001
@@ -17,3 +17,6 @@ lint:
 
 format:
 	haxelib run formatter -s source 
+
+watch-web:
+	find source -name "*.hx" -o -name "*.xml" | entr -r haxelib run lime test html5 -debug --connect 6000
