@@ -1,11 +1,13 @@
 package game.dialogue;
 
+import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.text.FlxBitmapText;
 import game.Palette;
 import game.actor.Actor;
 import game.ui.NineSlice;
+import game.ui.PanelAnimator;
 
 // 9-slice dialogue box using a 48x48 spritesheet (3x3 grid of 16x16 tiles).
 class DialogueBox extends FlxGroup {
@@ -19,10 +21,13 @@ class DialogueBox extends FlxGroup {
 	private static final PORTRAIT_X_OFFSET:Int = -10;
 	private static final PORTRAIT_Y_OFFSET:Int = 7;
 	private static final CHARS_PER_SEC:Float = 30.0;
+	private static final NEXT_BLINK_MS:Int = 400;
 
 	private var actorText:FlxBitmapText;
 	private var contentText:FlxBitmapText;
 	private var portrait:FlxSprite;
+	private var nextIndicator:FlxSprite;
+	private var anim:PanelAnimator;
 
 	private var fullText:String;
 	private var visibleChars:Float;
@@ -70,7 +75,21 @@ class DialogueBox extends FlxGroup {
 		contentText.scrollFactor.set(0, 0);
 		add(contentText);
 
+		// Blinking down-arrow shown when the line has finished typing
+		nextIndicator = new FlxSprite(BOX_X + BOX_W - NineSlice.TILE - 4, BOX_Y + BOX_H - NineSlice.TILE + 2);
+		nextIndicator.makeGraphic(5, 3, 0x00000000, true);
+		for (row in 0...3) {
+			for (col in row...5 - row) {
+				nextIndicator.pixels.setPixel32(col, row, Palette.BLACK);
+			}
+		}
+		nextIndicator.dirty = true;
+		nextIndicator.scrollFactor.set(0, 0);
+		nextIndicator.visible = false;
+		add(nextIndicator);
+
 		visible = false;
+		anim = new PanelAnimator(this, BOX_H + 8);
 	}
 
 	/**
@@ -80,12 +99,13 @@ class DialogueBox extends FlxGroup {
 	 */
 	public function show(line:DialogueLine, actor:Null<Actor>, onVoiceChar:Null<(String, Float) -> Void> = null):Void {
 		actorText.text = actor != null ? actor.name : line.actorId;
-		fullText = line.text;
+		fullText = InputManager.formatHints(line.text);
 		visibleChars = 0;
 		lastVisibleInt = 0;
 		typing = true;
 		contentText.text = "";
-		visible = true;
+		nextIndicator.visible = false;
+		anim.show();
 		this.voicePitch = actor != null ? actor.voicePitch : 1.0;
 		this.onVoiceChar = onVoiceChar;
 
@@ -117,8 +137,9 @@ class DialogueBox extends FlxGroup {
 	 * Hide the dialogue box.
 	 */
 	public function hide():Void {
-		visible = false;
-		portrait.visible = false;
+		typing = false;
+		nextIndicator.visible = false;
+		anim.hide();
 	}
 
 	/**
@@ -128,7 +149,12 @@ class DialogueBox extends FlxGroup {
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
 
-		if (!visible || !typing) {
+		if (!visible) {
+			return;
+		}
+
+		if (!typing) {
+			nextIndicator.visible = anim.isShown && Std.int(FlxG.game.ticks / NEXT_BLINK_MS) % 2 == 0;
 			return;
 		}
 

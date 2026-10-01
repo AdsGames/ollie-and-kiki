@@ -5,10 +5,11 @@ import flixel.text.FlxBitmapText;
 import game.Fonts;
 import game.Palette;
 import game.ui.NineSlice;
+import game.ui.PanelAnimator;
 
 class TaskRenderer extends FlxGroup {
-	// Maximum number of tasks to display at once.
-	private static final MAX_TASKS:Int = 3;
+	// Maximum number of rows to display at once. The last row becomes "+N more" on overflow.
+	private static final MAX_TASKS:Int = 5;
 
 	// Layout constants for the task panel.
 	private static final LINE_HEIGHT:Int = 14;
@@ -33,6 +34,8 @@ class TaskRenderer extends FlxGroup {
 
 	// Reference to the task manager to get active tasks.
 	private var taskManager:TaskManager;
+
+	private var anim:PanelAnimator;
 
 	public function new(taskManager:TaskManager) {
 		super();
@@ -63,10 +66,11 @@ class TaskRenderer extends FlxGroup {
 		}
 
 		visible = false;
+		anim = new PanelAnimator(this, -(PANEL_Y + PANEL_H));
 	}
 
 	public function toggle():Void {
-		visible = !visible;
+		anim.toggle();
 	}
 
 	override public function update(elapsed:Float):Void {
@@ -76,8 +80,14 @@ class TaskRenderer extends FlxGroup {
 		super.update(elapsed);
 
 		var active = [for (t in taskManager.tasks) if (t.state == Accepted || t.state == PickedUp) t];
+		var overflow = active.length > MAX_TASKS;
+		var shown = overflow ? MAX_TASKS - 1 : active.length;
 		for (i in 0...MAX_TASKS) {
-			if (i < active.length) {
+			if (overflow && i == MAX_TASKS - 1) {
+				taskTexts[i].visible = true;
+				taskTexts[i].text = '  +${active.length - shown} more';
+				taskTexts[i].color = Palette.DARK_GREY;
+			} else if (i < shown) {
 				taskTexts[i].visible = true;
 				taskTexts[i].text = formatTask(active[i]);
 				taskTexts[i].color = active[i].state == PickedUp
@@ -92,7 +102,7 @@ class TaskRenderer extends FlxGroup {
 	private function formatTask(task:Task):String {
 		var timer = "";
 		if (task.state == PickedUp && task.timeLimit != null) {
-			timer = " (${task.timeRemaining()}s)";
+			timer = " (${Math.ceil(task.timeRemaining())}s)";
 		}
 
 		return switch task.state {

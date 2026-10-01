@@ -5,10 +5,12 @@ import flixel.group.FlxGroup;
 import game.Palette;
 import game.location.LocationManager;
 import game.ui.NineSlice;
+import game.ui.PanelAnimator;
 
 class MinimapRenderer extends FlxGroup {
 	private static final X:Int = 172;
-	private static final Y:Int = 4;
+	// Sits below the coin counter (and its "+N" floater) in the top-right corner.
+	private static final Y:Int = 20;
 	private static final W:Int = 64;
 	private static final H:Int = 64;
 	private static final DOT:Int = 2;
@@ -23,6 +25,7 @@ class MinimapRenderer extends FlxGroup {
 	private var worldW:Int;
 	private var worldH:Int;
 	private var playerDot:FlxSprite;
+	private var anim:PanelAnimator;
 
 	public function new(worldW:Int, worldH:Int, locationManager:LocationManager) {
 		super();
@@ -46,16 +49,18 @@ class MinimapRenderer extends FlxGroup {
 		add(playerDot);
 
 		visible = false;
+		anim = new PanelAnimator(this, -(Y + H));
 	}
 
 	public function updatePlayerPos(px:Float, py:Float):Void {
 		var scaleX = IW / (worldW * 8.0);
 		var scaleY = IH / (worldH * 8.0);
 		playerDot.x = IX + px * scaleX - DOT * 0.5;
-		playerDot.y = IY + py * scaleY - DOT * 0.5;
+		// Include the slide offset since this position is set absolutely each frame
+		playerDot.y = IY + py * scaleY - DOT * 0.5 + Math.round(anim.offset);
 	}
 
 	public function toggle():Void {
-		visible = !visible;
+		anim.toggle();
 	}
 }

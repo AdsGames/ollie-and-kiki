@@ -19,5 +19,7 @@ class InitState extends FlxGame {
 		super.create(_);
 		stage.quality = StageQuality.LOW;
 		FlxSprite.defaultAntialiasing = false;
+		FlxG.signals.preUpdate.add(InputManager.poll);
+		FlxG.signals.postUpdate.add(InputManager.latchStick);
 	}
 }
