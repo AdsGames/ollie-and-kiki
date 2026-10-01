@@ -26,6 +26,9 @@ class MenuState extends FlxState {
 		super.create();
 		FlxG.mouse.visible = true;
 
+		// Drop the in-game day/night shader when returning from the game.
+		FlxG.game.setFilters([]);
+
 		FlxG.camera.fade(FlxColor.WHITE, 0.5, true, () -> ready = true);
 
 		FlxG.sound.playMusic(AssetPaths.jazzollie__ogg, 0, true);

@@ -23,6 +23,12 @@ class ExploringState extends GameStateBase {
 	}
 
 	override public function update(elapsed:Float):Void {
+		world.timeController.update(elapsed);
+		if (world.timeController.checkDayEnded()) {
+			world.events.emit(DayEnded(world.timeController.getDay() - 1));
+			return;
+		}
+
 		#if debug
 		// Cheat
 		if (FlxG.keys.justPressed.ONE) {
